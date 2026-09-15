@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./knights-home.css";
 
 export const metadata: Metadata = {
-  title: "KN1GHTS | Offensive Security",
-  description: "Built through competition. Sharpened through failure. Proven under pressure.",
+  title: "KN1GHTS | Competitive Cybersecurity",
+  description: "Competitive cybersecurity. Offensive research. CTFs.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

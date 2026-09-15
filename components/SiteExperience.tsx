@@ -9,11 +9,12 @@ import { Header } from "./ui/Header";
 import { SystemLoader } from "./ui/SystemLoader";
 import { Cursor } from "./ui/Cursor";
 import { Story } from "./sections/Story";
+import type { KnightsHomeData } from "@/data/knights";
 
 export type ProgressRef = React.MutableRefObject<number>;
 export type PointerRef = React.MutableRefObject<{ x: number; y: number }>;
 
-export function SiteExperience() {
+export function SiteExperience({ data }: { data: KnightsHomeData }) {
   const progress = useRef(0);
   const pointer = useRef({ x: 0, y: 0 });
   const [loaded, setLoaded] = useState(false);
@@ -64,14 +65,14 @@ export function SiteExperience() {
 
   return (
     <main className={loaded ? "experience is-loaded" : "experience"}>
-      <a className="skip-link" href="#story">Skip cinematic intro</a>
+      <a className="skip-link" href="#story">Skip to content</a>
       <SystemLoader onComplete={completeLoading} />
       <ExperienceCanvas progress={progress} pointer={pointer} />
       <div className="atmosphere" aria-hidden="true" />
       <div className="grain" aria-hidden="true" />
       <Header />
       <Cursor />
-      <Story />
+      <Story data={data} />
     </main>
   );
 }
