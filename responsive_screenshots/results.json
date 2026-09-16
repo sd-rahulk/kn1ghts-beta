@@ -1,0 +1,2428 @@
+{
+  "generatedAt": "2026-09-16T10:27:44.136Z",
+  "baseUrl": "http://localhost:3000",
+  "matrix": [
+    {
+      "device": {
+        "name": "tiny-phone",
+        "width": 280,
+        "height": 653,
+        "dpr": 2,
+        "mobile": true
+      },
+      "audit": {
+        "title": "KN1GHTS | Competitive Cybersecurity",
+        "viewport": {
+          "width": 280,
+          "height": 653,
+          "dpr": 2
+        },
+        "document": {
+          "clientWidth": 280,
+          "scrollWidth": 280,
+          "scrollHeight": 13520
+        },
+        "semantic": {
+          "h1Count": 1,
+          "chapterCount": 11,
+          "navButtonCount": 11,
+          "duplicateIds": []
+        },
+        "canvas": {
+          "width": 280,
+          "height": 653
+        },
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 280,
+          "height": 64
+        },
+        "overflow": [],
+        "brokenImages": [],
+        "externalLinkIssues": [],
+        "unlabeledControls": [],
+        "mobileTargets": [],
+        "fonts": "loaded",
+        "cursor": "auto",
+        "menuClosed": {
+          "expanded": "false",
+          "hidden": "true"
+        }
+      },
+      "chapters": [
+        {
+          "id": "home",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 0,
+          "sectionHeight": 947
+        },
+        {
+          "id": "updates",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 1039,
+          "sectionHeight": 1162
+        },
+        {
+          "id": "approach",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 2200,
+          "sectionHeight": 1110
+        },
+        {
+          "id": "disciplines",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 3336,
+          "sectionHeight": 1238
+        },
+        {
+          "id": "results",
+          "visibleContent": 5,
+          "overflow": [],
+          "scrollY": 4554,
+          "sectionHeight": 1132
+        },
+        {
+          "id": "writeups",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 5649,
+          "sectionHeight": 1071
+        },
+        {
+          "id": "projects",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 6734,
+          "sectionHeight": 1019
+        },
+        {
+          "id": "team",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 7931,
+          "sectionHeight": 2750
+        },
+        {
+          "id": "journal",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 10507,
+          "sectionHeight": 1040
+        },
+        {
+          "id": "recruitment",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 11541,
+          "sectionHeight": 1045
+        },
+        {
+          "id": "contact",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 12596,
+          "sectionHeight": 980
+        }
+      ],
+      "menu": {
+        "clientHeight": 653,
+        "scrollHeight": 653,
+        "canScroll": false,
+        "lastButtonBottom": 560
+      }
+    },
+    {
+      "device": {
+        "name": "small-phone",
+        "width": 320,
+        "height": 568,
+        "dpr": 2,
+        "mobile": true
+      },
+      "audit": {
+        "title": "KN1GHTS | Competitive Cybersecurity",
+        "viewport": {
+          "width": 320,
+          "height": 568,
+          "dpr": 2
+        },
+        "document": {
+          "clientWidth": 320,
+          "scrollWidth": 320,
+          "scrollHeight": 12006
+        },
+        "semantic": {
+          "h1Count": 1,
+          "chapterCount": 11,
+          "navButtonCount": 11,
+          "duplicateIds": []
+        },
+        "canvas": {
+          "width": 320,
+          "height": 568
+        },
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 320,
+          "height": 64
+        },
+        "overflow": [],
+        "brokenImages": [],
+        "externalLinkIssues": [],
+        "unlabeledControls": [],
+        "mobileTargets": [],
+        "fonts": "loaded",
+        "cursor": "auto",
+        "menuClosed": {
+          "expanded": "false",
+          "hidden": "true"
+        }
+      },
+      "chapters": [
+        {
+          "id": "home",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 0,
+          "sectionHeight": 824
+        },
+        {
+          "id": "updates",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 911,
+          "sectionHeight": 1053
+        },
+        {
+          "id": "approach",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 1956,
+          "sectionHeight": 966
+        },
+        {
+          "id": "disciplines",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 2957,
+          "sectionHeight": 1144
+        },
+        {
+          "id": "results",
+          "visibleContent": 5,
+          "overflow": [],
+          "scrollY": 4068,
+          "sectionHeight": 981
+        },
+        {
+          "id": "writeups",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 5019,
+          "sectionHeight": 946
+        },
+        {
+          "id": "projects",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 5976,
+          "sectionHeight": 890
+        },
+        {
+          "id": "team",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 7031,
+          "sectionHeight": 2488
+        },
+        {
+          "id": "journal",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 9364,
+          "sectionHeight": 945
+        },
+        {
+          "id": "recruitment",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 10295,
+          "sectionHeight": 909
+        },
+        {
+          "id": "contact",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 11214,
+          "sectionHeight": 852
+        }
+      ],
+      "menu": {
+        "clientHeight": 568,
+        "scrollHeight": 636,
+        "canScroll": true,
+        "lastButtonBottom": 560
+      }
+    },
+    {
+      "device": {
+        "name": "android-phone",
+        "width": 360,
+        "height": 740,
+        "dpr": 3,
+        "mobile": true
+      },
+      "audit": {
+        "title": "KN1GHTS | Competitive Cybersecurity",
+        "viewport": {
+          "width": 360,
+          "height": 740,
+          "dpr": 3
+        },
+        "document": {
+          "clientWidth": 360,
+          "scrollWidth": 360,
+          "scrollHeight": 15068
+        },
+        "semantic": {
+          "h1Count": 1,
+          "chapterCount": 11,
+          "navButtonCount": 11,
+          "duplicateIds": []
+        },
+        "canvas": {
+          "width": 360,
+          "height": 740
+        },
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 360,
+          "height": 64
+        },
+        "overflow": [],
+        "brokenImages": [],
+        "externalLinkIssues": [],
+        "unlabeledControls": [],
+        "mobileTargets": [],
+        "fonts": "loaded",
+        "cursor": "auto",
+        "menuClosed": {
+          "expanded": "false",
+          "hidden": "true"
+        }
+      },
+      "chapters": [
+        {
+          "id": "home",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 0,
+          "sectionHeight": 1073
+        },
+        {
+          "id": "updates",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 1177,
+          "sectionHeight": 1317
+        },
+        {
+          "id": "approach",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 2494,
+          "sectionHeight": 1258
+        },
+        {
+          "id": "disciplines",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 3768,
+          "sectionHeight": 1339
+        },
+        {
+          "id": "results",
+          "visibleContent": 5,
+          "overflow": [],
+          "scrollY": 5072,
+          "sectionHeight": 1161
+        },
+        {
+          "id": "writeups",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 6215,
+          "sectionHeight": 1214
+        },
+        {
+          "id": "projects",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 7445,
+          "sectionHeight": 1154
+        },
+        {
+          "id": "team",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 8801,
+          "sectionHeight": 3109
+        },
+        {
+          "id": "journal",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 11699,
+          "sectionHeight": 1106
+        },
+        {
+          "id": "recruitment",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 12812,
+          "sectionHeight": 1184
+        },
+        {
+          "id": "contact",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 14009,
+          "sectionHeight": 1110
+        }
+      ],
+      "menu": {
+        "clientHeight": 740,
+        "scrollHeight": 740,
+        "canScroll": false,
+        "lastButtonBottom": 624
+      }
+    },
+    {
+      "device": {
+        "name": "iphone",
+        "width": 390,
+        "height": 844,
+        "dpr": 3,
+        "mobile": true
+      },
+      "audit": {
+        "title": "KN1GHTS | Competitive Cybersecurity",
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 3
+        },
+        "document": {
+          "clientWidth": 390,
+          "scrollWidth": 390,
+          "scrollHeight": 17030
+        },
+        "semantic": {
+          "h1Count": 1,
+          "chapterCount": 11,
+          "navButtonCount": 11,
+          "duplicateIds": []
+        },
+        "canvas": {
+          "width": 390,
+          "height": 844
+        },
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 390,
+          "height": 64
+        },
+        "overflow": [],
+        "brokenImages": [],
+        "externalLinkIssues": [],
+        "unlabeledControls": [],
+        "mobileTargets": [],
+        "fonts": "loaded",
+        "cursor": "auto",
+        "menuClosed": {
+          "expanded": "false",
+          "hidden": "true"
+        }
+      },
+      "chapters": [
+        {
+          "id": "home",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 0,
+          "sectionHeight": 1224
+        },
+        {
+          "id": "updates",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 1342,
+          "sectionHeight": 1502
+        },
+        {
+          "id": "approach",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 2844,
+          "sectionHeight": 1435
+        },
+        {
+          "id": "disciplines",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 4284,
+          "sectionHeight": 1460
+        },
+        {
+          "id": "results",
+          "visibleContent": 5,
+          "overflow": [],
+          "scrollY": 5706,
+          "sectionHeight": 1267
+        },
+        {
+          "id": "writeups",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 6964,
+          "sectionHeight": 1384
+        },
+        {
+          "id": "projects",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 8367,
+          "sectionHeight": 1317
+        },
+        {
+          "id": "team",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 9912,
+          "sectionHeight": 3537
+        },
+        {
+          "id": "journal",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 13203,
+          "sectionHeight": 1227
+        },
+        {
+          "id": "recruitment",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 14443,
+          "sectionHeight": 1350
+        },
+        {
+          "id": "contact",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 15809,
+          "sectionHeight": 1266
+        }
+      ],
+      "menu": {
+        "clientHeight": 844,
+        "scrollHeight": 844,
+        "canScroll": false,
+        "lastButtonBottom": 689
+      }
+    },
+    {
+      "device": {
+        "name": "large-phone",
+        "width": 430,
+        "height": 932,
+        "dpr": 3,
+        "mobile": true
+      },
+      "audit": {
+        "title": "KN1GHTS | Competitive Cybersecurity",
+        "viewport": {
+          "width": 430,
+          "height": 932,
+          "dpr": 3
+        },
+        "document": {
+          "clientWidth": 430,
+          "scrollWidth": 430,
+          "scrollHeight": 18672
+        },
+        "semantic": {
+          "h1Count": 1,
+          "chapterCount": 11,
+          "navButtonCount": 11,
+          "duplicateIds": []
+        },
+        "canvas": {
+          "width": 430,
+          "height": 932
+        },
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 430,
+          "height": 64
+        },
+        "overflow": [],
+        "brokenImages": [],
+        "externalLinkIssues": [],
+        "unlabeledControls": [],
+        "mobileTargets": [],
+        "fonts": "loaded",
+        "cursor": "auto",
+        "menuClosed": {
+          "expanded": "false",
+          "hidden": "true"
+        }
+      },
+      "chapters": [
+        {
+          "id": "home",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 0,
+          "sectionHeight": 1351
+        },
+        {
+          "id": "updates",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 1479,
+          "sectionHeight": 1641
+        },
+        {
+          "id": "approach",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 3123,
+          "sectionHeight": 1584
+        },
+        {
+          "id": "disciplines",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 4703,
+          "sectionHeight": 1562
+        },
+        {
+          "id": "results",
+          "visibleContent": 5,
+          "overflow": [],
+          "scrollY": 6228,
+          "sectionHeight": 1377
+        },
+        {
+          "id": "writeups",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 7597,
+          "sectionHeight": 1508
+        },
+        {
+          "id": "projects",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 9128,
+          "sectionHeight": 1454
+        },
+        {
+          "id": "team",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 10834,
+          "sectionHeight": 3900
+        },
+        {
+          "id": "journal",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 14457,
+          "sectionHeight": 1329
+        },
+        {
+          "id": "recruitment",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 15807,
+          "sectionHeight": 1491
+        },
+        {
+          "id": "contact",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 17314,
+          "sectionHeight": 1398
+        }
+      ],
+      "menu": {
+        "clientHeight": 932,
+        "scrollHeight": 932,
+        "canScroll": false,
+        "lastButtonBottom": 759
+      }
+    },
+    {
+      "device": {
+        "name": "foldable",
+        "width": 540,
+        "height": 720,
+        "dpr": 2,
+        "mobile": true
+      },
+      "audit": {
+        "title": "KN1GHTS | Competitive Cybersecurity",
+        "viewport": {
+          "width": 540,
+          "height": 720,
+          "dpr": 2
+        },
+        "document": {
+          "clientWidth": 540,
+          "scrollWidth": 540,
+          "scrollHeight": 14619
+        },
+        "semantic": {
+          "h1Count": 1,
+          "chapterCount": 11,
+          "navButtonCount": 11,
+          "duplicateIds": []
+        },
+        "canvas": {
+          "width": 540,
+          "height": 720
+        },
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 540,
+          "height": 64
+        },
+        "overflow": [],
+        "brokenImages": [],
+        "externalLinkIssues": [],
+        "unlabeledControls": [],
+        "mobileTargets": [],
+        "fonts": "loaded",
+        "cursor": "auto",
+        "menuClosed": {
+          "expanded": "false",
+          "hidden": "true"
+        }
+      },
+      "chapters": [
+        {
+          "id": "home",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 0,
+          "sectionHeight": 1044
+        },
+        {
+          "id": "updates",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 1145,
+          "sectionHeight": 1282
+        },
+        {
+          "id": "approach",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 2427,
+          "sectionHeight": 1224
+        },
+        {
+          "id": "disciplines",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 3669,
+          "sectionHeight": 1316
+        },
+        {
+          "id": "results",
+          "visibleContent": 5,
+          "overflow": [],
+          "scrollY": 4939,
+          "sectionHeight": 1086
+        },
+        {
+          "id": "writeups",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 6017,
+          "sectionHeight": 1181
+        },
+        {
+          "id": "projects",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 7214,
+          "sectionHeight": 1123
+        },
+        {
+          "id": "team",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 8533,
+          "sectionHeight": 3026
+        },
+        {
+          "id": "journal",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 11352,
+          "sectionHeight": 1066
+        },
+        {
+          "id": "recruitment",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 12426,
+          "sectionHeight": 1152
+        },
+        {
+          "id": "contact",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 13590,
+          "sectionHeight": 1080
+        }
+      ],
+      "menu": {
+        "clientHeight": 720,
+        "scrollHeight": 866,
+        "canScroll": true,
+        "lastButtonBottom": 790
+      }
+    },
+    {
+      "device": {
+        "name": "short-landscape",
+        "width": 667,
+        "height": 375,
+        "dpr": 2,
+        "mobile": true
+      },
+      "audit": {
+        "title": "KN1GHTS | Competitive Cybersecurity",
+        "viewport": {
+          "width": 667,
+          "height": 375,
+          "dpr": 2
+        },
+        "document": {
+          "clientWidth": 667,
+          "scrollWidth": 667,
+          "scrollHeight": 10039
+        },
+        "semantic": {
+          "h1Count": 1,
+          "chapterCount": 11,
+          "navButtonCount": 11,
+          "duplicateIds": []
+        },
+        "canvas": {
+          "width": 667,
+          "height": 375
+        },
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 667,
+          "height": 56
+        },
+        "overflow": [],
+        "brokenImages": [],
+        "externalLinkIssues": [],
+        "unlabeledControls": [],
+        "mobileTargets": [],
+        "fonts": "loaded",
+        "cursor": "auto",
+        "menuClosed": {
+          "expanded": "false",
+          "hidden": "true"
+        }
+      },
+      "chapters": [
+        {
+          "id": "home",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 0,
+          "sectionHeight": 544
+        },
+        {
+          "id": "updates",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 638,
+          "sectionHeight": 898
+        },
+        {
+          "id": "approach",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 1495,
+          "sectionHeight": 638
+        },
+        {
+          "id": "disciplines",
+          "visibleContent": 1,
+          "overflow": [],
+          "scrollY": 2215,
+          "sectionHeight": 1054
+        },
+        {
+          "id": "results",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 3235,
+          "sectionHeight": 884
+        },
+        {
+          "id": "writeups",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 4087,
+          "sectionHeight": 865
+        },
+        {
+          "id": "projects",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 4960,
+          "sectionHeight": 761
+        },
+        {
+          "id": "team",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 5886,
+          "sectionHeight": 2393
+        },
+        {
+          "id": "journal",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 8129,
+          "sectionHeight": 840
+        },
+        {
+          "id": "recruitment",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 8917,
+          "sectionHeight": 600
+        },
+        {
+          "id": "contact",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 9523,
+          "sectionHeight": 563
+        }
+      ],
+      "menu": {
+        "clientHeight": 375,
+        "scrollHeight": 600,
+        "canScroll": true,
+        "lastButtonBottom": 544
+      }
+    },
+    {
+      "device": {
+        "name": "phone-landscape",
+        "width": 844,
+        "height": 390,
+        "dpr": 3,
+        "mobile": true
+      },
+      "audit": {
+        "title": "KN1GHTS | Competitive Cybersecurity",
+        "viewport": {
+          "width": 844,
+          "height": 390,
+          "dpr": 3
+        },
+        "document": {
+          "clientWidth": 844,
+          "scrollWidth": 844,
+          "scrollHeight": 8929
+        },
+        "semantic": {
+          "h1Count": 1,
+          "chapterCount": 11,
+          "navButtonCount": 11,
+          "duplicateIds": []
+        },
+        "canvas": {
+          "width": 844,
+          "height": 390
+        },
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 844,
+          "height": 56
+        },
+        "overflow": [],
+        "brokenImages": [],
+        "externalLinkIssues": [],
+        "unlabeledControls": [],
+        "mobileTargets": [],
+        "fonts": "loaded",
+        "cursor": "auto",
+        "menuClosed": {
+          "expanded": "false",
+          "hidden": "true"
+        }
+      },
+      "chapters": [
+        {
+          "id": "home",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 0,
+          "sectionHeight": 624
+        },
+        {
+          "id": "updates",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 726,
+          "sectionHeight": 955
+        },
+        {
+          "id": "approach",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 1638,
+          "sectionHeight": 683
+        },
+        {
+          "id": "disciplines",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 2340,
+          "sectionHeight": 786
+        },
+        {
+          "id": "results",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 3120,
+          "sectionHeight": 754
+        },
+        {
+          "id": "writeups",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 3861,
+          "sectionHeight": 816
+        },
+        {
+          "id": "projects",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 4700,
+          "sectionHeight": 806
+        },
+        {
+          "id": "team",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 5553,
+          "sectionHeight": 1464
+        },
+        {
+          "id": "journal",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 6972,
+          "sectionHeight": 817
+        },
+        {
+          "id": "recruitment",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 7746,
+          "sectionHeight": 624
+        },
+        {
+          "id": "contact",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 8377,
+          "sectionHeight": 585
+        }
+      ],
+      "menu": {
+        "clientHeight": 390,
+        "scrollHeight": 600,
+        "canScroll": true,
+        "lastButtonBottom": 544
+      }
+    },
+    {
+      "device": {
+        "name": "tablet-portrait",
+        "width": 768,
+        "height": 1024,
+        "dpr": 2,
+        "mobile": true
+      },
+      "audit": {
+        "title": "KN1GHTS | Competitive Cybersecurity",
+        "viewport": {
+          "width": 768,
+          "height": 1024,
+          "dpr": 2
+        },
+        "document": {
+          "clientWidth": 768,
+          "scrollWidth": 768,
+          "scrollHeight": 19968
+        },
+        "semantic": {
+          "h1Count": 1,
+          "chapterCount": 11,
+          "navButtonCount": 11,
+          "duplicateIds": []
+        },
+        "canvas": {
+          "width": 768,
+          "height": 1024
+        },
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 768,
+          "height": 64
+        },
+        "overflow": [],
+        "brokenImages": [],
+        "externalLinkIssues": [],
+        "unlabeledControls": [],
+        "mobileTargets": [],
+        "fonts": "loaded",
+        "cursor": "auto",
+        "menuClosed": {
+          "expanded": "false",
+          "hidden": "true"
+        }
+      },
+      "chapters": [
+        {
+          "id": "home",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 0,
+          "sectionHeight": 1485
+        },
+        {
+          "id": "updates",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 1615,
+          "sectionHeight": 1748
+        },
+        {
+          "id": "approach",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 3376,
+          "sectionHeight": 1741
+        },
+        {
+          "id": "disciplines",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 5102,
+          "sectionHeight": 1669
+        },
+        {
+          "id": "results",
+          "visibleContent": 6,
+          "overflow": [],
+          "scrollY": 6723,
+          "sectionHeight": 1428
+        },
+        {
+          "id": "writeups",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 8151,
+          "sectionHeight": 1600
+        },
+        {
+          "id": "projects",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 9785,
+          "sectionHeight": 1597
+        },
+        {
+          "id": "team",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 11630,
+          "sectionHeight": 4050
+        },
+        {
+          "id": "journal",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 15389,
+          "sectionHeight": 1384
+        },
+        {
+          "id": "recruitment",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 16812,
+          "sectionHeight": 1638
+        },
+        {
+          "id": "contact",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 18467,
+          "sectionHeight": 1536
+        }
+      ],
+      "menu": {
+        "clientHeight": 1024,
+        "scrollHeight": 1190,
+        "canScroll": true,
+        "lastButtonBottom": 1114
+      }
+    },
+    {
+      "device": {
+        "name": "large-tablet",
+        "width": 820,
+        "height": 1180,
+        "dpr": 2,
+        "mobile": true
+      },
+      "audit": {
+        "title": "KN1GHTS | Competitive Cybersecurity",
+        "viewport": {
+          "width": 820,
+          "height": 1180,
+          "dpr": 2
+        },
+        "document": {
+          "clientWidth": 820,
+          "scrollWidth": 820,
+          "scrollHeight": 21459
+        },
+        "semantic": {
+          "h1Count": 1,
+          "chapterCount": 11,
+          "navButtonCount": 11,
+          "duplicateIds": []
+        },
+        "canvas": {
+          "width": 820,
+          "height": 1180
+        },
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 820,
+          "height": 74
+        },
+        "overflow": [],
+        "brokenImages": [],
+        "externalLinkIssues": [],
+        "unlabeledControls": [],
+        "mobileTargets": [],
+        "fonts": "loaded",
+        "cursor": "auto",
+        "menuClosed": {
+          "expanded": "false",
+          "hidden": "true"
+        }
+      },
+      "chapters": [
+        {
+          "id": "home",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 0,
+          "sectionHeight": 1888
+        },
+        {
+          "id": "updates",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 2050,
+          "sectionHeight": 2080
+        },
+        {
+          "id": "approach",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 4145,
+          "sectionHeight": 2065
+        },
+        {
+          "id": "disciplines",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 6140,
+          "sectionHeight": 1716
+        },
+        {
+          "id": "results",
+          "visibleContent": 5,
+          "overflow": [],
+          "scrollY": 7849,
+          "sectionHeight": 1678
+        },
+        {
+          "id": "writeups",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 9504,
+          "sectionHeight": 1728
+        },
+        {
+          "id": "projects",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 11304,
+          "sectionHeight": 1932
+        },
+        {
+          "id": "team",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 13290,
+          "sectionHeight": 2880
+        },
+        {
+          "id": "journal",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 16065,
+          "sectionHeight": 1677
+        },
+        {
+          "id": "recruitment",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 17770,
+          "sectionHeight": 1888
+        },
+        {
+          "id": "contact",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 19679,
+          "sectionHeight": 1770
+        }
+      ],
+      "menu": {
+        "clientHeight": 1180,
+        "scrollHeight": 1180,
+        "canScroll": false,
+        "lastButtonBottom": 669
+      }
+    },
+    {
+      "device": {
+        "name": "tablet-landscape",
+        "width": 1024,
+        "height": 768,
+        "dpr": 2,
+        "mobile": true
+      },
+      "audit": {
+        "title": "KN1GHTS | Competitive Cybersecurity",
+        "viewport": {
+          "width": 1024,
+          "height": 768,
+          "dpr": 2
+        },
+        "document": {
+          "clientWidth": 1024,
+          "scrollWidth": 1024,
+          "scrollHeight": 14492
+        },
+        "semantic": {
+          "h1Count": 1,
+          "chapterCount": 11,
+          "navButtonCount": 11,
+          "duplicateIds": []
+        },
+        "canvas": {
+          "width": 1024,
+          "height": 768
+        },
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 1024,
+          "height": 74
+        },
+        "overflow": [],
+        "brokenImages": [],
+        "externalLinkIssues": [],
+        "unlabeledControls": [],
+        "mobileTargets": [],
+        "fonts": "loaded",
+        "cursor": "auto",
+        "menuClosed": {
+          "expanded": "false",
+          "hidden": "true"
+        }
+      },
+      "chapters": [
+        {
+          "id": "home",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 0,
+          "sectionHeight": 1229
+        },
+        {
+          "id": "updates",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 1342,
+          "sectionHeight": 1398
+        },
+        {
+          "id": "approach",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 2742,
+          "sectionHeight": 1344
+        },
+        {
+          "id": "disciplines",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 4059,
+          "sectionHeight": 1208
+        },
+        {
+          "id": "results",
+          "visibleContent": 5,
+          "overflow": [],
+          "scrollY": 5262,
+          "sectionHeight": 1182
+        },
+        {
+          "id": "writeups",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 6430,
+          "sectionHeight": 1260
+        },
+        {
+          "id": "projects",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 7718,
+          "sectionHeight": 1260
+        },
+        {
+          "id": "team",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 9019,
+          "sectionHeight": 1925
+        },
+        {
+          "id": "journal",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 10895,
+          "sectionHeight": 1222
+        },
+        {
+          "id": "recruitment",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 12110,
+          "sectionHeight": 1229
+        },
+        {
+          "id": "contact",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 13351,
+          "sectionHeight": 1152
+        }
+      ],
+      "menu": {
+        "clientHeight": 768,
+        "scrollHeight": 768,
+        "canScroll": false,
+        "lastButtonBottom": 677
+      }
+    },
+    {
+      "device": {
+        "name": "small-laptop",
+        "width": 1280,
+        "height": 720,
+        "dpr": 1,
+        "mobile": false
+      },
+      "audit": {
+        "title": "KN1GHTS | Competitive Cybersecurity",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "document": {
+          "clientWidth": 1265,
+          "scrollWidth": 1265,
+          "scrollHeight": 14656
+        },
+        "semantic": {
+          "h1Count": 1,
+          "chapterCount": 11,
+          "navButtonCount": 11,
+          "duplicateIds": []
+        },
+        "canvas": {
+          "width": 1265,
+          "height": 720
+        },
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 1265,
+          "height": 74
+        },
+        "overflow": [],
+        "brokenImages": [],
+        "externalLinkIssues": [],
+        "unlabeledControls": [],
+        "mobileTargets": [],
+        "fonts": "loaded",
+        "cursor": "none",
+        "menuClosed": {
+          "expanded": "false",
+          "hidden": "true"
+        }
+      },
+      "chapters": [
+        {
+          "id": "home",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 0,
+          "sectionHeight": 1152
+        },
+        {
+          "id": "updates",
+          "visibleContent": 6,
+          "overflow": [],
+          "scrollY": 1269,
+          "sectionHeight": 1368
+        },
+        {
+          "id": "approach",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 2628,
+          "sectionHeight": 1260
+        },
+        {
+          "id": "disciplines",
+          "visibleContent": 10,
+          "overflow": [],
+          "scrollY": 3910,
+          "sectionHeight": 1368
+        },
+        {
+          "id": "results",
+          "visibleContent": 10,
+          "overflow": [],
+          "scrollY": 5285,
+          "sectionHeight": 1404
+        },
+        {
+          "id": "writeups",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 6633,
+          "sectionHeight": 1296
+        },
+        {
+          "id": "projects",
+          "visibleContent": 5,
+          "overflow": [],
+          "scrollY": 7978,
+          "sectionHeight": 1368
+        },
+        {
+          "id": "team",
+          "visibleContent": 7,
+          "overflow": [],
+          "scrollY": 9328,
+          "sectionHeight": 1656
+        },
+        {
+          "id": "journal",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 11023,
+          "sectionHeight": 1476
+        },
+        {
+          "id": "recruitment",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 12426,
+          "sectionHeight": 1152
+        },
+        {
+          "id": "contact",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 13590,
+          "sectionHeight": 1080
+        }
+      ],
+      "menu": {
+        "clientHeight": 720,
+        "scrollHeight": 867,
+        "canScroll": true,
+        "lastButtonBottom": 791
+      }
+    },
+    {
+      "device": {
+        "name": "laptop",
+        "width": 1366,
+        "height": 768,
+        "dpr": 1,
+        "mobile": false
+      },
+      "audit": {
+        "title": "KN1GHTS | Competitive Cybersecurity",
+        "viewport": {
+          "width": 1366,
+          "height": 768,
+          "dpr": 1
+        },
+        "document": {
+          "clientWidth": 1351,
+          "scrollWidth": 1351,
+          "scrollHeight": 15636
+        },
+        "semantic": {
+          "h1Count": 1,
+          "chapterCount": 11,
+          "navButtonCount": 11,
+          "duplicateIds": []
+        },
+        "canvas": {
+          "width": 1351,
+          "height": 768
+        },
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 1351,
+          "height": 74
+        },
+        "overflow": [],
+        "brokenImages": [],
+        "externalLinkIssues": [],
+        "unlabeledControls": [],
+        "mobileTargets": [],
+        "fonts": "loaded",
+        "cursor": "none",
+        "menuClosed": {
+          "expanded": "false",
+          "hidden": "true"
+        }
+      },
+      "chapters": [
+        {
+          "id": "home",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 0,
+          "sectionHeight": 1229
+        },
+        {
+          "id": "updates",
+          "visibleContent": 6,
+          "overflow": [],
+          "scrollY": 1353,
+          "sectionHeight": 1459
+        },
+        {
+          "id": "approach",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 2803,
+          "sectionHeight": 1344
+        },
+        {
+          "id": "disciplines",
+          "visibleContent": 10,
+          "overflow": [],
+          "scrollY": 4170,
+          "sectionHeight": 1459
+        },
+        {
+          "id": "results",
+          "visibleContent": 10,
+          "overflow": [],
+          "scrollY": 5637,
+          "sectionHeight": 1498
+        },
+        {
+          "id": "writeups",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 7075,
+          "sectionHeight": 1382
+        },
+        {
+          "id": "projects",
+          "visibleContent": 5,
+          "overflow": [],
+          "scrollY": 8509,
+          "sectionHeight": 1459
+        },
+        {
+          "id": "team",
+          "visibleContent": 7,
+          "overflow": [],
+          "scrollY": 9950,
+          "sectionHeight": 1766
+        },
+        {
+          "id": "journal",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 11758,
+          "sectionHeight": 1574
+        },
+        {
+          "id": "recruitment",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 13254,
+          "sectionHeight": 1229
+        },
+        {
+          "id": "contact",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 14496,
+          "sectionHeight": 1152
+        }
+      ],
+      "menu": {
+        "clientHeight": 768,
+        "scrollHeight": 919,
+        "canScroll": true,
+        "lastButtonBottom": 843
+      }
+    },
+    {
+      "device": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900,
+        "dpr": 1,
+        "mobile": false
+      },
+      "audit": {
+        "title": "KN1GHTS | Competitive Cybersecurity",
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1
+        },
+        "document": {
+          "clientWidth": 1425,
+          "scrollWidth": 1425,
+          "scrollHeight": 18333
+        },
+        "semantic": {
+          "h1Count": 1,
+          "chapterCount": 11,
+          "navButtonCount": 11,
+          "duplicateIds": []
+        },
+        "canvas": {
+          "width": 1425,
+          "height": 900
+        },
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 1425,
+          "height": 74
+        },
+        "overflow": [],
+        "brokenImages": [],
+        "externalLinkIssues": [],
+        "unlabeledControls": [],
+        "mobileTargets": [],
+        "fonts": "loaded",
+        "cursor": "none",
+        "menuClosed": {
+          "expanded": "false",
+          "hidden": "true"
+        }
+      },
+      "chapters": [
+        {
+          "id": "home",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 0,
+          "sectionHeight": 1440
+        },
+        {
+          "id": "updates",
+          "visibleContent": 6,
+          "overflow": [],
+          "scrollY": 1586,
+          "sectionHeight": 1710
+        },
+        {
+          "id": "approach",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 3285,
+          "sectionHeight": 1575
+        },
+        {
+          "id": "disciplines",
+          "visibleContent": 10,
+          "overflow": [],
+          "scrollY": 4887,
+          "sectionHeight": 1710
+        },
+        {
+          "id": "results",
+          "visibleContent": 10,
+          "overflow": [],
+          "scrollY": 6606,
+          "sectionHeight": 1755
+        },
+        {
+          "id": "writeups",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 8291,
+          "sectionHeight": 1620
+        },
+        {
+          "id": "projects",
+          "visibleContent": 5,
+          "overflow": [],
+          "scrollY": 9972,
+          "sectionHeight": 1710
+        },
+        {
+          "id": "team",
+          "visibleContent": 7,
+          "overflow": [],
+          "scrollY": 11660,
+          "sectionHeight": 2070
+        },
+        {
+          "id": "journal",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 13779,
+          "sectionHeight": 1845
+        },
+        {
+          "id": "recruitment",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 15532,
+          "sectionHeight": 1440
+        },
+        {
+          "id": "contact",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 16988,
+          "sectionHeight": 1350
+        }
+      ],
+      "menu": {
+        "clientHeight": 900,
+        "scrollHeight": 984,
+        "canScroll": true,
+        "lastButtonBottom": 908
+      }
+    },
+    {
+      "device": {
+        "name": "full-hd",
+        "width": 1920,
+        "height": 1080,
+        "dpr": 1,
+        "mobile": false
+      },
+      "audit": {
+        "title": "KN1GHTS | Competitive Cybersecurity",
+        "viewport": {
+          "width": 1920,
+          "height": 1080,
+          "dpr": 1
+        },
+        "document": {
+          "clientWidth": 1905,
+          "scrollWidth": 1905,
+          "scrollHeight": 22010
+        },
+        "semantic": {
+          "h1Count": 1,
+          "chapterCount": 11,
+          "navButtonCount": 11,
+          "duplicateIds": []
+        },
+        "canvas": {
+          "width": 1905,
+          "height": 1080
+        },
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 1905,
+          "height": 74
+        },
+        "overflow": [],
+        "brokenImages": [],
+        "externalLinkIssues": [],
+        "unlabeledControls": [],
+        "mobileTargets": [],
+        "fonts": "loaded",
+        "cursor": "none",
+        "menuClosed": {
+          "expanded": "false",
+          "hidden": "true"
+        }
+      },
+      "chapters": [
+        {
+          "id": "home",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 0,
+          "sectionHeight": 1728
+        },
+        {
+          "id": "updates",
+          "visibleContent": 6,
+          "overflow": [],
+          "scrollY": 1903,
+          "sectionHeight": 2052
+        },
+        {
+          "id": "approach",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 3942,
+          "sectionHeight": 1890
+        },
+        {
+          "id": "disciplines",
+          "visibleContent": 10,
+          "overflow": [],
+          "scrollY": 5864,
+          "sectionHeight": 2052
+        },
+        {
+          "id": "results",
+          "visibleContent": 10,
+          "overflow": [],
+          "scrollY": 7927,
+          "sectionHeight": 2106
+        },
+        {
+          "id": "writeups",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 9949,
+          "sectionHeight": 1944
+        },
+        {
+          "id": "projects",
+          "visibleContent": 5,
+          "overflow": [],
+          "scrollY": 11966,
+          "sectionHeight": 2052
+        },
+        {
+          "id": "team",
+          "visibleContent": 7,
+          "overflow": [],
+          "scrollY": 13992,
+          "sectionHeight": 2484
+        },
+        {
+          "id": "journal",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 16535,
+          "sectionHeight": 2214
+        },
+        {
+          "id": "recruitment",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 18639,
+          "sectionHeight": 1728
+        },
+        {
+          "id": "contact",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 20385,
+          "sectionHeight": 1620
+        }
+      ],
+      "menu": {
+        "clientHeight": 1080,
+        "scrollHeight": 1169,
+        "canScroll": true,
+        "lastButtonBottom": 1093
+      }
+    },
+    {
+      "device": {
+        "name": "ultrawide",
+        "width": 2560,
+        "height": 1080,
+        "dpr": 1,
+        "mobile": false
+      },
+      "audit": {
+        "title": "KN1GHTS | Competitive Cybersecurity",
+        "viewport": {
+          "width": 2560,
+          "height": 1080,
+          "dpr": 1
+        },
+        "document": {
+          "clientWidth": 2545,
+          "scrollWidth": 2545,
+          "scrollHeight": 22010
+        },
+        "semantic": {
+          "h1Count": 1,
+          "chapterCount": 11,
+          "navButtonCount": 11,
+          "duplicateIds": []
+        },
+        "canvas": {
+          "width": 2545,
+          "height": 1080
+        },
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 2545,
+          "height": 74
+        },
+        "overflow": [],
+        "brokenImages": [],
+        "externalLinkIssues": [],
+        "unlabeledControls": [],
+        "mobileTargets": [],
+        "fonts": "loaded",
+        "cursor": "none",
+        "menuClosed": {
+          "expanded": "false",
+          "hidden": "true"
+        }
+      },
+      "chapters": [
+        {
+          "id": "home",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 0,
+          "sectionHeight": 1728
+        },
+        {
+          "id": "updates",
+          "visibleContent": 6,
+          "overflow": [],
+          "scrollY": 1903,
+          "sectionHeight": 2052
+        },
+        {
+          "id": "approach",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 3942,
+          "sectionHeight": 1890
+        },
+        {
+          "id": "disciplines",
+          "visibleContent": 10,
+          "overflow": [],
+          "scrollY": 5864,
+          "sectionHeight": 2052
+        },
+        {
+          "id": "results",
+          "visibleContent": 10,
+          "overflow": [],
+          "scrollY": 7927,
+          "sectionHeight": 2106
+        },
+        {
+          "id": "writeups",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 9949,
+          "sectionHeight": 1944
+        },
+        {
+          "id": "projects",
+          "visibleContent": 5,
+          "overflow": [],
+          "scrollY": 11966,
+          "sectionHeight": 2052
+        },
+        {
+          "id": "team",
+          "visibleContent": 7,
+          "overflow": [],
+          "scrollY": 13992,
+          "sectionHeight": 2484
+        },
+        {
+          "id": "journal",
+          "visibleContent": 4,
+          "overflow": [],
+          "scrollY": 16535,
+          "sectionHeight": 2214
+        },
+        {
+          "id": "recruitment",
+          "visibleContent": 3,
+          "overflow": [],
+          "scrollY": 18639,
+          "sectionHeight": 1728
+        },
+        {
+          "id": "contact",
+          "visibleContent": 2,
+          "overflow": [],
+          "scrollY": 20385,
+          "sectionHeight": 1620
+        }
+      ],
+      "menu": {
+        "clientHeight": 1080,
+        "scrollHeight": 1169,
+        "canScroll": true,
+        "lastButtonBottom": 1093
+      }
+    }
+  ],
+  "functional": {
+    "loader": {
+      "initial": {
+        "exists": true,
+        "done": false,
+        "value": "Initializing system 4%",
+        "visibility": "visible"
+      },
+      "complete": {
+        "done": true,
+        "visibility": "hidden",
+        "loaded": true
+      }
+    },
+    "interactions": {
+      "initial": {
+        "expanded": "false",
+        "bodyOverflow": ""
+      },
+      "opened": {
+        "expanded": "true",
+        "bodyOverflow": "hidden",
+        "overlayHidden": "false",
+        "pointerEvents": "auto",
+        "focused": "00HOME→",
+        "storyInert": true,
+        "scrollable": true
+      },
+      "escaped": {
+        "expanded": "false",
+        "bodyOverflow": "",
+        "overlayHidden": "true"
+      },
+      "jumps": [
+        {
+          "id": "home",
+          "top": 0,
+          "expanded": "false"
+        },
+        {
+          "id": "updates",
+          "top": 74,
+          "expanded": "false"
+        },
+        {
+          "id": "approach",
+          "top": 74,
+          "expanded": "false"
+        },
+        {
+          "id": "disciplines",
+          "top": 74,
+          "expanded": "false"
+        },
+        {
+          "id": "results",
+          "top": 74,
+          "expanded": "false"
+        },
+        {
+          "id": "writeups",
+          "top": 74,
+          "expanded": "false"
+        },
+        {
+          "id": "projects",
+          "top": 74,
+          "expanded": "false"
+        },
+        {
+          "id": "team",
+          "top": 74,
+          "expanded": "false"
+        },
+        {
+          "id": "journal",
+          "top": 101,
+          "expanded": "false"
+        },
+        {
+          "id": "recruitment",
+          "top": 74,
+          "expanded": "false"
+        },
+        {
+          "id": "contact",
+          "top": 74,
+          "expanded": "false"
+        }
+      ],
+      "wordmark": {
+        "scrollY": 0
+      },
+      "skipLink": {
+        "focused": true,
+        "top": 16,
+        "href": "#story"
+      },
+      "links": {
+        "external": [
+          {
+            "href": "https://www.linkedin.com/company/kn1ghts/",
+            "rel": "noreferrer",
+            "target": "_blank"
+          },
+          {
+            "href": "https://www.linkedin.com/company/kn1ghts/",
+            "rel": "noreferrer",
+            "target": "_blank"
+          },
+          {
+            "href": "https://www.linkedin.com/company/kn1ghts/",
+            "rel": "noreferrer",
+            "target": "_blank"
+          },
+          {
+            "href": "https://github.com/Kn1ghts-org",
+            "rel": "noreferrer",
+            "target": "_blank"
+          },
+          {
+            "href": "https://www.linkedin.com/company/kn1ghts/",
+            "rel": "noreferrer",
+            "target": "_blank"
+          },
+          {
+            "href": "https://www.linkedin.com/company/kn1ghts/",
+            "rel": "noreferrer",
+            "target": "_blank"
+          },
+          {
+            "href": "https://github.com/Kn1ghts-org",
+            "rel": "noreferrer",
+            "target": "_blank"
+          },
+          {
+            "href": "https://www.linkedin.com/company/kn1ghts/",
+            "rel": "noreferrer",
+            "target": "_blank"
+          }
+        ],
+        "internal": [
+          "#story",
+          "#updates",
+          "#team"
+        ]
+      }
+    },
+    "reducedMotion": {
+      "matches": true,
+      "grainDisplay": "none",
+      "revealOpacity": "1",
+      "trackTransform": "none"
+    },
+    "orientation": {
+      "landscape": {
+        "title": "KN1GHTS | Competitive Cybersecurity",
+        "viewport": {
+          "width": 844,
+          "height": 390,
+          "dpr": 3
+        },
+        "document": {
+          "clientWidth": 844,
+          "scrollWidth": 844,
+          "scrollHeight": 8929
+        },
+        "semantic": {
+          "h1Count": 1,
+          "chapterCount": 11,
+          "navButtonCount": 11,
+          "duplicateIds": []
+        },
+        "canvas": {
+          "width": 844,
+          "height": 390
+        },
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 844,
+          "height": 56
+        },
+        "overflow": [],
+        "brokenImages": [],
+        "externalLinkIssues": [],
+        "unlabeledControls": [],
+        "mobileTargets": [],
+        "fonts": "loaded",
+        "cursor": "auto",
+        "menuClosed": {
+          "expanded": "false",
+          "hidden": "true"
+        }
+      },
+      "portrait": {
+        "title": "KN1GHTS | Competitive Cybersecurity",
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 3
+        },
+        "document": {
+          "clientWidth": 390,
+          "scrollWidth": 390,
+          "scrollHeight": 17030
+        },
+        "semantic": {
+          "h1Count": 1,
+          "chapterCount": 11,
+          "navButtonCount": 11,
+          "duplicateIds": []
+        },
+        "canvas": {
+          "width": 390,
+          "height": 844
+        },
+        "header": {
+          "top": 0,
+          "left": 0,
+          "right": 390,
+          "height": 64
+        },
+        "overflow": [],
+        "brokenImages": [],
+        "externalLinkIssues": [],
+        "unlabeledControls": [],
+        "mobileTargets": [],
+        "fonts": "loaded",
+        "cursor": "auto",
+        "menuClosed": {
+          "expanded": "false",
+          "hidden": "true"
+        }
+      }
+    },
+    "blockedAssets": {
+      "brokenImages": 0,
+      "placeholders": 4,
+      "teamCards": 4,
+      "fontsStatus": "loaded",
+      "documentOverflow": 0
+    },
+    "contentStress": {
+      "mobile": {
+        "teamCards": 8,
+        "teamSpill": 0,
+        "resultCards": 6,
+        "resultsSpill": 0,
+        "documentOverflow": 0,
+        "longHeadingOverflow": 0,
+        "teamHeight": 6048,
+        "resultsHeight": 2327
+      },
+      "shortDesktop": {
+        "teamCards": 8,
+        "teamSpill": 0,
+        "resultCards": 6,
+        "resultsSpill": 0,
+        "documentOverflow": 0,
+        "longHeadingOverflow": 0,
+        "teamHeight": 2304,
+        "resultsHeight": 1590
+      },
+      "desktop": {
+        "teamCards": 8,
+        "teamSpill": 0,
+        "resultCards": 6,
+        "resultsSpill": 0,
+        "documentOverflow": 0,
+        "longHeadingOverflow": 0,
+        "teamHeight": 3456,
+        "resultsHeight": 1815
+      }
+    }
+  },
+  "runtimeErrors": [],
+  "networkFailures": []
+}

@@ -35,16 +35,33 @@ export function SiteExperience({ data }: { data: KnightsHomeData }) {
     frame = requestAnimationFrame(update);
 
     const ctx = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((node) => {
-        gsap.fromTo(node, { yPercent: 18, opacity: 0, filter: "blur(14px)" }, {
-          yPercent: 0, opacity: 1, filter: "blur(0px)", ease: "power3.out", duration: 1.1,
-          scrollTrigger: { trigger: node, start: "top 82%", end: "top 48%", scrub: reduceMotion ? false : 0.8 },
+      if (!reduceMotion) {
+        gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((node) => {
+          gsap.fromTo(node, { yPercent: 18, opacity: 0, filter: "blur(14px)" }, {
+            yPercent: 0, opacity: 1, filter: "blur(0px)", ease: "power3.out", duration: 1.1,
+            scrollTrigger: { trigger: node, start: "top 82%", end: "top 48%", scrub: 0.8 },
+          });
+        });
+      }
+
+      const media = gsap.matchMedia();
+      media.add("(min-width: 1101px) and (prefers-reduced-motion: no-preference)", () => {
+        gsap.utils.toArray<HTMLElement>("[data-track]").forEach((node) => {
+          gsap.to(node, {
+            x: () => -Math.max(0, node.scrollWidth - window.innerWidth + 80),
+            ease: "none",
+            scrollTrigger: {
+              trigger: node.parentElement,
+              start: "top top",
+              end: "bottom bottom",
+              scrub: 1,
+              invalidateOnRefresh: true,
+            },
+          });
         });
       });
-      gsap.utils.toArray<HTMLElement>("[data-track]").forEach((node) => {
-        const distance = Math.max(0, node.scrollWidth - window.innerWidth + 80);
-        gsap.to(node, { x: -distance, ease: "none", scrollTrigger: { trigger: node.parentElement, start: "top top", end: "bottom bottom", scrub: 1 } });
-      });
+
+      return () => media.revert();
     });
     return () => {
       cancelAnimationFrame(frame);
