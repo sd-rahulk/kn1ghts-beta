@@ -1,4 +1,5 @@
 import type { ArticlePreview, KnightsHomeData } from "@/data/knights";
+import { MemberPortrait } from "@/components/ui/MemberPortrait";
 
 function Index({ children }: { children: React.ReactNode }) {
   return <span className="chapter-index">{children}</span>;
@@ -111,7 +112,12 @@ export function Story({ data }: { data: KnightsHomeData }) {
         </div>
       </section>
 
-      <section id="results" className="chapter results-chapter" data-chapter>
+      <section
+        id="results"
+        className="chapter results-chapter"
+        data-chapter
+        style={{ "--results-height": `calc(75dvh + ${Math.max(data.events.length, 1) * 190}px)` } as React.CSSProperties}
+      >
         <div className="chapter-copy align-left" data-reveal>
           <Index>04 / SELECTED RESULTS</Index>
           <h2>PROOF,<br />NOT PROMISES.</h2>
@@ -131,7 +137,12 @@ export function Story({ data }: { data: KnightsHomeData }) {
         </div>
       </section>
 
-      <section id="writeups" className="chapter writeups" data-chapter>
+      <section
+        id="writeups"
+        className="chapter writeups"
+        data-chapter
+        style={{ "--writeups-height": `${Math.max(180, 120 + Math.max(data.writeups.length, 1) * 45)}dvh` } as React.CSSProperties}
+      >
         <div className="writeup-head" data-reveal>
           <Index>05 / TECHNICAL WRITEUPS</Index>
           <h2>NOTES FROM<br />THE BREACH.</h2>
@@ -182,7 +193,12 @@ export function Story({ data }: { data: KnightsHomeData }) {
         )}
       </section>
 
-      <section id="team" className="chapter team-chapter" data-chapter>
+      <section
+        id="team"
+        className="chapter team-chapter"
+        data-chapter
+        style={{ "--team-height": `${76 + Math.ceil(Math.max(data.members.length, 1) / 2) * 77}dvh` } as React.CSSProperties}
+      >
         <div className="team-intro" data-reveal>
           <Index>07 / THE TEAM</Index>
           <h2>BUILT IN<br />THE ARENA.</h2>
@@ -191,7 +207,7 @@ export function Story({ data }: { data: KnightsHomeData }) {
         <div className="team-grid">
           {data.members.map((member, index) => (
             <article className="team-card" key={member.id} data-cursor="PROFILE" data-reveal>
-              {member.avatarUrl ? <img src={member.avatarUrl} alt={`${member.name}, KN1GHTS team member`} /> : <div className="portrait-placeholder" aria-hidden="true">KN1</div>}
+              <MemberPortrait src={member.avatarUrl} name={member.name} />
               <div className="portrait-scan" aria-hidden="true" />
               <span>OPERATOR / 0{index + 1}</span>
               <h3>{member.handle || member.name}</h3>

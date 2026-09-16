@@ -136,3 +136,236 @@ body,a,button { cursor:none; } a { color:inherit; text-decoration:none; } button
 @media (prefers-reduced-motion:reduce) {
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}.grain{display:none}
 }
+
+/* Responsive foundations shared by every chapter. */
+html { min-width: 280px; scroll-padding-top: 74px; }
+body { min-width: 280px; }
+img, canvas { max-width: 100%; }
+button, a { touch-action: manipulation; }
+.chapter h1, .chapter h2, .chapter h3, .chapter p, .chapter strong, .chapter span, .chapter em { overflow-wrap: anywhere; }
+.header {
+  padding-left: max(28px, env(safe-area-inset-left));
+  padding-right: max(28px, env(safe-area-inset-right));
+}
+.menu-overlay {
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.menu-overlay nav { padding-bottom: max(76px, calc(48px + env(safe-area-inset-bottom))); }
+.finale { padding-bottom: max(24px, env(safe-area-inset-bottom)); }
+.experience .writeups { min-height: var(--writeups-height, 180dvh); }
+.experience .writeup-track-wrap { margin-inline: calc(-1 * clamp(20px, 5vw, 76px)); }
+.experience .results-chapter { min-height: max(195dvh, var(--results-height, 195dvh)); }
+.experience .team-chapter { min-height: max(230dvh, var(--team-height, 230dvh)); }
+.wordmark { min-height: 44px; display: inline-flex; align-items: center; }
+.menu-toggle { height: 44px; }
+.menu-overlay nav button { min-height: 44px; }
+
+:where(a, button):focus-visible {
+  outline: 1px solid var(--acid);
+  outline-offset: 4px;
+}
+
+@media (hover: none), (pointer: coarse) {
+  body, a, button { cursor: auto; }
+  .cursor { display: none; }
+  .disciplines article:hover, .team-card:hover img { transform: none; }
+}
+
+@media (min-width: 1101px) {
+  .experience .projects-chapter .chapter-copy {
+    width: min(660px, 42vw);
+    margin-left: 0;
+    margin-right: auto;
+    text-align: left;
+    align-items: flex-start;
+  }
+}
+
+/* Stack split editorial layouts before their columns become cramped. */
+@media (max-width: 1100px) {
+  .header {
+    padding-left: max(24px, env(safe-area-inset-left));
+    padding-right: max(24px, env(safe-area-inset-right));
+  }
+  .chapter {
+    padding-left: max(32px, env(safe-area-inset-left));
+    padding-right: max(32px, env(safe-area-inset-right));
+  }
+  .experience .updates-chapter,
+  .experience .arsenal,
+  .experience .results-chapter,
+  .experience .projects-chapter,
+  .experience .team-chapter,
+  .experience .journal-chapter {
+    min-height: auto;
+    padding-bottom: clamp(140px, 24dvh, 280px);
+  }
+  .updates-chapter .chapter-copy,
+  .arsenal .chapter-copy,
+  .results-chapter .chapter-copy,
+  .projects-chapter .chapter-copy,
+  .journal-chapter .chapter-copy {
+    position: relative;
+    top: auto;
+    width: 100%;
+    min-height: 100svh;
+    padding: 96px 0 64px;
+    justify-content: center;
+    text-align: left;
+    align-items: flex-start;
+  }
+  .experience .update-feature,
+  .experience .disciplines,
+  .experience .results-list,
+  .experience .project-list,
+  .experience .project-note,
+  .experience .journal-list,
+  .experience .content-note {
+    position: relative;
+    inset: auto;
+    width: min(100%, 800px);
+    margin: 0 0 0 auto;
+  }
+  .experience .update-feature { min-height: clamp(420px, 58svh, 620px); }
+  .experience .disciplines { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .experience .disciplines article { min-width: 0; }
+  .experience .results-list article,
+  .experience .journal-list article { min-width: 0; }
+  .experience .project-list > a { min-width: 0; }
+  .experience .project-list > a > strong,
+  .experience .project-list > a > p,
+  .experience .results-list article > div,
+  .experience .journal-list article > div { min-width: 0; }
+  .experience .team-intro {
+    position: relative;
+    top: auto;
+    width: 100%;
+    min-height: 100svh;
+    padding: 96px 0 64px;
+    justify-content: center;
+  }
+  .experience .team-grid {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .experience .team-card { min-height: clamp(440px, 62svh, 700px); }
+  .experience .team-card:nth-child(even) { transform: none; }
+  .telemetry-a { top: 16%; right: max(32px, env(safe-area-inset-right)); }
+  .experience .writeups {
+    min-height: auto;
+    padding-bottom: clamp(140px, 24dvh, 240px);
+  }
+  .experience .writeup-head { height: auto; min-height: 82svh; padding: 84px 0 48px; justify-content: center; }
+  .experience .writeup-track-wrap {
+    position: relative;
+    top: auto;
+    height: auto;
+    overflow: visible;
+    display: block;
+    margin: 0;
+  }
+  .experience .writeup-track {
+    display: grid;
+    width: 100%;
+    padding: 0;
+    transform: none !important;
+  }
+  .experience .writeup-track article,
+  .experience .writeup-track a {
+    width: 100%;
+    min-height: clamp(340px, 58svh, 520px);
+    padding: clamp(22px, 5vw, 36px);
+    border: 1px solid var(--hairline);
+    border-bottom: 0;
+  }
+  .experience .writeup-track article:last-child,
+  .experience .writeup-track a:last-child { border-bottom: 1px solid var(--hairline); }
+  .experience .writeup-track article > strong,
+  .experience .writeup-track strong { font-size: clamp(3rem, 11vw, 7rem); }
+}
+
+@media (max-width: 800px) {
+  .header {
+    height: 64px;
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+  }
+  .wordmark { min-height: 44px; display: inline-flex; align-items: center; }
+  .menu-toggle { width: 48px; min-height: 44px; }
+  .chapter {
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+  }
+  .hero h1 { font-size: clamp(4rem, 24vw, 9rem); }
+  .hero-manifesto { padding-inline: 12px; }
+  .hero-copy { left: max(20px, env(safe-area-inset-left)); }
+  .updates-chapter .chapter-copy,
+  .arsenal .chapter-copy,
+  .results-chapter .chapter-copy,
+  .projects-chapter .chapter-copy,
+  .journal-chapter .chapter-copy,
+  .team-intro { min-height: 92svh; padding: 84px 0 48px; }
+  .experience .update-feature,
+  .experience .disciplines,
+  .experience .results-list,
+  .experience .project-list,
+  .experience .project-note,
+  .experience .journal-list,
+  .experience .content-note { width: 100%; margin-inline: 0; }
+  .experience .update-feature { min-height: clamp(390px, 62svh, 560px); padding: clamp(22px, 7vw, 40px); }
+  .experience .update-feature h3 { font-size: clamp(2.5rem, 14vw, 5rem); }
+  .experience .disciplines { grid-template-columns: 1fr; }
+  .experience .disciplines article { min-height: 160px; border-right: 1px solid var(--hairline); }
+  .experience .team-grid { grid-template-columns: 1fr; }
+  .experience .team-card { min-height: clamp(430px, 72svh, 680px); }
+  .experience .writeup-track article,
+  .experience .writeup-track a { padding: clamp(22px, 7vw, 36px); }
+  .experience .writeup-track article > strong,
+  .experience .writeup-track strong { font-size: clamp(3rem, 15vw, 6rem); }
+  .experience .results-list article { grid-template-columns: minmax(44px, 18%) minmax(0, 1fr) 20px; }
+  .experience .project-list > a { grid-template-columns: minmax(62px, 24%) minmax(0, 1fr) 20px; }
+  .experience .journal-list article { grid-template-columns: minmax(52px, 22%) minmax(0, 1fr); }
+  .finale footer { padding-bottom: env(safe-area-inset-bottom); }
+  .menu-overlay nav {
+    width: calc(100% - 40px);
+    margin-top: max(76px, 10svh);
+  }
+}
+
+@media (max-width: 420px) {
+  .loader-word { font-size: clamp(3.6rem, 23vw, 6rem); }
+  .chapter h2 { font-size: clamp(3.1rem, 16.5vw, 5.4rem); }
+  .approach-copy h2 { font-size: clamp(2.55rem, 12.5vw, 4.2rem); }
+  .chapter-copy p, .approach-copy p { max-width: 100%; }
+  .results-list article,
+  .journal-list article { padding-block: 20px; }
+  .results-list article > span,
+  .journal-list article > span,
+  .journal-list time { letter-spacing: .04em; }
+  .network-cta { width: 100%; }
+  .final-copy h2 { font-size: 23vw; }
+  .final-copy p { max-width: 280px; }
+}
+
+@media (max-height: 560px) and (orientation: landscape) {
+  .header { height: 56px; }
+  .menu-overlay nav {
+    margin-top: 60px;
+    padding-bottom: 56px;
+  }
+  .menu-overlay nav button {
+    min-height: 44px;
+    font-size: clamp(1.65rem, 7vh, 2.7rem);
+    padding-block: 4px;
+  }
+  .menu-foot { display: none; }
+  .hero-type, .chapter-copy, .approach-copy, .team-intro { padding-top: 64px; }
+  .hero h1 { font-size: clamp(5rem, 24vh, 9rem); }
+  .hero-copy { bottom: 20px; }
+}

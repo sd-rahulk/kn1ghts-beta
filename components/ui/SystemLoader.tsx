@@ -7,15 +7,17 @@ export function SystemLoader({ onComplete }: { onComplete: () => void }) {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).has("skipIntro")) {
-      setValue(100);
-      setDone(true);
-      onComplete();
-      return;
-    }
-    const started = performance.now();
     let frame = 0;
     let timer = 0;
+    if (new URLSearchParams(window.location.search).has("skipIntro")) {
+      frame = requestAnimationFrame(() => {
+        setValue(100);
+        setDone(true);
+        onComplete();
+      });
+      return () => cancelAnimationFrame(frame);
+    }
+    const started = performance.now();
     const tick = (time: number) => {
       const next = Math.min(100, Math.floor(((time - started) / 1850) * 100));
       setValue(next);

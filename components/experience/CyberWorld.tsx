@@ -121,13 +121,15 @@ function ParticleField({ progress }: { progress: ProgressRef }) {
   useFrame(({ clock, size }) => {
     if (!points.current) return;
     const p = progress.current;
+    const visibleCount = size.width < 520 ? 2300 : size.width < 900 ? 3400 : count;
     const pos = geometry.attributes.position.array as Float32Array;
     const toNetwork = smoothstep(.045, .19, p);
     const toLogo = smoothstep(.84, .965, p);
-    for (let i = 0; i < count * 3; i++) {
+    for (let i = 0; i < visibleCount * 3; i++) {
       const mid = THREE.MathUtils.lerp(data.knight[i], data.network[i], toNetwork);
       pos[i] = THREE.MathUtils.lerp(mid, data.logo[i], toLogo);
     }
+    geometry.setDrawRange(0, visibleCount);
     geometry.attributes.position.needsUpdate = true;
     material.uniforms.uTime.value = clock.elapsedTime;
     material.uniforms.uPointSize.value = size.width < 700 ? 2.3 : 3.2;
@@ -226,13 +228,17 @@ function FlagCore({ progress }: { progress: ProgressRef }) {
 export function CyberWorld({ progress, pointer }: { progress: ProgressRef; pointer: PointerRef }) {
   const world = useRef<THREE.Group>(null);
   const { camera } = useThree();
-  useFrame(({ clock }) => {
+  useFrame(({ clock, size }) => {
     const p = progress.current;
-    camera.position.x = THREE.MathUtils.lerp(camera.position.x, Math.sin(p * Math.PI * 5) * .7 + pointer.current.x * .22, .035);
+    const compact = size.width < 700;
+    const worldScale = compact ? .58 : size.width < 1100 ? .78 : 1;
+    const cameraTravel = compact ? .42 : .7;
+    camera.position.x = THREE.MathUtils.lerp(camera.position.x, Math.sin(p * Math.PI * 5) * cameraTravel + pointer.current.x * .22, .035);
     camera.position.y = THREE.MathUtils.lerp(camera.position.y, Math.cos(p * Math.PI * 3) * .28 + pointer.current.y * .14, .035);
     camera.position.z = THREE.MathUtils.lerp(camera.position.z, 7.8 - smoothstep(.1, .42, p) * 1.65 + smoothstep(.82, .96, p) * 2.1, .035);
     camera.lookAt(0, 0, 0);
     if (world.current) {
+      world.current.scale.setScalar(worldScale);
       world.current.rotation.y = Math.sin(clock.elapsedTime * .08) * .08 + pointer.current.x * .035;
       world.current.rotation.x = pointer.current.y * .025;
     }
