@@ -49,9 +49,14 @@ export function Story({ data }: { data: KnightsHomeData }) {
     <div id="story" className="story">
       <section id="home" className="chapter hero" data-chapter>
         <div className="hero-type" data-reveal>
+          {/* The KN1GHTS logo itself is assembled by the 3D intro; the heading stays for screen readers. */}
+          <h1 className="sr-only">KN1GHTS</h1>
+          <p className="hero-manifesto">SECURE <i aria-hidden="true">/</i> EXPLOIT <i aria-hidden="true">/</i> DEFEND</p>
           <span className="hero-kicker">COMPETITIVE CYBERSECURITY · INDIA</span>
-          <h1>KN<span>1</span>GHTS</h1>
-          <p className="hero-manifesto">OFFENSE. DEFENSE. RESEARCH.</p>
+          <p className="hero-mindset">MORE THAN A CTF<br />IT&apos;S A MINDSET.</p>
+          <ul className="hero-path" aria-label="The path">
+            <li>LEARN</li><li>PRACTICE</li><li>COMPETE</li><li>BECOME A KNIGHT</li>
+          </ul>
         </div>
         <p className="hero-copy" data-reveal>
           Competitive cybersecurity. Offensive research. CTFs.
@@ -239,8 +244,10 @@ export function Story({ data }: { data: KnightsHomeData }) {
 
       <section id="contact" className="chapter finale" data-chapter>
         <div className="final-copy" data-reveal>
+          {/* The KN1GHTS crest + wordmark return here in the 3D scene, in front of the knight. */}
+          <h2 className="sr-only">KN1GHTS</h2>
+          <p className="final-tagline">SECURE <i aria-hidden="true">/</i> EXPLOIT <i aria-hidden="true">/</i> DEFEND</p>
           <span>OPEN CHANNEL</span>
-          <h2>KN1GHTS</h2>
           <p>Have a challenge, event, or research idea worth pursuing?</p>
           <a className="network-cta magnetic" href="https://www.linkedin.com/company/kn1ghts/" target="_blank" rel="noreferrer" data-cursor="ENTER"><span>START A CONVERSATION</span><b>↗</b></a>
         </div>

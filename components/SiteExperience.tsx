@@ -1,34 +1,67 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ExperienceCanvas } from "./experience/ExperienceCanvas";
+import { OPENING_END, OPENING_REVEAL } from "./experience/CyberWorld";
 import { Header } from "./ui/Header";
-import { SystemLoader } from "./ui/SystemLoader";
 import { Cursor } from "./ui/Cursor";
 import { Story } from "./sections/Story";
 import type { KnightsHomeData } from "@/data/knights";
 
 export type ProgressRef = React.MutableRefObject<number>;
 export type PointerRef = React.MutableRefObject<{ x: number; y: number }>;
+/** Seconds of the intro sequence played so far (0 → OPENING_END). */
+export type OpeningRef = React.MutableRefObject<number>;
 
 export function SiteExperience({ data }: { data: KnightsHomeData }) {
   const progress = useRef(0);
   const pointer = useRef({ x: 0, y: 0 });
-  const [loaded, setLoaded] = useState(false);
-  const completeLoading = useCallback(() => setLoaded(true), []);
+  const opening = useRef(0);
+  const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const skipOpening = reduceMotion || new URLSearchParams(window.location.search).has("skipIntro");
     const lenis = new Lenis({ lerp: reduceMotion ? 1 : 0.075, smoothWheel: !reduceMotion, syncTouch: false });
+    const root = document.documentElement;
     let frame = 0;
+    let last = performance.now();
+    let shown = false;
+    let complete = false;
+
+    // The intro plays in full from the top of the page with scrolling locked.
+    if (skipOpening) {
+      opening.current = OPENING_END;
+    } else {
+      window.history.scrollRestoration = "manual";
+      window.scrollTo(0, 0);
+      root.classList.add("intro-lock");
+      lenis.stop();
+    }
+
     const update = (time: number) => {
       lenis.raf(time);
-      const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const max = Math.max(1, root.scrollHeight - window.innerHeight);
       progress.current = window.scrollY / max;
+      if (!complete) {
+        // Capped step: a slow frame slows the intro down instead of skipping a stage.
+        opening.current = Math.min(OPENING_END, opening.current + Math.min(0.05, Math.max(0, time - last) / 1000));
+        if (!shown && opening.current >= OPENING_REVEAL) {
+          shown = true;
+          setRevealed(true);
+        }
+        if (opening.current >= OPENING_END) {
+          complete = true;
+          root.classList.remove("intro-lock");
+          lenis.start();
+          ScrollTrigger.refresh();
+        }
+      }
+      last = time;
       frame = requestAnimationFrame(update);
     };
     lenis.on("scroll", ScrollTrigger.update);
@@ -65,6 +98,7 @@ export function SiteExperience({ data }: { data: KnightsHomeData }) {
     });
     return () => {
       cancelAnimationFrame(frame);
+      root.classList.remove("intro-lock");
       lenis.destroy();
       ctx.revert();
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
@@ -81,10 +115,9 @@ export function SiteExperience({ data }: { data: KnightsHomeData }) {
   }, []);
 
   return (
-    <main className={loaded ? "experience is-loaded" : "experience"}>
+    <main className={revealed ? "experience is-loaded" : "experience is-opening"}>
       <a className="skip-link" href="#story">Skip to content</a>
-      <SystemLoader onComplete={completeLoading} />
-      <ExperienceCanvas progress={progress} pointer={pointer} />
+      <ExperienceCanvas progress={progress} pointer={pointer} opening={opening} />
       <div className="atmosphere" aria-hidden="true" />
       <div className="grain" aria-hidden="true" />
       <Header />

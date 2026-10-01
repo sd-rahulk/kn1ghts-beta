@@ -8,21 +8,24 @@ export function Cursor() {
     if (window.matchMedia("(pointer: coarse)").matches) return;
     const node = cursor.current;
     if (!node) return;
-    let x = -100, y = -100, cx = x, cy = y, frame = 0;
-    const move = (event: PointerEvent) => { x = event.clientX; y = event.clientY; };
+    let x = -100, y = -100, frame = 0;
+    // The system cursor is hidden, so draw exactly at the pointer (once per frame, no easing):
+    // easing made the cursor trail behind the mouse, more so whenever a frame took longer.
+    const draw = () => {
+      frame = 0;
+      node.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+    };
+    const move = (event: PointerEvent) => {
+      x = event.clientX; y = event.clientY;
+      if (!frame) frame = requestAnimationFrame(draw);
+    };
     const over = (event: PointerEvent) => {
       const target = event.target as HTMLElement;
       node.classList.toggle("is-active", Boolean(target.closest("a, button, [data-cursor]")));
       node.dataset.label = target.closest<HTMLElement>("[data-cursor]")?.dataset.cursor || "OPEN";
     };
-    const tick = () => {
-      cx += (x - cx) * .18; cy += (y - cy) * .18;
-      node.style.transform = `translate3d(${cx}px, ${cy}px, 0) translate(-50%, -50%)`;
-      frame = requestAnimationFrame(tick);
-    };
     window.addEventListener("pointermove", move, { passive: true });
     window.addEventListener("pointerover", over, { passive: true });
-    frame = requestAnimationFrame(tick);
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("pointermove", move);
