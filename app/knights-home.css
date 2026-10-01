@@ -37,8 +37,8 @@
 .content-note>strong{display:block;max-width:540px;margin-top:56px;font-size:clamp(2.5rem,5vw,5rem);line-height:.87;letter-spacing:-.05em;font-weight:500}.content-note>p{margin:24px 0 0;color:var(--soft);font:400 10px/1.7 "IBM Plex Mono",monospace}
 .recruitment-chapter{min-height:160dvh;overflow:hidden}.recruitment-copy{position:sticky;top:0;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;width:min(760px,86vw);margin-left:8vw}
 .recruitment-copy h2{margin:20px 0;font-size:clamp(4.5rem,12vw,12rem);line-height:.77;letter-spacing:-.065em;font-weight:600}.recruitment-copy h2 em{color:var(--soft);font-style:normal}.recruitment-copy p{max-width:330px;color:var(--soft);font:400 11px/1.7 "IBM Plex Mono",monospace}.recruitment-copy .network-cta{margin-top:20px}
-.recruitment-mark{position:absolute;right:1vw;bottom:5dvh;color:rgba(183,255,60,.045);font-size:50vw;line-height:.7;font-weight:700;letter-spacing:-.12em;pointer-events:none}
-.portrait-placeholder{position:absolute;inset:0;display:grid;place-items:center;color:rgba(183,255,60,.14);font-size:clamp(5rem,11vw,12rem);font-weight:700;letter-spacing:-.12em;background:radial-gradient(circle at 55% 35%,#1a2d22,#080b09 70%)}
+.recruitment-mark{position:absolute;right:1vw;bottom:5dvh;color:rgba(46,242,196,.045);font-size:50vw;line-height:.7;font-weight:700;letter-spacing:-.12em;pointer-events:none}
+.portrait-placeholder{position:absolute;inset:0;display:grid;place-items:center;color:rgba(46,242,196,.14);font-size:clamp(5rem,11vw,12rem);font-weight:700;letter-spacing:-.12em;background:radial-gradient(circle at 55% 35%,#1a2d22,#080b09 70%)}
 .team-card>.portrait-placeholder{position:absolute;z-index:0}
 @media(max-width:800px){
  .hero-kicker{margin-bottom:22px;font-size:7px}.hero-scroll{display:none}.updates-chapter{min-height:235dvh}.updates-chapter .chapter-copy{justify-content:center;padding-bottom:0}
@@ -50,3 +50,71 @@
  .team-chapter{min-height:330dvh}.journal-chapter{min-height:235dvh}.journal-list,.content-note{top:110dvh;left:20px;right:20px;width:auto}.journal-list article{grid-template-columns:55px 1fr;gap:10px}.journal-list time{grid-column:2}.content-note{padding:22px}
  .recruitment-copy{width:auto;margin:0}.recruitment-copy h2{font-size:clamp(4.5rem,18vw,8rem)}.recruitment-mark{font-size:70vw}
 }
+
+/* Intro: the cinematic sequence plays with scrolling locked, then the page content fades in. */
+html.intro-lock,html.intro-lock body{overflow:hidden;overscroll-behavior:none}
+.experience.is-opening .story,.experience.is-opening .header{opacity:0;visibility:hidden}
+.experience.is-loaded .story,.experience.is-loaded .header{animation:openReveal 1.4s ease backwards}
+@keyframes openReveal{from{opacity:0}to{opacity:1}}
+
+/* Storyboard HUD readouts for each intro stage (driven by data-stage from the 3D scene). */
+.intro-hud{position:absolute;inset:0;pointer-events:none;font:500 11px/1.3 "IBM Plex Mono",monospace;letter-spacing:.12em;color:rgba(146,240,220,.78);text-shadow:0 0 12px rgba(46,242,196,.35)}
+.intro-hud b{font-weight:500;color:#eafff6}
+.ih{position:absolute;display:grid;gap:7px;opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease}
+.intro-hud[data-stage="start"] .ih-start,.intro-hud[data-stage="particles"] .ih-particles,.intro-hud[data-stage="knight"] .ih-knight,.intro-hud[data-stage="scan"] .ih-scan,.intro-hud[data-stage="burst"] .ih-burst{opacity:1;transform:none}
+.ih-start{left:clamp(16px,6vw,96px);top:clamp(90px,24vh,240px);padding:14px 18px;border-left:1px solid rgba(146,240,220,.35)}
+.ih-start::before,.ih-start::after{content:"";position:absolute;left:-1px;width:10px;height:1px;background:rgba(146,240,220,.5)}
+.ih-start::before{top:0}.ih-start::after{bottom:0}
+.ih-particles{right:clamp(16px,6vw,96px);top:clamp(90px,14vh,160px);text-align:right}
+.ih-knight{right:clamp(16px,6vw,96px);top:50%;margin-top:-90px}
+.ih-target{width:96px;height:96px;margin-bottom:10px;display:grid;place-items:center;border:1px solid rgba(146,240,220,.25);background:linear-gradient(#2ef2c4,#2ef2c4) top left/10px 1px no-repeat,linear-gradient(#2ef2c4,#2ef2c4) top left/1px 10px no-repeat,linear-gradient(#2ef2c4,#2ef2c4) bottom right/10px 1px no-repeat,linear-gradient(#2ef2c4,#2ef2c4) bottom right/1px 10px no-repeat}
+.ih-target svg{width:46px;fill:none;stroke:#2ef2c4;stroke-width:1;filter:drop-shadow(0 0 6px rgba(46,242,196,.7))}
+.ih-scan{left:clamp(16px,6vw,96px);top:50%;margin-top:-50px;padding:12px 16px;border-left:1px solid rgba(46,242,196,.5)}
+.ih-scan .ih-title{color:#3dffa8}
+.ih-scan em{font-style:normal;color:#ffd36b;animation:ihBlink 1s steps(2) infinite}
+.ih-burst{left:clamp(16px,6vw,96px);top:clamp(90px,22vh,220px);padding:10px 14px;color:#ff8a9b;border:1px solid rgba(255,61,85,.4);background:rgba(40,2,8,.35);text-shadow:0 0 10px rgba(255,40,80,.45)}
+.ih-burst b{color:#fff}
+.intro-hud[data-stage="burst"] .ih-burst{animation:ihJitter .16s steps(2) infinite}
+.ih-dots::after{content:"";animation:ihDots 1.2s steps(4) infinite}
+@keyframes ihDots{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+@keyframes ihBlink{50%{opacity:.25}}
+@keyframes ihJitter{0%{transform:translate(2px,-1px)}100%{transform:translate(-2px,1px)}}
+@media (max-width:760px){
+ .intro-hud{font-size:9.5px}
+ .ih{gap:5px}
+ .ih-knight,.ih-scan{top:auto;margin-top:0;bottom:clamp(64px,12vh,110px)}
+ .ih-target{width:64px;height:64px}.ih-target svg{width:30px}
+}
+
+/* Frame 8: chromatic glitch bars over the canvas while the knight shatters. */
+.canvas-glitch{position:absolute;inset:0;opacity:0;pointer-events:none}
+.canvas-glitch[data-active="false"]{visibility:hidden}
+.canvas-glitch span{position:absolute;left:-10%;right:-10%;background:linear-gradient(90deg,transparent,rgba(255,40,80,.32) 20%,rgba(46,242,196,.22) 55%,rgba(70,110,255,.32) 80%,transparent);mix-blend-mode:screen;animation:glitchBar .22s steps(3) infinite}
+.canvas-glitch[data-active="false"] span{animation-play-state:paused}
+@keyframes glitchBar{0%{transform:translateX(-6%) scaleY(1)}50%{transform:translateX(5%) scaleY(2.2)}100%{transform:translateX(-2%) scaleY(.6)}}
+
+/* Panel 10: the hero is the final shot of the intro. The 3D knight and crest + wordmark fill the top;
+   the tagline sits under the wordmark at 74% of the screen height, side copy left and right. */
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.hero .hero-type{justify-content:flex-start;padding-top:72.5dvh}
+.hero .hero-manifesto,.ih-logo,.finale .final-copy .final-tagline{margin:0;font:500 clamp(11px,1.25vw,17px) "IBM Plex Mono",monospace;letter-spacing:.42em;color:#dff8f1;text-shadow:0 0 16px rgba(46,242,196,.5)}
+.hero .hero-manifesto i,.ih-logo i,.final-tagline i{font-style:normal;color:#8fe9d4;margin:0 .35em}
+.hero .hero-kicker{margin:3vh 0 0}
+.hero-mindset,.hero-path{position:absolute;margin:0;font:500 clamp(10px,.95vw,13px)/1.9 "IBM Plex Mono",monospace;letter-spacing:.24em;color:rgba(214,246,238,.82);text-align:left}
+.hero-mindset{left:clamp(16px,3.4vw,64px);top:35dvh}
+.hero-path{right:clamp(16px,3.4vw,64px);top:33dvh;padding:0;list-style:none}
+.hero-mindset::after,.hero-path::after{content:"";display:block;width:24px;height:1px;margin-top:12px;background:rgba(214,246,238,.7)}
+@media (max-width:760px){.hero-mindset,.hero-path{display:none}.hero .hero-manifesto,.ih-logo,.finale .final-copy .final-tagline{letter-spacing:.28em}}
+@media (max-height:560px) and (orientation:landscape){.hero .hero-type{padding-top:72dvh}.hero-mindset,.hero-path{display:none}}
+
+/* Final section: panel 10 again, with the contact copy below the tagline. */
+.finale .final-copy{justify-content:flex-start;padding-top:72.5dvh}
+.finale .final-copy>span{margin-top:2.5vh}
+.finale .final-copy p:not(.final-tagline){margin:1vh 0 2vh;font-size:clamp(1rem,1.5vw,1.5rem)}
+
+/* Storyboard HUD additions: boot frame (01), scan coordinates (04), tagline tracking the forming wordmark (09). */
+.ih-start{border-left:0;padding:14px 20px;background:linear-gradient(rgba(146,240,220,.5),rgba(146,240,220,.5)) top left/12px 1px no-repeat,linear-gradient(rgba(146,240,220,.5),rgba(146,240,220,.5)) top left/1px 12px no-repeat,linear-gradient(rgba(146,240,220,.5),rgba(146,240,220,.5)) bottom left/12px 1px no-repeat,linear-gradient(rgba(146,240,220,.5),rgba(146,240,220,.5)) bottom left/1px 12px no-repeat}
+.ih-start::before,.ih-start::after{display:none}
+.ih-coords{right:clamp(16px,6vw,96px);top:clamp(90px,14vh,160px);text-align:left}
+.intro-hud[data-stage="scan"] .ih-coords,.intro-hud[data-stage="logo"] .ih-logo{opacity:1;transform:none}
+.ih-logo{left:0;right:0;top:var(--tagline-y,66%);display:block;margin-top:6.5vh;text-align:center}
