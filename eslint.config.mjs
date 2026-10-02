@@ -24,5 +24,10 @@ export default defineConfig([
     "next-env.d.ts",
     "responsive_screenshots/**",
     ".qa-chrome/**",
+    "backend/**",
+    ".firebase-emulators/**",
+    ".npm-cache/**",
+    ".qa-browser*/**",
+    ".staging-push/**",
   ]),
 ]);

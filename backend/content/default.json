@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "settings": {
+    "name": "KN1GHTS", "registrationMark": "®", "headerLine": "COMPETITIVE CYBERSECURITY · INDIA",
+    "title": "KN1GHTS | Competitive Cybersecurity", "description": "Competitive cybersecurity. Offensive research. CTFs.",
+    "copyright": "© 2026 KN1GHTS", "publicUrl": "http://localhost:3000",
+    "navigation": [
+      { "label": "HOME", "href": "#home" }, { "label": "WRITEUPS", "href": "#writeups" },
+      { "label": "PROJECTS", "href": "#projects" }, { "label": "TEAM", "href": "#team" },
+      { "label": "ABOUT US", "href": "#approach" }, { "label": "CONTACT US", "href": "#contact" }
+    ],
+    "footerLinks": [
+      { "label": "GITHUB", "href": "https://github.com/Kn1ghts-org" },
+      { "label": "LINKEDIN", "href": "https://www.linkedin.com/company/kn1ghts/" },
+      { "label": "THE TEAM", "href": "#team" }
+    ],
+    "theme": { "ink": "#050706", "deep": "#07120e", "tactical": "#142a20", "paper": "#ecede7", "soft": "#8a918c", "accent": "#2ef2c4" },
+    "labels": { "skipIntro": "SKIP INTRO", "entering": "ENTERING…", "skipContent": "Skip to content", "openMenu": "Open menu", "closeMenu": "Close menu", "backToTop": "Back to top", "fieldReport": "FIELD REPORT", "profile": "PROFILE" },
+    "contact": {
+      "enabled": true, "nameLabel": "NAME", "emailLabel": "EMAIL", "messageLabel": "MESSAGE",
+      "namePlaceholder": "Your name", "emailPlaceholder": "you@example.com", "messagePlaceholder": "Tell us what you have in mind.",
+      "buttonLabel": "SEND MESSAGE", "sendingLabel": "SENDING…", "successMessage": "Message received. Thanks for reaching out to KN1GHTS.",
+      "unavailableMessage": "Our contact channel is being set up. Check back soon."
+    }
+  },
+  "sections": [
+    {
+      "id": "home", "type": "hero", "enabled": true, "eyebrow": "COMPETITIVE CYBERSECURITY · INDIA", "title": "KN1GHTS",
+      "description": "Competitive cybersecurity. Offensive research. CTFs.",
+      "fields": { "tagline": "SECURE / EXPLOIT / DEFEND", "mindset": "MORE THAN A CTF\nIT'S A MINDSET.", "path": "LEARN\nPRACTICE\nCOMPETE\nBECOME A KNIGHT", "metaLeft": "KN1GHTS COLLECTIVE", "metaRight": "INDIA / ONLINE", "ctaLabel": "CONTACT US", "ctaHref": "#contact", "scrollLabel": "SCROLL TO EXPLORE", "scrollHref": "#updates" }, "items": []
+    },
+    {
+      "id": "updates", "type": "updates", "enabled": true, "eyebrow": "LATEST FROM KN1GHTS", "title": "PROGRESS\nIN PUBLIC.",
+      "description": "Competition results, team updates, and work worth sharing.",
+      "fields": { "linkLabel": "View public result", "feedLabel": "FEED", "feedStatus": "LIVE / PUBLIC" },
+      "items": [
+        { "id": "exploitx", "title": "ExploitX — Into The Void 2.0", "body": "1st among 120+ teams in the qualification round, then 1st among 40 teams in the finals. The public announcement says the final margin was 28 points over 2nd place.", "label": "CTF RESULT", "href": "https://www.linkedin.com/company/kn1ghts/", "imageUrl": "", "date": "", "meta": "", "tags": [] }
+      ]
+    },
+    {
+      "id": "approach", "type": "about", "enabled": true, "eyebrow": "WHAT DRIVES US", "title": "PRESSURE REVEALS\nTHE [[PATTERN.]]",
+      "description": "A team forged through competition, focused on understanding how systems fail—and how to make them stronger.",
+      "fields": { "secondHeading": "CURIOSITY FINDS\nTHE [[BREAK.]]", "rail": "OBSERVE / QUESTION / TEST\nUNDERSTAND THE FAILURE\nBUILD WHAT COMES NEXT" }, "items": []
+    },
+    {
+      "id": "disciplines", "type": "disciplines", "enabled": true, "eyebrow": "HOW WE WORK", "title": "COMPETE.\nRESEARCH.\nBUILD.", "description": "", "fields": {},
+      "items": [
+        { "id": "compete", "title": "COMPETE", "body": "CTFs across web, pwn, crypto, forensics, and OSINT.", "label": "", "href": "", "imageUrl": "", "date": "", "meta": "", "tags": [] },
+        { "id": "research", "title": "RESEARCH", "body": "Technical investigation, offensive experiments, and clear field notes.", "label": "", "href": "", "imageUrl": "", "date": "", "meta": "", "tags": [] },
+        { "id": "build", "title": "BUILD", "body": "Purposeful tools and challenge infrastructure for the security community.", "label": "", "href": "", "imageUrl": "", "date": "", "meta": "", "tags": [] }
+      ]
+    },
+    {
+      "id": "results", "type": "results", "enabled": true, "eyebrow": "SELECTED RESULTS", "title": "PROOF,\nNOT PROMISES.", "description": "Publicly shared competition results from the KN1GHTS team.", "fields": { "sourceLabel": "View public source" },
+      "items": [
+        { "id": "exploitx", "title": "ExploitX — Into The Void 2.0", "body": "1st among 120+ teams in the qualification round, then 1st among 40 teams in the finals. The public announcement says the final margin was 28 points over 2nd place.", "label": "#1", "href": "https://www.linkedin.com/company/kn1ghts/", "imageUrl": "", "date": "", "meta": "", "tags": [] },
+        { "id": "blackbox", "title": "BLACKBOX 2026", "body": "1st Place at a story-driven cybersecurity and web engineering challenge organized by the CodeChef VIT Chennai Chapter at VIT Chennai.", "label": "#1", "href": "https://www.linkedin.com/company/kn1ghts/", "imageUrl": "", "date": "", "meta": "", "tags": [] }
+      ]
+    },
+    {
+      "id": "writeups", "type": "writeups", "enabled": true, "eyebrow": "TECHNICAL WRITEUPS", "title": "NOTES FROM\nTHE BREACH.", "description": "Methods, lessons, and challenge solutions from the team.",
+      "fields": { "emptyLabel": "EDITORIAL / IN REVIEW", "emptyTitle": "THE FIRST\nDISPATCH IS\nIN REVIEW.", "emptyDescription": "Published writeups will appear here.", "itemLabel": "WRITEUP" }, "items": []
+    },
+    {
+      "id": "projects", "type": "projects", "enabled": true, "eyebrow": "OPEN SOURCE", "title": "TOOLS FOR\nTHE NEXT\nCHALLENGE.", "description": "Small, useful tools built to make security work more effective.",
+      "fields": { "emptyLabel": "GITHUB / KN1GHTS-ORG", "emptyTitle": "Explore the\norganization", "emptyDescription": "New projects will be featured here as they are published.", "emptyHref": "https://github.com/Kn1ghts-org" }, "items": []
+    },
+    {
+      "id": "team", "type": "team", "enabled": true, "eyebrow": "THE TEAM", "title": "BUILT IN\nTHE ARENA.", "description": "Competitors, researchers, and builders, working the problem together.", "fields": { "itemLabel": "OPERATOR" },
+      "items": [
+        { "id": "raven", "title": "0xRAVEN", "body": "PWN / CAPTAIN", "label": "", "href": "", "imageUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=85", "date": "", "meta": "Heap · Kernel · ROP", "tags": [] },
+        { "id": "spectre", "title": "SPECTRE", "body": "REVERSE", "label": "", "href": "", "imageUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=85", "date": "", "meta": "Firmware · VM · Mobile", "tags": [] },
+        { "id": "nullbyte", "title": "NULLBYTE", "body": "WEB / CLOUD", "label": "", "href": "", "imageUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=85", "date": "", "meta": "Browser · OAuth · K8s", "tags": [] },
+        { "id": "cipher", "title": "CIPHER", "body": "CRYPTO", "label": "", "href": "", "imageUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=85", "date": "", "meta": "Lattices · ECC · ZKP", "tags": [] }
+      ]
+    },
+    {
+      "id": "journal", "type": "journal", "enabled": true, "eyebrow": "FROM THE FIELD", "title": "THINGS\nWORTH\nSHARING.", "description": "Research notes, lessons learned, and ideas the team wants to leave better documented.",
+      "fields": { "emptyLabel": "JOURNAL / 00", "emptyTitle": "Notes from the field are being prepared.", "emptyDescription": "Published KN1GHTS work will appear here after editorial review.", "itemLabel": "JOURNAL" }, "items": []
+    },
+    {
+      "id": "recruitment", "type": "recruitment", "enabled": true, "eyebrow": "RECRUITMENT STATUS", "title": "THE GATE\nIS CLOSED.\n[[FOR NOW.]]", "description": "KN1GHTS is not currently accepting applications. Follow the team’s public updates for the next recruitment campaign.",
+      "fields": { "ctaLabel": "FOLLOW KN1GHTS", "ctaHref": "https://www.linkedin.com/company/kn1ghts/", "mark": "KN" }, "items": []
+    },
+    {
+      "id": "finale", "type": "finale", "enabled": true, "eyebrow": "OPEN CHANNEL", "title": "KN1GHTS", "description": "Have a challenge, event, or research idea worth pursuing?",
+      "fields": { "tagline": "SECURE / EXPLOIT / DEFEND", "ctaLabel": "START A CONVERSATION", "ctaHref": "#contact" }, "items": []
+    },
+    {
+      "id": "contact", "type": "contact", "enabled": true, "eyebrow": "CONTACT US", "title": "LET'S\nCONNECT.", "description": "A challenge, a collaboration, or a question. Leave us a message.", "fields": {}, "items": []
+    }
+  ]
+}

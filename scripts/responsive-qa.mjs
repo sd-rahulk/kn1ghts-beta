@@ -125,7 +125,7 @@ const globalAuditExpression = `(() => {
     title: document.title,
     viewport: { width: innerWidth, height: innerHeight, dpr: devicePixelRatio },
     document: { clientWidth: document.documentElement.clientWidth, scrollWidth: document.documentElement.scrollWidth, scrollHeight: document.documentElement.scrollHeight },
-    semantic: { h1Count: document.querySelectorAll('h1').length, chapterCount: document.querySelectorAll('[data-chapter]').length, navButtonCount: document.querySelectorAll('.menu-overlay nav button').length, duplicateIds },
+    semantic: { h1Count: document.querySelectorAll('h1').length, chapterCount: document.querySelectorAll('[data-chapter]').length, navButtonCount: document.querySelectorAll('.menu-overlay nav a').length, duplicateIds },
     canvas: canvasRect ? { width: round(canvasRect.width), height: round(canvasRect.height) } : null,
     header: headerRect ? { top: round(headerRect.top), left: round(headerRect.left), right: round(headerRect.right), height: round(headerRect.height) } : null,
     overflow,
@@ -182,12 +182,12 @@ async function testInteractions() {
   await delay(120);
   const escaped = await evaluate(`(() => ({ expanded: document.querySelector('.menu-toggle').getAttribute('aria-expanded'), bodyOverflow: document.body.style.overflow, overlayHidden: document.querySelector('.menu-overlay').getAttribute('aria-hidden') }))()`);
   const jumps = [];
-  for (let index = 0; index < chapters.length; index++) {
+  for (let index = 0; index < 6; index++) {
     await evaluate(`document.querySelector('.menu-toggle').click()`);
     await delay(40);
-    await evaluate(`document.querySelectorAll('.menu-overlay nav button')[${index}].click()`);
+    await evaluate(`document.querySelectorAll('.menu-overlay nav a')[${index}].click()`);
     await delay(1000);
-    jumps.push(await evaluate(`(() => { const target = document.querySelectorAll('[data-chapter]')[${index}]; return { id: target.id, top: Math.round(target.getBoundingClientRect().top), expanded: document.querySelector('.menu-toggle').getAttribute('aria-expanded') }; })()`));
+    jumps.push(await evaluate(`(() => { const link = document.querySelectorAll('.menu-overlay nav a')[${index}]; const target = document.querySelector(link.getAttribute('href')); return { id: target.id, top: Math.round(target.getBoundingClientRect().top), expanded: document.querySelector('.menu-toggle').getAttribute('aria-expanded') }; })()`));
   }
   await evaluate(`window.scrollTo(0, document.documentElement.scrollHeight * .55)`);
   await delay(80);
@@ -289,7 +289,7 @@ for (const viewport of viewports) {
   await evaluate("window.scrollTo(0, 0)");
   await evaluate("document.querySelector('.menu-toggle').click()");
   await delay(900);
-  const menu = await evaluate(`(() => { const overlay = document.querySelector('.menu-overlay'); const last = overlay.querySelector('nav button:last-child').getBoundingClientRect(); return { clientHeight: overlay.clientHeight, scrollHeight: overlay.scrollHeight, canScroll: overlay.scrollHeight > overlay.clientHeight, lastButtonBottom: Math.round(last.bottom) }; })()`);
+  const menu = await evaluate(`(() => { const overlay = document.querySelector('.menu-overlay'); const last = overlay.querySelector('nav a:last-child').getBoundingClientRect(); return { clientHeight: overlay.clientHeight, scrollHeight: overlay.scrollHeight, canScroll: overlay.scrollHeight > overlay.clientHeight, lastButtonBottom: Math.round(last.bottom) }; })()`);
   if (screenshotDevices.has(viewport.name)) await screenshot(`${viewport.name}-menu`);
   await evaluate("document.querySelector('.menu-toggle').click()");
   matrix.push({ device: viewport, audit, chapters: chapterAudits, menu });

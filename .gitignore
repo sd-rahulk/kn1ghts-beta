@@ -4,3 +4,15 @@ node_modules
 out
 *.log
 .DS_Store
+.env
+.env.local
+.env.*.local
+*service-account*.json
+*firebase-adminsdk*.json
+.vercel/
+.firebase/
+.qa-browser*/
+.npm-cache/
+.firebase-emulators/
+.staging-push/
+responsive_screenshots/

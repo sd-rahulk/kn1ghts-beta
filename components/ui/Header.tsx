@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { availableLink, type SiteContent } from "@/backend/lib/schema";
 
-const chapters = ["HOME", "UPDATES", "APPROACH", "DISCIPLINES", "RESULTS", "WRITEUPS", "PROJECTS", "TEAM", "JOURNAL", "RECRUITMENT", "CONTACT"];
-
-export function Header() {
+export function Header({ site }: { site: SiteContent }) {
+  const chapters = site.settings.navigation.filter((link) => availableLink(site, link.href));
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -19,7 +19,7 @@ export function Header() {
     let focusFrame = 0;
     if (open) {
       focusFrame = requestAnimationFrame(() => {
-        menuRef.current?.querySelector<HTMLButtonElement>("nav button")?.focus();
+        menuRef.current?.querySelector<HTMLAnchorElement>("nav a")?.focus();
       });
     } else if (menuRef.current?.contains(document.activeElement)) {
       toggleRef.current?.focus();
@@ -38,24 +38,18 @@ export function Header() {
     };
   }, [open]);
 
-  const jump = (index: number) => {
-    const target = document.querySelectorAll<HTMLElement>("[data-chapter]")[index];
-    setOpen(false);
-    window.setTimeout(() => target?.scrollIntoView({ behavior: "smooth" }), 120);
-  };
-
   return <>
     <header className="header">
-      <button className="wordmark magnetic" tabIndex={open ? -1 : 0} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="Back to top">KN1GHTS<span>®</span></button>
-      <span className="header-coord">COMPETITIVE CYBERSECURITY · INDIA</span>
-      <button ref={toggleRef} className={open ? "menu-toggle is-open magnetic" : "menu-toggle magnetic"} onClick={() => setOpen((current) => !current)} aria-expanded={open} aria-controls="menu-overlay" aria-label={open ? "Close menu" : "Open menu"}><span /><span /><span /></button>
+      <button className="wordmark magnetic" tabIndex={open ? -1 : 0} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label={site.settings.labels.backToTop}>{site.settings.name}<span>{site.settings.registrationMark}</span></button>
+      <span className="header-coord">{site.settings.headerLine}</span>
+      {chapters.length > 0 && <button ref={toggleRef} className={open ? "menu-toggle is-open magnetic" : "menu-toggle magnetic"} onClick={() => setOpen((current) => !current)} aria-expanded={open} aria-controls="menu-overlay" aria-label={open ? site.settings.labels.closeMenu : site.settings.labels.openMenu}><span /><span /><span /></button>}
     </header>
     <div ref={menuRef} id="menu-overlay" className={open ? "menu-overlay is-open" : "menu-overlay"} role="dialog" aria-modal={open || undefined} aria-label="Site navigation" aria-hidden={!open}>
       <div className="menu-scan" aria-hidden="true" />
-      <nav aria-label="KN1GHTS sections">
-        {chapters.map((chapter, index) => <button key={chapter} onClick={() => jump(index)} tabIndex={open ? 0 : -1}><span>{String(index).padStart(2, "0")}</span>{chapter}<i>{index % 2 ? "↗" : "→"}</i></button>)}
+      <nav aria-label={`${site.settings.name} sections`}>
+        {chapters.map((chapter, index) => <a key={`${chapter.href}-${index}`} href={chapter.href} onClick={() => setOpen(false)} tabIndex={open ? 0 : -1} {...(chapter.href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}><span>{String(index).padStart(2, "0")}</span>{chapter.label}<i>{index % 2 ? "↗" : "→"}</i></a>)}
       </nav>
-      <div className="menu-foot">COMPETITIVE CYBERSECURITY / INDIA</div>
+      <div className="menu-foot">{site.settings.headerLine}</div>
     </div>
   </>;
 }
