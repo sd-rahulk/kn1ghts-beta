@@ -105,6 +105,8 @@ Check the production URLs:
 
 If login reports an origin/CSRF problem, check `ADMIN_ORIGIN` against the URL actually in the browser. If contact fails, check matching `CONTACT_API_SECRET`, `PUBLIC_SITE_ORIGIN`, `BACKEND_URL`, and whether the production backend API is intercepted by Vercel Deployment Protection. Read the failing project's Vercel function logs for server errors. Keep credentials and message contents out of copied logs.
 
+The backend's scoped npm override keeps `jwks-rsa` on the CommonJS-compatible JOSE 5.10.0 release. Firebase Admin 14 loads this library through `require`, while JOSE 6 relies on Node's native `require(ESM)` support, which may be disabled in the hosting runtime. Keep the override and updated backend lockfile together. If an older deployment reports `ERR_REQUIRE_ESM` from `jwks-rsa`, deploy the updated commit and clear the Vercel build cache. `npm run test` includes a startup/signing-key regression test with `require(ESM)` disabled.
+
 ## References
 
 - [Vercel monorepo projects](https://vercel.com/docs/monorepos)
