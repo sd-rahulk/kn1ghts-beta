@@ -1240,7 +1240,7 @@ export function CyberWorld({ progress, pointer, opening, glitch, hud }: {
         return node ? Math.min(1, (node.getBoundingClientRect().top + window.scrollY) / max) : fallback;
       };
       a.updates = at("updates", 0.1);
-      a.contact = at("contact", 0.9);
+      a.contact = at("finale", 0.9);
       a.wait = 30;
     }
     const scroll = done ? progress.current : 0;

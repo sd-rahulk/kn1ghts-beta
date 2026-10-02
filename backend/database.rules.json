@@ -1,0 +1,10 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "cms": {
+      "published": { ".read": true }
+    },
+    "messages": { ".indexOn": ["createdAt"] }
+  }
+}

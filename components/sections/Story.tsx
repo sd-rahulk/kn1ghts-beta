@@ -1,263 +1,85 @@
-import type { ArticlePreview, KnightsHomeData } from "@/data/knights";
+import { Fragment } from "react";
+import { availableLink, type SiteContent, type SiteSection } from "@/backend/lib/schema";
 import { MemberPortrait } from "@/components/ui/MemberPortrait";
+import { ContactForm } from "@/components/ui/ContactForm";
 
-function Index({ children }: { children: React.ReactNode }) {
-  return <span className="chapter-index">{children}</span>;
+function Text({ value }: { value: string }) {
+  return value.split(/(\[\[[\s\S]*?\]\]|\n)/).map((part, index) => part === "\n" ? <br key={index} /> : part.startsWith("[[") ? <em key={index}>{part.slice(2, -2)}</em> : <Fragment key={index}>{part}</Fragment>);
+}
+function Tagline({ value }: { value: string }) {
+  return value.split("/").map((part, index) => <Fragment key={index}>{index > 0 && <i aria-hidden="true">/</i>}{part.trim()}</Fragment>);
+}
+function Link({ site, href, children, ...props }: { site: SiteContent; href: string; children: React.ReactNode } & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href">) {
+  if (!href || !availableLink(site, href)) return null;
+  return <a href={href} {...(href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})} {...props}>{children}</a>;
+}
+function Index({ section, index }: { section: SiteSection; index: number }) {
+  return <span className="chapter-index">{String(index).padStart(2, "0")} / {section.eyebrow}</span>;
+}
+function Copy({ section, index, className = "chapter-copy align-left" }: { section: SiteSection; index: number; className?: string }) {
+  return <div className={className} data-reveal><Index section={section} index={index} /><h2><Text value={section.title} /></h2>{section.description && <p>{section.description}</p>}</div>;
+}
+function date(value: string, fallback: string) {
+  const parsed = new Date(value);
+  return value && Number.isFinite(parsed.valueOf()) ? new Intl.DateTimeFormat("en", { month: "short", year: "numeric" }).format(parsed).toUpperCase() : fallback;
 }
 
-function formatDate(value: string | null) {
-  if (!value) return "FIELD REPORT";
-  const date = new Date(value);
-  return Number.isNaN(date.valueOf())
-    ? "FIELD REPORT"
-    : new Intl.DateTimeFormat("en", { month: "short", year: "numeric" })
-        .format(date)
-        .toUpperCase();
-}
-
-function ArticleList({ items, kind }: { items: ArticlePreview[]; kind: string }) {
-  if (!items.length) {
-    return (
-      <div className="content-note" data-reveal>
-        <span>{kind} / 00</span>
-        <strong>{kind === "WRITEUP" ? "The first dispatch is in review." : "Notes from the field are being prepared."}</strong>
-        <p>Published KN1GHTS work will appear here after editorial review.</p>
+function Section({ section: s, index, site, contactReady }: { section: SiteSection; index: number; site: SiteContent; contactReady: boolean }) {
+  const f = s.fields;
+  const base = { id: s.id, "data-chapter": true, "data-section-type": s.type };
+  switch (s.type) {
+    case "hero": return <section {...base} className="chapter hero">
+      <div className="hero-type" data-reveal>
+        <h1 className="sr-only">{s.title}</h1>
+        <p className="hero-manifesto"><Tagline value={f.tagline || ""} /></p>
+        <span className="hero-kicker">{s.eyebrow}</span>
+        <Link site={site} className="hero-contact" href={f.ctaHref || ""}>{f.ctaLabel}<span aria-hidden="true">↗</span></Link>
+        <p className="hero-mindset"><Text value={f.mindset || ""} /></p>
+        <ul className="hero-path">{(f.path || "").split("\n").filter(Boolean).map((entry, i) => <li key={i}>{entry}</li>)}</ul>
       </div>
-    );
+      <p className="hero-copy" data-reveal>{s.description}</p>
+      <div className="hero-meta"><span>{f.metaLeft}</span><span>{f.metaRight}</span></div>
+      <Link site={site} className="hero-scroll" href={f.scrollHref || ""}><span />{f.scrollLabel}</Link>
+    </section>;
+    case "updates": return <section {...base} className="chapter updates-chapter" style={{ "--updates-height": `${Math.max(190, 100 + s.items.length * 65)}dvh` } as React.CSSProperties}>
+      <Copy section={s} index={index} />
+      {s.items.map((item, i) => <article className="update-feature" key={item.id} data-reveal style={{ "--update-index": i } as React.CSSProperties}>
+        <span className="update-label">{item.label} / {date(item.date, site.settings.labels.fieldReport)}</span><h3>{item.title}</h3><p>{item.body}</p>
+        <Link site={site} href={item.href}>{f.linkLabel}<b aria-hidden="true">↗</b></Link>
+      </article>)}
+      <span className="telemetry telemetry-a" aria-hidden="true"><span>{f.feedLabel}</span><b>{f.feedStatus}</b></span>
+    </section>;
+    case "about": return <section {...base} className="chapter approach-chapter">
+      <div className="approach-copy" data-reveal><Index section={s} index={index} /><h2><Text value={s.title} /></h2>{f.secondHeading && <h2><Text value={f.secondHeading} /></h2>}<p>{s.description}</p></div>
+      <div className="code-rail" aria-hidden="true">{(f.rail || "").split("\n").map((entry, i) => <span key={i}>{entry}</span>)}</div>
+    </section>;
+    case "disciplines": return <section {...base} className="chapter arsenal">
+      <Copy section={s} index={index} className="chapter-copy align-center" />
+      <div className="disciplines" data-reveal>{s.items.map((item, i) => <article key={item.id}><span>{String(i + 1).padStart(2, "0")}</span><strong>{item.title}</strong><p>{item.body}</p><b aria-hidden="true">↗</b></article>)}</div>
+    </section>;
+    case "results": return <section {...base} className="chapter results-chapter" style={{ "--results-height": `calc(75dvh + ${Math.max(s.items.length, 1) * 190}px)` } as React.CSSProperties}>
+      <Copy section={s} index={index} /><div className="results-list">{s.items.map((item, i) => <article key={item.id} data-reveal><span>{String(i + 1).padStart(2, "0")} / {item.label}</span><div><h3>{item.title}</h3><p>{item.body}</p></div><Link site={site} href={item.href} aria-label={`${f.sourceLabel || ""} ${item.title}`}>↗</Link></article>)}</div>
+    </section>;
+    case "writeups": return <section {...base} className="chapter writeups" style={{ "--writeups-height": `${Math.max(180, 120 + Math.max(s.items.length, 1) * 45)}dvh` } as React.CSSProperties}>
+      <Copy section={s} index={index} className="writeup-head" />
+      <div className="writeup-track-wrap"><div className="writeup-track" data-track>{s.items.length ? s.items.map((item, i) => <article key={item.id}><span>{String(i + 1).padStart(2, "0")} / {item.label || f.itemLabel}</span><strong><Text value={item.title} /></strong><em>{item.body}</em><Link site={site} href={item.href} className="article-link">{item.meta || item.label || f.itemLabel} ↗</Link></article>) : <article className="writeup-empty"><span>{f.emptyLabel}</span><strong><Text value={f.emptyTitle || ""} /></strong><em>{f.emptyDescription}</em></article>}</div></div>
+    </section>;
+    case "projects": return <section {...base} className="chapter projects-chapter">
+      <Copy section={s} index={index} className="chapter-copy align-right" />
+      {s.items.length ? <div className="project-list">{s.items.map((item, i) => <article key={item.id} data-reveal><span>{String(i + 1).padStart(2, "0")} / {item.label || item.tags[0]}</span><strong><Link site={site} href={item.href}>{item.title}</Link>{!item.href && item.title}</strong><p>{item.body}</p><Link site={site} href={item.href} aria-label={item.title}>↗</Link></article>)}</div> : <Link site={site} className="project-note" href={f.emptyHref || ""} data-reveal><span>{f.emptyLabel}</span><strong><Text value={f.emptyTitle || ""} /><b aria-hidden="true">↗</b></strong><p>{f.emptyDescription}</p></Link>}
+    </section>;
+    case "team": return <section {...base} className="chapter team-chapter" style={{ "--team-height": `${76 + Math.ceil(Math.max(s.items.length, 1) / 2) * 77}dvh` } as React.CSSProperties}>
+      <Copy section={s} index={index} className="team-intro" /><div className="team-grid">{s.items.map((item, i) => <article className="team-card" key={item.id} data-cursor={site.settings.labels.profile} data-reveal><MemberPortrait src={item.imageUrl || null} name={item.title} /><div className="portrait-scan" aria-hidden="true" /><span>{f.itemLabel} / {String(i + 1).padStart(2, "0")}</span><h3>{item.title}</h3><p>{item.body}</p><em>{item.meta || item.tags.join(" · ")}</em><Link site={site} href={item.href} className="member-link">↗</Link></article>)}</div>
+    </section>;
+    case "journal": return <section {...base} className="chapter journal-chapter">
+      <Copy section={s} index={index} />{s.items.length ? <div className="journal-list">{s.items.map((item, i) => <article key={item.id} data-reveal><span>{String(i + 1).padStart(2, "0")} / {item.label || f.itemLabel}</span><div><h3>{item.href ? <Link site={site} href={item.href}>{item.title} ↗</Link> : item.title}</h3><p>{item.body}</p></div><time>{date(item.date, site.settings.labels.fieldReport)}</time></article>)}</div> : <div className="content-note" data-reveal><span>{f.emptyLabel}</span><strong>{f.emptyTitle}</strong><p>{f.emptyDescription}</p></div>}
+    </section>;
+    case "recruitment": return <section {...base} className="chapter recruitment-chapter"><div className="recruitment-copy" data-reveal><Index section={s} index={index} /><h2><Text value={s.title} /></h2><p>{s.description}</p><Link site={site} className="network-cta" href={f.ctaHref || ""}><span>{f.ctaLabel}</span><b aria-hidden="true">↗</b></Link></div><div className="recruitment-mark" aria-hidden="true">{f.mark}</div></section>;
+    case "finale": return <section {...base} className="chapter finale"><div className="final-copy" data-reveal><h2 className="sr-only">{s.title}</h2><p className="final-tagline"><Tagline value={f.tagline || ""} /></p><span>{s.eyebrow}</span><p>{s.description}</p><Link site={site} className="network-cta magnetic" href={f.ctaHref || ""} data-cursor="ENTER"><span>{f.ctaLabel}</span><b aria-hidden="true">↗</b></Link></div></section>;
+    case "contact": return <section {...base} className="chapter contact-chapter" aria-labelledby={`${s.id}-heading`}><div className="contact-section"><div className="contact-copy" data-reveal><Index section={s} index={index} /><h2 id={`${s.id}-heading`}><Text value={s.title} /></h2><p>{s.description}</p></div><ContactForm settings={site.settings.contact} ready={contactReady} /></div></section>;
+    default: return <section {...base} className="chapter custom-chapter"><Copy section={s} index={index} />{s.items.length > 0 && <div className="custom-grid">{s.items.map((item) => <article key={item.id} data-reveal>{item.imageUrl && <div className="content-image"><MemberPortrait src={item.imageUrl} name={item.title} /></div>}<span>{item.label}</span><h3>{item.title}</h3><p>{item.body}</p><Link site={site} href={item.href}>{item.meta || item.title} ↗</Link></article>)}</div>}<Link site={site} className="network-cta" href={f.ctaHref || ""}><span>{f.ctaLabel}</span><b aria-hidden="true">↗</b></Link></section>;
   }
-
-  return (
-    <div className="journal-list">
-      {items.map((item, index) => (
-        <article key={item.id} data-reveal>
-          <span>0{index + 1} / {item.category ?? kind}</span>
-          <div>
-            <h3>{item.title}</h3>
-            {item.excerpt ? <p>{item.excerpt}</p> : null}
-          </div>
-          <time>{formatDate(item.publishedAt)}</time>
-        </article>
-      ))}
-    </div>
-  );
 }
-
-export function Story({ data }: { data: KnightsHomeData }) {
-  const featuredUpdate = data.updates[0];
-
-  return (
-    <div id="story" className="story">
-      <section id="home" className="chapter hero" data-chapter>
-        <div className="hero-type" data-reveal>
-          {/* The KN1GHTS logo itself is assembled by the 3D intro; the heading stays for screen readers. */}
-          <h1 className="sr-only">KN1GHTS</h1>
-          <p className="hero-manifesto">SECURE <i aria-hidden="true">/</i> EXPLOIT <i aria-hidden="true">/</i> DEFEND</p>
-          <span className="hero-kicker">COMPETITIVE CYBERSECURITY · INDIA</span>
-          <p className="hero-mindset">MORE THAN A CTF<br />IT&apos;S A MINDSET.</p>
-          <ul className="hero-path" aria-label="The path">
-            <li>LEARN</li><li>PRACTICE</li><li>COMPETE</li><li>BECOME A KNIGHT</li>
-          </ul>
-        </div>
-        <p className="hero-copy" data-reveal>
-          Competitive cybersecurity. Offensive research. CTFs.
-        </p>
-        <div className="hero-meta"><span>KN1GHTS COLLECTIVE</span><span>INDIA / ONLINE</span></div>
-        <a className="hero-scroll" href="#updates"><span /> SCROLL TO EXPLORE</a>
-      </section>
-
-      <section id="updates" className="chapter updates-chapter" data-chapter>
-        <div className="chapter-copy align-left" data-reveal>
-          <Index>01 / LATEST FROM KN1GHTS</Index>
-          <h2>PROGRESS<br />IN PUBLIC.</h2>
-          <p>Competition results, team updates, and work worth sharing.</p>
-        </div>
-        {featuredUpdate ? (
-          <article className="update-feature" data-reveal>
-            <span className="update-label">{featuredUpdate.postType.replaceAll("_", " ")} / {formatDate(featuredUpdate.publishedAt)}</span>
-            <h3>{featuredUpdate.title}</h3>
-            <p>{featuredUpdate.excerpt ?? featuredUpdate.event?.summary ?? "A new update from the KN1GHTS team."}</p>
-            {featuredUpdate.event?.sourceUrl ? (
-              <a href={featuredUpdate.event.sourceUrl} target="_blank" rel="noreferrer">
-                View public result <b aria-hidden="true">↗</b>
-              </a>
-            ) : null}
-          </article>
-        ) : null}
-        <span className="telemetry telemetry-a" aria-hidden="true"><span>FEED</span><b>LIVE / PUBLIC</b></span>
-      </section>
-
-      <section id="approach" className="chapter approach-chapter" data-chapter>
-        <div className="approach-copy" data-reveal>
-          <Index>02 / WHAT DRIVES US</Index>
-          <h2>PRESSURE REVEALS<br />THE <em>PATTERN.</em></h2>
-          <h2>CURIOSITY FINDS<br />THE <em>BREAK.</em></h2>
-          <p>A team forged through competition, focused on understanding how systems fail—and how to make them stronger.</p>
-        </div>
-        <div className="code-rail" aria-hidden="true"><span>OBSERVE / QUESTION / TEST</span><span>UNDERSTAND THE FAILURE</span><span>BUILD WHAT COMES NEXT</span></div>
-      </section>
-
-      <section id="disciplines" className="chapter arsenal" data-chapter>
-        <div className="chapter-copy align-center" data-reveal>
-          <Index>03 / HOW WE WORK</Index>
-          <h2>COMPETE.<br />RESEARCH.<br />BUILD.</h2>
-        </div>
-        <div className="disciplines" data-reveal>
-          {[
-            ["COMPETE", "CTFs across web, pwn, crypto, forensics, and OSINT."],
-            ["RESEARCH", "Technical investigation, offensive experiments, and clear field notes."],
-            ["BUILD", "Purposeful tools and challenge infrastructure for the security community."],
-          ].map(([name, summary], index) => (
-            <article key={name}>
-              <span>0{index + 1}</span>
-              <strong>{name}</strong>
-              <p>{summary}</p>
-              <b aria-hidden="true">↗</b>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section
-        id="results"
-        className="chapter results-chapter"
-        data-chapter
-        style={{ "--results-height": `calc(75dvh + ${Math.max(data.events.length, 1) * 190}px)` } as React.CSSProperties}
-      >
-        <div className="chapter-copy align-left" data-reveal>
-          <Index>04 / SELECTED RESULTS</Index>
-          <h2>PROOF,<br />NOT PROMISES.</h2>
-          <p>Publicly shared competition results from the KN1GHTS team.</p>
-        </div>
-        <div className="results-list">
-          {data.events.map((event, index) => (
-            <article key={event.id} data-reveal>
-              <span>0{index + 1} / {event.placement ? `#${event.placement}` : "RESULT"}</span>
-              <div>
-                <h3>{event.name}</h3>
-                {event.summary ? <p>{event.summary}</p> : null}
-              </div>
-              {event.sourceUrl ? <a href={event.sourceUrl} target="_blank" rel="noreferrer" aria-label={`View public source for ${event.name}`}>↗</a> : null}
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section
-        id="writeups"
-        className="chapter writeups"
-        data-chapter
-        style={{ "--writeups-height": `${Math.max(180, 120 + Math.max(data.writeups.length, 1) * 45)}dvh` } as React.CSSProperties}
-      >
-        <div className="writeup-head" data-reveal>
-          <Index>05 / TECHNICAL WRITEUPS</Index>
-          <h2>NOTES FROM<br />THE BREACH.</h2>
-          <p>Methods, lessons, and challenge solutions from the team.</p>
-        </div>
-        <div className="writeup-track-wrap">
-          <div className="writeup-track" data-track>
-            {data.writeups.length ? data.writeups.map((item, index) => (
-              <article key={item.id}>
-                <span>0{index + 1} / {item.category ?? "WRITEUP"}</span>
-                <strong>{item.title}</strong>
-                <em>{item.excerpt ?? "KN1GHTS technical field note"}</em>
-              </article>
-            )) : (
-              <article className="writeup-empty">
-                <span>EDITORIAL / IN REVIEW</span>
-                <strong>THE FIRST<br />DISPATCH IS<br />IN REVIEW.</strong>
-                <em>Published writeups will appear here.</em>
-              </article>
-            )}
-          </div>
-        </div>
-      </section>
-
-      <section id="projects" className="chapter projects-chapter" data-chapter>
-        <div className="chapter-copy align-right" data-reveal>
-          <Index>06 / OPEN SOURCE</Index>
-          <h2>TOOLS FOR<br />THE NEXT<br />CHALLENGE.</h2>
-          <p>Small, useful tools built to make security work more effective.</p>
-        </div>
-        {data.projects.length ? (
-          <div className="project-list">
-            {data.projects.slice(0, 4).map((project, index) => (
-              <a key={project.id} href={project.repositoryUrl} target="_blank" rel="noreferrer" data-reveal>
-                <span>0{index + 1} / {project.technologies[0] ?? "OPEN SOURCE"}</span>
-                <strong>{project.name}</strong>
-                <p>{project.description}</p>
-                <b aria-hidden="true">↗</b>
-              </a>
-            ))}
-          </div>
-        ) : (
-          <a className="project-note" href="https://github.com/Kn1ghts-org" target="_blank" rel="noreferrer" data-reveal>
-            <span>GITHUB / KN1GHTS-ORG</span>
-            <strong>Explore the<br />organization <b aria-hidden="true">↗</b></strong>
-            <p>New projects will be featured here as they are published.</p>
-          </a>
-        )}
-      </section>
-
-      <section
-        id="team"
-        className="chapter team-chapter"
-        data-chapter
-        style={{ "--team-height": `${76 + Math.ceil(Math.max(data.members.length, 1) / 2) * 77}dvh` } as React.CSSProperties}
-      >
-        <div className="team-intro" data-reveal>
-          <Index>07 / THE TEAM</Index>
-          <h2>BUILT IN<br />THE ARENA.</h2>
-          <p>Competitors, researchers, and builders, working the problem together.</p>
-        </div>
-        <div className="team-grid">
-          {data.members.map((member, index) => (
-            <article className="team-card" key={member.id} data-cursor="PROFILE" data-reveal>
-              <MemberPortrait src={member.avatarUrl} name={member.name} />
-              <div className="portrait-scan" aria-hidden="true" />
-              <span>OPERATOR / 0{index + 1}</span>
-              <h3>{member.handle || member.name}</h3>
-              <p>{member.specialties[0] ?? "KN1GHTS"}</p>
-              <em>{member.specialties.slice(1).join(" · ") || "Competitive cybersecurity"}</em>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section id="journal" className="chapter journal-chapter" data-chapter>
-        <div className="chapter-copy align-left" data-reveal>
-          <Index>08 / FROM THE FIELD</Index>
-          <h2>THINGS<br />WORTH<br />SHARING.</h2>
-          <p>Research notes, lessons learned, and ideas the team wants to leave better documented.</p>
-        </div>
-        <ArticleList items={data.blogPosts} kind="JOURNAL" />
-      </section>
-
-      <section id="recruitment" className="chapter recruitment-chapter" data-chapter>
-        <div className="recruitment-copy" data-reveal>
-          <Index>09 / RECRUITMENT STATUS</Index>
-          <h2>THE GATE<br />IS CLOSED.<br /><em>FOR NOW.</em></h2>
-          <p>KN1GHTS is not currently accepting applications. Follow the team’s public updates for the next recruitment campaign.</p>
-          <a className="network-cta" href="https://www.linkedin.com/company/kn1ghts/" target="_blank" rel="noreferrer"><span>FOLLOW KN1GHTS</span><b>↗</b></a>
-        </div>
-        <div className="recruitment-mark" aria-hidden="true">KN</div>
-      </section>
-
-      <section id="contact" className="chapter finale" data-chapter>
-        <div className="final-copy" data-reveal>
-          {/* The KN1GHTS crest + wordmark return here in the 3D scene, in front of the knight. */}
-          <h2 className="sr-only">KN1GHTS</h2>
-          <p className="final-tagline">SECURE <i aria-hidden="true">/</i> EXPLOIT <i aria-hidden="true">/</i> DEFEND</p>
-          <span>OPEN CHANNEL</span>
-          <p>Have a challenge, event, or research idea worth pursuing?</p>
-          <a className="network-cta magnetic" href="https://www.linkedin.com/company/kn1ghts/" target="_blank" rel="noreferrer" data-cursor="ENTER"><span>START A CONVERSATION</span><b>↗</b></a>
-        </div>
-        <footer>
-          <a href="https://github.com/Kn1ghts-org" target="_blank" rel="noreferrer">GITHUB</a>
-          <a href="https://www.linkedin.com/company/kn1ghts/" target="_blank" rel="noreferrer">LINKEDIN</a>
-          <a href="#team">THE TEAM</a>
-          <span>© 2026 KN1GHTS</span>
-        </footer>
-      </section>
-    </div>
-  );
+export function Story({ site, contactReady }: { site: SiteContent; contactReady: boolean }) {
+  return <div id="story" className="story">{site.sections.filter((section) => section.enabled).map((section, index) => <Section key={section.id} section={section} index={index} site={site} contactReady={contactReady} />)}<div className="chapter finale site-footer-wrap"><footer>{site.settings.footerLinks.filter((link) => availableLink(site, link.href)).map((link, i) => <Link site={site} key={i} href={link.href}>{link.label}</Link>)}<span>{site.settings.copyright}</span></footer></div></div>;
 }

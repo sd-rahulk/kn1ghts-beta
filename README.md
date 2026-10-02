@@ -1,5 +1,7 @@
 # KN1GHTS UI Registry
 
+The separate management app lives in [`backend/`](backend/README.md). Its setup guide covers Firebase, email/password login, dynamic public content, contact inbox, publishing, and revision history. Start it with `npm.cmd run backend:dev` after configuring Firebase or the local emulators.
+
 ## Baseline
 
 Established 2026-09-13 from the initial cinematic build.
