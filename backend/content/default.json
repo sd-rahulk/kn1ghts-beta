@@ -12,6 +12,7 @@
     "footerLinks": [
       { "label": "GITHUB", "href": "https://github.com/Kn1ghts-org" },
       { "label": "LINKEDIN", "href": "https://www.linkedin.com/company/kn1ghts/" },
+      { "label": "DISCORD", "href": "https://discord.com/" },
       { "label": "THE TEAM", "href": "#team" }
     ],
     "theme": { "ink": "#050706", "deep": "#07120e", "tactical": "#142a20", "paper": "#ecede7", "soft": "#8a918c", "accent": "#2ef2c4" },
@@ -77,6 +78,18 @@
     {
       "id": "journal", "type": "journal", "enabled": true, "eyebrow": "FROM THE FIELD", "title": "THINGS\nWORTH\nSHARING.", "description": "Research notes, lessons learned, and ideas the team wants to leave better documented.",
       "fields": { "emptyLabel": "JOURNAL / 00", "emptyTitle": "Notes from the field are being prepared.", "emptyDescription": "Published KN1GHTS work will appear here after editorial review.", "itemLabel": "JOURNAL" }, "items": []
+    },
+    {
+      "id": "events", "type": "events", "enabled": true, "eyebrow": "UPCOMING EVENTS", "title": "MEET US\nIN THE FIELD.", "description": "Competitions, sessions, and public appearances from KN1GHTS.",
+      "fields": {}, "items": []
+    },
+    {
+      "id": "weekly", "type": "challenge", "enabled": true, "eyebrow": "IN-HOUSE WEEKLY", "title": "TRY THE\nCHALLENGE.", "description": "A fresh security problem for the community.",
+      "fields": {}, "items": []
+    },
+    {
+      "id": "blog", "type": "blog", "enabled": true, "eyebrow": "FIELD NOTES", "title": "EXPLORE\nTHE BLOG.", "description": "Research, writeups, and lessons from the arena.",
+      "fields": {}, "items": []
     },
     {
       "id": "recruitment", "type": "recruitment", "enabled": true, "eyebrow": "RECRUITMENT STATUS", "title": "THE GATE\nIS CLOSED.\n[[FOR NOW.]]", "description": "KN1GHTS is not currently accepting applications. Follow the team’s public updates for the next recruitment campaign.",

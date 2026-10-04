@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { availableLink, type SiteContent, type SiteSection } from "@/backend/lib/schema";
 import { MemberPortrait } from "@/components/ui/MemberPortrait";
 import { ContactForm } from "@/components/ui/ContactForm";
+import type { HomePlatformData } from "@/lib/platform-api";
 
 function Text({ value }: { value: string }) {
   return value.split(/(\[\[[\s\S]*?\]\]|\n)/).map((part, index) => part === "\n" ? <br key={index} /> : part.startsWith("[[") ? <em key={index}>{part.slice(2, -2)}</em> : <Fragment key={index}>{part}</Fragment>);
@@ -24,7 +25,7 @@ function date(value: string, fallback: string) {
   return value && Number.isFinite(parsed.valueOf()) ? new Intl.DateTimeFormat("en", { month: "short", year: "numeric" }).format(parsed).toUpperCase() : fallback;
 }
 
-function Section({ section: s, index, site, contactReady }: { section: SiteSection; index: number; site: SiteContent; contactReady: boolean }) {
+function Section({ section: s, index, site, platform, contactReady }: { section: SiteSection; index: number; site: SiteContent; platform: HomePlatformData; contactReady: boolean }) {
   const f = s.fields;
   const base = { id: s.id, "data-chapter": true, "data-section-type": s.type };
   switch (s.type) {
@@ -74,12 +75,24 @@ function Section({ section: s, index, site, contactReady }: { section: SiteSecti
     case "journal": return <section {...base} className="chapter journal-chapter">
       <Copy section={s} index={index} />{s.items.length ? <div className="journal-list">{s.items.map((item, i) => <article key={item.id} data-reveal><span>{String(i + 1).padStart(2, "0")} / {item.label || f.itemLabel}</span><div><h3>{item.href ? <Link site={site} href={item.href}>{item.title} ↗</Link> : item.title}</h3><p>{item.body}</p></div><time>{date(item.date, site.settings.labels.fieldReport)}</time></article>)}</div> : <div className="content-note" data-reveal><span>{f.emptyLabel}</span><strong>{f.emptyTitle}</strong><p>{f.emptyDescription}</p></div>}
     </section>;
+    case "events": return <section {...base} className="chapter platform-home-chapter"><Copy section={s} index={index} /><div className="platform-home-list">{platform.events.length ? platform.events.map((event) => <article key={event.id} data-reveal><span>{date(new Date(event.startsAt).toISOString(), site.settings.labels.fieldReport)}</span><div><h3>{event.title}</h3><p>{event.description}</p></div></article>) : <div className="content-note" data-reveal><span>EVENTS / 00</span><strong>No upcoming events are published.</strong></div>}<Link site={site} className="network-cta" href="/events"><span>VIEW ALL EVENTS</span><b aria-hidden="true">→</b></Link></div></section>;
+    case "challenge": return <section {...base} className="chapter platform-home-chapter challenge-home"><Copy section={s} index={index} /><div className="platform-home-feature" data-reveal>{platform.challenge ? <><span>{platform.challenge.category} / {platform.challenge.difficulty}</span><h3>{platform.challenge.title}</h3><p>{platform.challenge.description}</p></> : <><span>WEEKLY / STANDBY</span><h3>Next challenge incoming.</h3><p>The next in-house brief will appear here after it is published.</p></>}<Link site={site} className="network-cta" href="/inhouse-weekly"><span>TRY THE CHALLENGE</span><b aria-hidden="true">→</b></Link></div></section>;
+    case "blog": return <section {...base} className="chapter platform-home-chapter"><Copy section={s} index={index} /><div className="platform-home-list">{platform.blog.length ? platform.blog.map((post) => <article key={post.id} data-reveal><span>{date(new Date(post.publishedAt ?? post.updatedAt).toISOString(), site.settings.labels.fieldReport)}</span><div><h3><Link site={site} href={`/blog/${post.slug}`}>{post.title} →</Link></h3><p>{post.excerpt}</p></div></article>) : <div className="content-note" data-reveal><span>BLOG / 00</span><strong>The first field note is being prepared.</strong></div>}<Link site={site} className="network-cta" href="/blog"><span>EXPLORE THE BLOG</span><b aria-hidden="true">→</b></Link></div></section>;
     case "recruitment": return <section {...base} className="chapter recruitment-chapter"><div className="recruitment-copy" data-reveal><Index section={s} index={index} /><h2><Text value={s.title} /></h2><p>{s.description}</p><Link site={site} className="network-cta" href={f.ctaHref || ""}><span>{f.ctaLabel}</span><b aria-hidden="true">↗</b></Link></div><div className="recruitment-mark" aria-hidden="true">{f.mark}</div></section>;
     case "finale": return <section {...base} className="chapter finale"><div className="final-copy" data-reveal><h2 className="sr-only">{s.title}</h2><p className="final-tagline"><Tagline value={f.tagline || ""} /></p><span>{s.eyebrow}</span><p>{s.description}</p><Link site={site} className="network-cta magnetic" href={f.ctaHref || ""} data-cursor="ENTER"><span>{f.ctaLabel}</span><b aria-hidden="true">↗</b></Link></div></section>;
     case "contact": return <section {...base} className="chapter contact-chapter" aria-labelledby={`${s.id}-heading`}><div className="contact-section"><div className="contact-copy" data-reveal><Index section={s} index={index} /><h2 id={`${s.id}-heading`}><Text value={s.title} /></h2><p>{s.description}</p></div><ContactForm settings={site.settings.contact} ready={contactReady} /></div></section>;
     default: return <section {...base} className="chapter custom-chapter"><Copy section={s} index={index} />{s.items.length > 0 && <div className="custom-grid">{s.items.map((item) => <article key={item.id} data-reveal>{item.imageUrl && <div className="content-image"><MemberPortrait src={item.imageUrl} name={item.title} /></div>}<span>{item.label}</span><h3>{item.title}</h3><p>{item.body}</p><Link site={site} href={item.href}>{item.meta || item.title} ↗</Link></article>)}</div>}<Link site={site} className="network-cta" href={f.ctaHref || ""}><span>{f.ctaLabel}</span><b aria-hidden="true">↗</b></Link></section>;
   }
 }
-export function Story({ site, contactReady }: { site: SiteContent; contactReady: boolean }) {
-  return <div id="story" className="story">{site.sections.filter((section) => section.enabled).map((section, index) => <Section key={section.id} section={section} index={index} site={site} contactReady={contactReady} />)}<div className="chapter finale site-footer-wrap"><footer>{site.settings.footerLinks.filter((link) => availableLink(site, link.href)).map((link, i) => <Link site={site} key={i} href={link.href}>{link.label}</Link>)}<span>{site.settings.copyright}</span></footer></div></div>;
+export function Story({ site, platform, contactReady }: { site: SiteContent; platform: HomePlatformData; contactReady: boolean }) {
+  const sections = site.sections.filter((section) => section.enabled);
+  const templates: SiteSection[] = [
+    { id: "events", type: "events", enabled: true, eyebrow: "UPCOMING EVENTS", title: "MEET US\nIN THE FIELD.", description: "Competitions, sessions, and public appearances.", fields: {}, items: [] },
+    { id: "weekly", type: "challenge", enabled: true, eyebrow: "IN-HOUSE WEEKLY", title: "TRY THE\nCHALLENGE.", description: "A fresh security problem for the community.", fields: {}, items: [] },
+    { id: "blog", type: "blog", enabled: true, eyebrow: "FIELD NOTES", title: "EXPLORE\nTHE BLOG.", description: "Research, writeups, and lessons from the arena.", fields: {}, items: [] },
+  ];
+  const missing = templates.filter((template) => !sections.some((section) => section.type === template.type));
+  const insertAt = sections.findIndex((section) => ["recruitment", "finale", "contact"].includes(section.type));
+  const rendered = insertAt < 0 ? [...sections, ...missing] : [...sections.slice(0, insertAt), ...missing, ...sections.slice(insertAt)];
+  return <div id="story" className="story">{rendered.map((section, index) => <Section key={section.id} section={section} index={index} site={site} platform={platform} contactReady={contactReady} />)}<div className="chapter finale site-footer-wrap"><footer>{site.settings.footerLinks.filter((link) => availableLink(site, link.href)).map((link, i) => <Link site={site} key={i} href={link.href}>{link.label}</Link>)}<span>{site.settings.copyright}</span></footer></div></div>;
 }

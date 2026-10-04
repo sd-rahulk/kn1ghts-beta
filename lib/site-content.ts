@@ -19,7 +19,7 @@ export const getSiteContent = cache(async (preview?: string): Promise<SiteConten
     try {
       const response = await fetch(url, { cache: "no-store", signal: AbortSignal.timeout(8000) });
       if (response.ok) { const content = await response.json(); if (content) return siteSchema.parse(content); }
-    } catch { console.error("Published site content is unavailable; using the bundled initial content."); }
+    } catch { console.warn("Published site content is unavailable; using the bundled initial content."); }
   }
   return siteSchema.parse(initial);
 });

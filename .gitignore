@@ -12,7 +12,9 @@ out
 .vercel/
 .firebase/
 .qa-browser*/
+.qa-community/
 .npm-cache/
 .firebase-emulators/
+.firebase-config/
 .staging-push/
 responsive_screenshots/

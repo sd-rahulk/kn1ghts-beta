@@ -165,6 +165,8 @@ html { scrollbar-width:thin; scrollbar-color:var(--tactical) var(--ink); }
 .experience { color:var(--paper); }
 .experience .finale[data-section-type] { min-height:100dvh; }
 .experience .contact-chapter { min-height:0; scroll-margin-top:16px; }
+.platform-home-chapter{min-height:190dvh}.platform-home-list,.platform-home-feature{position:absolute;top:72dvh;right:5vw;width:min(780px,58vw)}.platform-home-list article{display:grid;grid-template-columns:110px 1fr;gap:22px;padding:24px 0;border-top:1px solid var(--hairline)}.platform-home-list article>span,.platform-home-feature>span{color:var(--acid);font:500 9px "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase}.platform-home-list h3,.platform-home-feature h3{margin:0;font-size:clamp(2rem,4vw,4.8rem);line-height:.9;font-weight:500;letter-spacing:-.03em}.platform-home-list p,.platform-home-feature p{margin:12px 0 0;color:var(--soft);font:400 11px/1.7 "IBM Plex Mono",monospace}.platform-home-list>.network-cta,.platform-home-feature>.network-cta{margin-top:28px}.platform-home-feature h3{margin-top:18px;font-size:clamp(3rem,7vw,7rem)}.platform-home-feature p{max-width:650px;white-space:pre-wrap}.challenge-home{min-height:175dvh}
+@media(max-width:700px){.platform-home-chapter{min-height:210dvh}.platform-home-list,.platform-home-feature{top:105dvh;left:20px;right:20px;width:auto}.platform-home-list article{grid-template-columns:1fr;gap:8px}.platform-home-feature h3{font-size:clamp(3rem,15vw,5rem)}}
 .experience .site-footer-wrap { min-height:0; padding-bottom:32px; }
 .story p { white-space:pre-line; }
 .contact-trap { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }

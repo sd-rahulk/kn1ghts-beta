@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     await rateLimit(`contact-${data.requestKey}`, 3, 60 * 60 * 1000);
     await rateLimit("contact-global", 20, 60 * 1000);
     const id = randomUUID();
-    await database().ref(`messages/${id}`).set({ id, name: data.name, email: data.email, message: data.message, createdAt: Date.now(), status: "new", notes: "" });
+    await database().ref(`messages/${id}`).set({ id, kind: "contact", name: data.name, email: data.email, message: data.message, createdAt: Date.now(), status: "new", notes: "" });
     return json({ ok: true }, 201);
   });
 }

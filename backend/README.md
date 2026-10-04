@@ -9,10 +9,12 @@ A separate Next.js app in `backend/`, connected to the existing public website t
 - Save drafts, create a ten-minute preview link, and publish separately. Preview links show the saved draft and disable message submission. Anyone holding the link can see that draft until expiration; disabling its creator's access invalidates it.
 - See revision notes, field changes, editor identity, and timestamps. Download full snapshots or restore a revision into a new draft before publishing it.
 - Receive contact messages in a private inbox with live updates, status, internal notes, and activity records.
+- Draft and publish blog posts, moderate member comments, schedule events, run weekly flag challenges, review joining applications, and see an audit record for each platform change.
+- Public visitors can create verified email/password accounts, choose a unique handle, comment on articles, submit challenge flags, and appear on leaderboards without exposing their email address.
 - Grant owner, editor, or viewer access. Owners manage accounts; editors manage content and messages; viewers can read content, history, and messages. The last active owner cannot be disabled or demoted.
 - Export/import the current draft as JSON. Concurrent edits use a version check; a stale save never silently overwrites another editor's work. Unsaved drafts remain while switching management screens.
 
-History here records **CMS content revisions**, rather than Git commits or arbitrary source-code deployments. Application code, layout implementations, Firebase configuration, and deployment secrets require source-code/deployment changes. This checkout does not contain a Git repository.
+History records CMS revisions and managed platform actions, rather than Git commits or arbitrary source-code deployments. Application code, layout implementations, Firebase configuration, and deployment secrets still require source-code/deployment changes.
 
 ## Local demo
 
@@ -63,7 +65,7 @@ The seed contains the current public content. Change a field, save a draft with 
 2. Create **Realtime Database** in locked mode. Copy its exact URL, including its regional hostname if applicable.
 3. Copy `backend/.env.example` into `backend/.env.local`. Fill the web app API key, auth domain, and project ID. These `NEXT_PUBLIC_` web configuration values are public identifiers. Add the database URL and canonical management/public origins without trailing slashes.
 4. Generate a service-account credential through Firebase project settings. Put its client email and private key in the **backend's server environment only**. `FIREBASE_PRIVATE_KEY` accepts escaped `\n` newlines. Never expose a private key or either application secret through a `NEXT_PUBLIC_` variable, the public app, a commit, or an image URL.
-5. Generate two independent random secrets, for example with `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`. Use one as `CONTACT_API_SECRET` on both apps, and the other as `PREVIEW_SECRET` on the backend only.
+5. Generate three independent random secrets, for example with `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`. Use one as `CONTACT_API_SECRET` on both apps, one as `PLATFORM_API_SECRET` on both apps, and one as `PREVIEW_SECRET` on the backend only.
 6. Deploy the included database rules to your actual project:
 
    ```powershell
@@ -83,14 +85,14 @@ The seed contains the current public content. Change a field, save a draft with 
 
    It creates an account if needed and refuses to replace an existing owner. It does not assign a hardcoded password or send email. On the login screen, enter the owner email and choose **Set up or reset your password**. Open Firebase's password reset email, set a password, and sign in. If the email is unverified, choose **Send verification email**, verify it, then sign in again.
 
-8. On the public app, fill the root `.env.local` using `.env.example`: the same database URL, backend URL, public origin, and matching contact secret. Remove `FIREBASE_DATABASE_NAMESPACE` outside emulators. On both apps remove all emulator environment variables.
-9. Start the backend, sign in, set **Settings → Public URL** to your actual public website, review the seeded sections, and publish the first snapshot. Use **Team access** to grant additional emails. New accounts use the same password-reset and verification setup; there is no public registration screen.
+8. On the public app, fill the root `.env.local` using `.env.example`: Firebase web configuration, the same database URL, backend URL, public origin, and matching contact/platform secrets. Remove `FIREBASE_DATABASE_NAMESPACE` outside emulators. On both apps remove all emulator environment variables.
+9. Start the backend, sign in, set **Settings → Public URL** to your actual public website, review the seeded sections, and publish the first snapshot. Use **Team access** for management accounts. Public accounts register separately at `/sign-up` and never receive dashboard access automatically.
 
 ## Deploy
 
 For Vercel, follow the step-by-step [two-project deployment guide](VERCEL.md).
 
-Deploy the root public app and `backend/` as two Next.js Node deployments with Node.js 22+. Both must serve HTTPS in production. Set `ADMIN_ORIGIN` to the exact backend origin and `PUBLIC_SITE_ORIGIN` to the exact public origin. The public deployment needs a reachable `BACKEND_URL`; its server calls the backend for contact submissions and signed preview requests. No browser CORS connection between the two apps is required.
+Deploy the root public app and `backend/` as two Next.js Node deployments with Node.js 22+. Both must serve HTTPS in production. Set `ADMIN_ORIGIN` to the exact backend origin and `PUBLIC_SITE_ORIGIN` to the exact public origin. The public deployment needs a reachable `BACKEND_URL`; its server calls the backend for content, contact, comments, challenge submissions, applications, and previews. Browser actions use same-origin proxy routes, so no browser CORS connection is required.
 
 ```powershell
 npm.cmd run build
@@ -115,6 +117,14 @@ Each revision preserves a full content snapshot and diff. The transaction atomic
 Preview URLs are bearer credentials; avoid sharing them publicly or retaining their query strings in access/analytics logs. Rotate secrets and Firebase service-account keys through the deployment platform if exposed. Password resets and disabled membership revoke access; **Sign out all sessions** also revokes Firebase refresh/session tokens for that user.
 
 Firebase's [session cookie documentation](https://firebase.google.com/docs/auth/admin/manage-cookies) describes the underlying authentication flow.
+
+## Public community platform
+
+The root public app also needs the Firebase web API key, auth domain, project ID, and the same `PLATFORM_API_SECRET` as the backend. Public registration is available at `/sign-up`. These accounts are stored under `community/profiles` and never receive management access unless an owner separately grants the email through **Team access**.
+
+Posts, comments, challenges, challenge secrets, attempts, solves, events, applications, and audit records use separate database branches. Challenge secrets and attempts never appear in public responses. Direct Realtime Database writes remain denied; the public app forwards bounded same-origin requests to authenticated backend endpoints.
+
+After deploying new rules and both apps, verify signup email delivery, comment moderation, one correct challenge solve, joining application delivery, and that unauthenticated reads of `/private.json` and `/activity.json` are denied.
 
 ## Validation
 

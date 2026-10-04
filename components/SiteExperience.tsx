@@ -10,13 +10,14 @@ import { Header } from "./ui/Header";
 import { Cursor } from "./ui/Cursor";
 import { Story } from "./sections/Story";
 import type { SiteContent } from "@/backend/lib/schema";
+import type { HomePlatformData } from "@/lib/platform-api";
 
 export type ProgressRef = React.MutableRefObject<number>;
 export type PointerRef = React.MutableRefObject<{ x: number; y: number }>;
 /** Seconds of the intro sequence played so far (0 → OPENING_END). */
 export type OpeningRef = React.MutableRefObject<number>;
 
-export function SiteExperience({ data, preview = false, contactReady = false }: { data: SiteContent; preview?: boolean; contactReady?: boolean }) {
+export function SiteExperience({ data, platform, preview = false, contactReady = false }: { data: SiteContent; platform: HomePlatformData; preview?: boolean; contactReady?: boolean }) {
   const progress = useRef(0);
   const pointer = useRef({ x: 0, y: 0 });
   const opening = useRef(0);
@@ -214,7 +215,7 @@ export function SiteExperience({ data, preview = false, contactReady = false }: 
       <div className="grain" aria-hidden="true" />
       <Header site={data} />
       <Cursor />
-      <Story site={data} contactReady={contactReady && !preview} />
+      <Story site={data} platform={platform} contactReady={contactReady && !preview} />
       {preview && <div className="draft-banner" role="status">DRAFT PREVIEW · Not published</div>}
     </main>
   );
