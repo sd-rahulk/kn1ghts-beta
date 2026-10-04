@@ -9,12 +9,12 @@ export function configuration() {
   // so any one of them in production (or a half-configured pair elsewhere) must keep the backend closed.
   const emulators = EMULATOR_VARIABLES.filter((key) => process.env[key]);
   const emulator = Boolean(process.env.FIREBASE_AUTH_EMULATOR_HOST && process.env.FIREBASE_DATABASE_EMULATOR_HOST);
-  const missing = ["NEXT_PUBLIC_FIREBASE_API_KEY", "NEXT_PUBLIC_FIREBASE_PROJECT_ID", "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN", "FIREBASE_DATABASE_URL", "ADMIN_ORIGIN", "PUBLIC_SITE_ORIGIN", "CONTACT_API_SECRET", "PREVIEW_SECRET"]
+  const missing = ["NEXT_PUBLIC_FIREBASE_API_KEY", "NEXT_PUBLIC_FIREBASE_PROJECT_ID", "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN", "FIREBASE_DATABASE_URL", "ADMIN_ORIGIN", "PUBLIC_SITE_ORIGIN", "CONTACT_API_SECRET", "PLATFORM_API_SECRET", "PREVIEW_SECRET"]
     .filter((key) => !process.env[key]);
   if (!emulator) for (const key of ["FIREBASE_CLIENT_EMAIL", "FIREBASE_PRIVATE_KEY"]) if (!process.env[key]) missing.push(key);
   if (process.env.NODE_ENV === "production" && emulators.length) missing.push(`Disable Firebase emulators in production (remove ${emulators.join(", ")})`);
   else if (Boolean(process.env.FIREBASE_AUTH_EMULATOR_HOST) !== Boolean(process.env.FIREBASE_DATABASE_EMULATOR_HOST)) missing.push("Set both FIREBASE_AUTH_EMULATOR_HOST and FIREBASE_DATABASE_EMULATOR_HOST, or neither");
-  for (const key of ["CONTACT_API_SECRET", "PREVIEW_SECRET"]) if (process.env[key] && process.env[key]!.length < 32) missing.push(`${key} must contain at least 32 characters`);
+  for (const key of ["CONTACT_API_SECRET", "PLATFORM_API_SECRET", "PREVIEW_SECRET"]) if (process.env[key] && process.env[key]!.length < 32) missing.push(`${key} must contain at least 32 characters`);
   for (const key of ["ADMIN_ORIGIN", "PUBLIC_SITE_ORIGIN"]) {
     if (!process.env[key]) continue;
     try {

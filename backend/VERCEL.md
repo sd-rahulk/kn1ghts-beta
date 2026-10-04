@@ -43,6 +43,7 @@ FIREBASE_DATABASE_URL
 FIREBASE_CLIENT_EMAIL
 FIREBASE_PRIVATE_KEY
 CONTACT_API_SECRET
+PLATFORM_API_SECRET
 PREVIEW_SECRET
 ```
 
@@ -66,9 +67,13 @@ FIREBASE_DATABASE_URL=https://YOUR_FIREBASE_DATABASE_HOST
 BACKEND_URL=https://kn1ghts-admin.vercel.app
 PUBLIC_SITE_ORIGIN=https://kn1ghts-site.vercel.app
 CONTACT_API_SECRET=THE_EXACT_SAME_SECRET_AS_THE_BACKEND
+PLATFORM_API_SECRET=THE_EXACT_SAME_SECRET_AS_THE_BACKEND
+NEXT_PUBLIC_FIREBASE_API_KEY=YOUR_FIREBASE_WEB_API_KEY
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=YOUR_PROJECT.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=YOUR_FIREBASE_PROJECT_ID
 ```
 
-Copy the exact real database URL and contact secret from your existing configuration. The frontend does not need the Firebase service-account private key or `PREVIEW_SECRET`. Leave `FIREBASE_DATABASE_NAMESPACE` unset. Leave `CONTACT_TRUSTED_IP_HEADER` unset unless you have verified that your deployment proxy overwrites the chosen header.
+Copy the exact real database URL and shared secrets from your existing configuration. Firebase web values are public identifiers used by the browser for email/password authentication. The frontend does not need the Firebase service-account private key or `PREVIEW_SECRET`. Leave `FIREBASE_DATABASE_NAMESPACE` and every emulator variable unset.
 
 Select the **Production** environment. If you later create staging/preview environments, use separate origins and preferably a separate Firebase project; do not point arbitrary preview deployments at production data.
 

@@ -6,7 +6,7 @@ import { changeState, ConflictError, normalizeState, type CmsState } from "../li
 
 const actor = { uid: "test-owner", email: "owner@example.com", role: "owner" as const };
 const state = (): CmsState => ({ version: 0, draft: siteSchema.parse(initial), published: siteSchema.parse(initial), publishedAt: 1, revisions: {} });
-test("the complete initial site validates and every navigation anchor exists", () => { const site = siteSchema.parse(initial); assert.equal(site.sections.length, 12); assert.ok(site.settings.navigation.every((link) => availableLink(site, link.href))); });
+test("the complete initial site validates and every navigation anchor exists", () => { const site = siteSchema.parse(initial); assert.equal(site.sections.length, 15); assert.ok(site.settings.navigation.every((link) => availableLink(site, link.href))); });
 test("malicious links, duplicate IDs, unknown properties, and an entirely hidden site are rejected", () => {
   for (const mutate of [
     (site: typeof initial) => { site.sections[0].fields.ctaHref = "javascript:alert(1)"; },

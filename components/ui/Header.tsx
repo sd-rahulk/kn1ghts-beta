@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { availableLink, type SiteContent } from "@/backend/lib/schema";
 
 export function Header({ site }: { site: SiteContent }) {
-  const chapters = site.settings.navigation.filter((link) => availableLink(site, link.href));
+  const productLinks = [{ label: "POW", href: "/pow" }, { label: "TEAM", href: "/team" }, { label: "EVENTS", href: "/events" }, { label: "WEEKLY", href: "/inhouse-weekly" }, { label: "BLOG", href: "/blog" }, { label: "JOIN", href: "/contact" }, { label: "SIGN IN", href: "/sign-in" }];
+  const chapters = [...site.settings.navigation.filter((link) => availableLink(site, link.href) && !["TEAM", "CONTACT US"].includes(link.label.toUpperCase())), ...productLinks].filter((link, index, all) => all.findIndex((entry) => entry.href === link.href) === index);
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);

@@ -10,6 +10,8 @@ loadEnvConfig(process.cwd());
 // The same local-only password the seed script used (backend/.env.local).
 const password = process.env.EMULATOR_SEED_PASSWORD ?? "";
 if (!password) throw new Error("Set EMULATOR_SEED_PASSWORD in backend/.env.local, as used by the seed script.");
+const platformSecret = process.env.PLATFORM_API_SECRET ?? "";
+if (!platformSecret) throw new Error("Set PLATFORM_API_SECRET in backend/.env.local before running integration tests.");
 class Client {
   cookies = new Map<string, string>();
   csrf = "";
@@ -30,6 +32,14 @@ class Client {
 }
 async function expect(client: Client, path: string, status: number, method = "GET", body?: unknown, headers?: Record<string, string>) {
   const result = await client.request(path, method, body, headers); assert.equal(result.status, status, `${method} ${path}: ${JSON.stringify(result.data)}`); return result.data;
+}
+async function firebaseToken(email: string) {
+  const response = await fetch("http://127.0.0.1:9099/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=local-emulator-key", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password, returnSecureToken: true }) });
+  const data = await response.json(); assert.ok(data.idToken, JSON.stringify(data)); return data.idToken as string;
+}
+async function platform(path: string, method = "GET", body?: unknown, token?: string, extra: Record<string, string> = {}) {
+  const response = await fetch(`${base}/api/public/platform/${path}`, { method, headers: { "X-Platform-Key": platformSecret, ...(token ? { Authorization: `Bearer ${token}` } : {}), ...(body === undefined ? {} : { "Content-Type": "application/json" }), ...extra }, body: body === undefined ? undefined : JSON.stringify(body) });
+  const data = await response.json(); return { status: response.status, data };
 }
 async function main() {
 const owner = new Client(), viewer = new Client(), editor = new Client();
@@ -65,7 +75,7 @@ const restored = await expect(owner, `/api/admin/history/${saved.revisionId}`, 2
 const history = await expect(owner, "/api/admin/history", 200);
 assert.equal(history.revisions[0].kind, "restore"); assert.equal(history.revisions[0].actor.email, "owner@kn1ghts.test");
 const revision = await expect(owner, `/api/admin/history/${saved.revisionId}`, 200); assert.ok(revision.revision.changes.length);
-for (const path of ["cms", "cms/draft", "messages", "access"]) assert.equal((await fetch(`${db}/${path}.json?ns=demo-kn1ghts-default-rtdb`)).status, 401, path);
+for (const path of ["cms", "cms/draft", "messages", "access", "private", "activity", "audit", "community/profiles", "content/blog"]) assert.equal((await fetch(`${db}/${path}.json?ns=demo-kn1ghts-default-rtdb`)).status, 401, path);
 const contact = { name: "Integration visitor", email: `qa-${randomUUID()}@example.com`, message: "This is a local integration test message.", website: "" };
 async function submit(body: unknown, origin = publicBase) { return fetch(publicBase + "/api/contact", { method: "POST", headers: { Origin: origin, "Content-Type": "application/json" }, body: JSON.stringify(body) }); }
 assert.equal((await submit(contact, "https://example.com")).status, 403);
@@ -79,6 +89,30 @@ await expect(owner, `/api/admin/messages/${message.id}`, 200, "PATCH", { status:
 const updated = (await expect(owner, "/api/admin/messages", 200)).messages.find((entry: { id: string }) => entry.id === message.id);
 assert.equal(updated.status, "read"); assert.equal(Object.values(updated.events as Record<string, { actor: { email: string } }>)[0].actor.email, "owner@kn1ghts.test");
 assert.equal((await submit(contact)).status, 200); assert.equal((await submit(contact)).status, 200); assert.equal((await submit(contact)).status, 429);
+const participantToken = await firebaseToken("outsider@kn1ghts.test");
+const profile = await platform("profile", "POST", { handle: `qa_${randomUUID().slice(0, 8)}` }, participantToken); assert.equal(profile.status, 200, JSON.stringify(profile.data));
+const postInput = { slug: `integration-${randomUUID()}`, title: "Integration field note", excerpt: "A verified integration field note.", content: "This article exists to verify publishing and moderated comments end to end.", coverImageUrl: "", tags: ["QA"], status: "published" };
+await expect(viewer, "/api/admin/platform/blog", 403, "POST", postInput);
+const post = (await expect(editor, "/api/admin/platform/blog", 201, "POST", postInput)).item;
+const publicPost = await platform(`blog/${post.slug}`); assert.equal(publicPost.status, 200); assert.equal(publicPost.data.comments.length, 0);
+const submittedComment = await platform(`blog/${post.id}/comments`, "POST", { body: "A useful integration comment for moderation." }, participantToken); assert.equal(submittedComment.status, 201, JSON.stringify(submittedComment.data));
+const comments = await expect(editor, "/api/admin/platform/comments", 200); const comment = comments.items.find((entry: { id: string }) => entry.id === submittedComment.data.comment.id); assert.equal(comment.status, "pending");
+await expect(editor, `/api/admin/platform/comments/${post.id}/${comment.id}`, 200, "PATCH", { status: "approved" });
+assert.equal((await platform(`blog/${post.slug}`)).data.comments[0].body, comment.body);
+const ownComments = await platform("profile/comments", "GET", undefined, participantToken); assert.equal(ownComments.status, 200); assert.ok(ownComments.data.items.some((entry: { id: string; status: string }) => entry.id === comment.id && entry.status === "approved"));
+assert.equal((await platform(`blog/${post.id}/comments/${comment.id}`, "DELETE", {}, participantToken)).status, 200); assert.equal((await platform(`blog/${post.slug}`)).data.comments.length, 0);
+const challengeInput = { slug: `integration-${randomUUID()}`, title: "Integration weekly", description: "A local weekly challenge used to verify private flag checks.", category: "Web", difficulty: "beginner", resourceUrl: "", opensAt: Date.now() - 1000, closesAt: null, status: "published", flag: "KN1GHTS{integration-pass}" };
+const challenge = (await expect(editor, "/api/admin/platform/challenges", 201, "POST", challengeInput)).item;
+assert.equal((await platform(`challenge/${challenge.id}/submit`, "POST", { flag: "wrong" }, participantToken)).data.correct, false);
+assert.equal((await platform(`challenge/${challenge.id}/submit`, "POST", { flag: challengeInput.flag }, participantToken)).data.correct, true);
+const attempts = await expect(editor, `/api/admin/platform/challenges/${challenge.id}/attempts`, 200); assert.equal(attempts.items.length, 2); assert.equal(attempts.items.filter((entry: { correct: boolean }) => entry.correct).length, 1); assert.ok(attempts.items.every((entry: { handle: string }) => entry.handle === profile.data.profile.handle));
+const weekly = await platform("challenge"); assert.equal(weekly.status, 200); assert.ok(weekly.data.leaderboard.some((entry: { handle: string }) => entry.handle === profile.data.profile.handle)); assert.ok(!JSON.stringify(weekly.data).includes("local-outsider")); assert.ok(!JSON.stringify(weekly.data).includes(challengeInput.flag));
+const eventInput = { title: "Integration event", description: "A public event created by the integration suite.", location: "Online", startsAt: Date.now() + 86400000, endsAt: null, registrationUrl: "", status: "published" };
+const event = (await expect(editor, "/api/admin/platform/events", 201, "POST", eventInput)).item; assert.ok((await platform("events")).data.items.some((entry: { id: string }) => entry.id === event.id));
+const application = await platform("applications", "POST", { name: "Integration Applicant", email: `app-${randomUUID()}@example.com`, handle: "qa_applicant", discipline: "Web", portfolioUrl: "https://github.com/example", message: "I want to learn and contribute through weekly security practice.", website: "" }, undefined, { "X-Request-Key": "a".repeat(64) }); assert.equal(application.status, 201, JSON.stringify(application.data));
+assert.ok((await expect(owner, "/api/admin/platform/applications", 200)).items.some((entry: { name: string }) => entry.name === "Integration Applicant"));
+const audit = await expect(owner, "/api/admin/platform/audit", 200); assert.ok(audit.items.some((entry: { resource: string; actor: { email: string } }) => entry.resource === "challenge" && entry.actor.email === "editor@kn1ghts.test"));
+await expect(editor, `/api/admin/platform/blog/${post.id}`, 200, "DELETE", {}); await expect(editor, `/api/admin/platform/challenges/${challenge.id}`, 200, "DELETE", {}); await expect(editor, `/api/admin/platform/events/${event.id}`, 200, "DELETE", {});
 const access = await expect(owner, "/api/admin/access", 200);
 const ownerMember = access.members.find((m: { role: string }) => m.role === "owner");
 await expect(owner, "/api/admin/access", 409, "PATCH", { uid: ownerMember.uid, role: "viewer", active: true });
@@ -93,6 +127,6 @@ await new Promise((resolve) => setTimeout(resolve, 1100));
 await expect(owner, "/api/auth/logout?all=true", 200, "POST", {});
 await expect(owner, "/api/admin/content", 401);
 await expect(secondSession, "/api/admin/content", 401);
-console.log("PASS: sessions, verification, roles, CSRF/origin, draft/publish/restore, concurrency, audit identity, database privacy, preview, public contact, inbox, throttling, last-owner protection, and logout.");
+console.log("PASS: sessions, verification, roles, CSRF/origin, drafts, publishing, audit, privacy, contact, public profiles, moderated comments, weekly challenge solves, events, applications, access revocation, and logout.");
 }
 main().catch((error) => { console.error(error); process.exitCode = 1; });

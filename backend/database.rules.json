@@ -5,6 +5,16 @@
     "cms": {
       "published": { ".read": true }
     },
-    "messages": { ".indexOn": ["createdAt"] }
+    "messages": { ".indexOn": ["createdAt"] },
+    "content": {
+      "blog": { ".indexOn": ["slug", "updatedAt"] },
+      "events": { ".indexOn": ["startsAt", "updatedAt"] },
+      "challenges": { ".indexOn": ["slug", "opensAt"] }
+    },
+    "activity": {
+      "comments": { "$postId": { ".indexOn": ["createdAt", "status"] } },
+      "challengeSolves": { "$challengeId": { ".indexOn": ["solvedAt"] } }
+    },
+    "audit": { ".indexOn": ["at"] }
   }
 }

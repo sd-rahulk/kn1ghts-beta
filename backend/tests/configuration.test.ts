@@ -8,7 +8,7 @@ function configuration(env: Record<string, string>) {
   const base = {
     NEXT_PUBLIC_FIREBASE_API_KEY: "key", NEXT_PUBLIC_FIREBASE_PROJECT_ID: "project", NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: "project.firebaseapp.com",
     FIREBASE_DATABASE_URL: "https://project-default-rtdb.firebaseio.com", ADMIN_ORIGIN: "https://admin.example.com", PUBLIC_SITE_ORIGIN: "https://www.example.com",
-    CONTACT_API_SECRET: "c".repeat(32), PREVIEW_SECRET: "p".repeat(32), FIREBASE_CLIENT_EMAIL: "service@project.iam.gserviceaccount.com", FIREBASE_PRIVATE_KEY: "test-key",
+    CONTACT_API_SECRET: "c".repeat(32), PLATFORM_API_SECRET: "g".repeat(32), PREVIEW_SECRET: "p".repeat(32), FIREBASE_CLIENT_EMAIL: "service@project.iam.gserviceaccount.com", FIREBASE_PRIVATE_KEY: "test-key",
   };
   const output = execFileSync(process.execPath, ["--conditions=react-server", "--import", "tsx", "--input-type=module", "-e",
     "const { configuration } = await import('./lib/firebase-admin.ts'); console.log(JSON.stringify(configuration()));"],

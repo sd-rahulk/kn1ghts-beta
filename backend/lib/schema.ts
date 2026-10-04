@@ -1,9 +1,10 @@
 import { z } from "zod";
 
-export const SECTION_TYPES = ["hero", "updates", "about", "disciplines", "results", "writeups", "projects", "team", "journal", "recruitment", "finale", "contact", "content"] as const;
+export const SECTION_TYPES = ["hero", "updates", "about", "disciplines", "results", "writeups", "projects", "team", "journal", "events", "challenge", "blog", "recruitment", "finale", "contact", "content"] as const;
 export const sectionTypeNames: Record<(typeof SECTION_TYPES)[number], string> = {
   hero: "Hero", updates: "Updates", about: "About / manifesto", disciplines: "Disciplines", results: "Results",
-  writeups: "Writeups", projects: "Projects", team: "Team", journal: "Journal", recruitment: "Recruitment",
+  writeups: "Writeups", projects: "Projects", team: "Team", journal: "Journal", events: "Events",
+  challenge: "Weekly challenge", blog: "Blog", recruitment: "Recruitment",
   finale: "Closing section", contact: "Contact form", content: "Text & cards",
 };
 
@@ -86,7 +87,93 @@ export type Actor = { uid: string; email: string; role: MemberRole };
 export type Change = { path: string; before: string; after: string };
 export type Revision = { id: string; kind: "save" | "publish" | "restore"; at: number; actor: Actor; note: string; version: number; changes: Change[]; content: SiteContent };
 export type Member = { uid: string; email: string; role: MemberRole; active: boolean; createdAt: number };
-export type Message = { id: string; name: string; email: string; message: string; createdAt: number; status: "new" | "read" | "archived"; notes: string; events?: Record<string, { at: number; actor: Actor; action: string }> };
+export type Message = { id: string; kind?: "contact" | "joining"; name: string; email: string; message: string; createdAt: number; status: "new" | "read" | "archived"; notes: string; application?: { handle: string; discipline: string; portfolioUrl: string }; events?: Record<string, { at: number; actor: Actor; action: string }> };
+
+const resourceId = z.string().regex(/^[a-z0-9][a-z0-9-]{0,95}$/);
+const slug = z.string().trim().toLowerCase().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).max(96);
+const timestamp = z.number().int().nonnegative();
+// Realtime Database removes keys written as null. Normalize missing optional
+// timestamps back to null when records are read.
+const optionalTimestamp = timestamp.nullish().transform((value) => value ?? null);
+const publicHandle = z.string().trim().regex(/^[A-Za-z0-9_-]{3,24}$/, "Use 3–24 letters, numbers, underscores, or hyphens.");
+
+export const publicProfileInputSchema = z.object({ handle: publicHandle }).strict();
+export const publicProfileSchema = z.object({
+  uid: z.string().min(1).max(128), email: z.email().max(254), handle: publicHandle,
+  handleKey: z.string().min(3).max(24), createdAt: timestamp, updatedAt: timestamp,
+}).strict();
+export type PublicProfile = z.infer<typeof publicProfileSchema>;
+export type PublicProfileView = Pick<PublicProfile, "uid" | "handle" | "createdAt">;
+
+export const blogPostInputSchema = z.object({
+  slug, title: shortText.min(3), excerpt: z.string().trim().min(10).max(600),
+  content: z.string().trim().min(20).max(100000), coverImageUrl: link.default(""),
+  tags: z.array(z.string().trim().min(1).max(40)).max(12).default([]),
+  status: z.enum(["draft", "published"]).default("draft"),
+}).strict();
+export const blogPostSchema = blogPostInputSchema.extend({
+  id: resourceId, createdAt: timestamp, updatedAt: timestamp, publishedAt: optionalTimestamp,
+  author: z.object({ uid: z.string(), email: z.email() }).strict(),
+}).strict();
+export type BlogPost = z.infer<typeof blogPostSchema>;
+
+export const blogCommentInputSchema = z.object({ body: z.string().trim().min(2).max(3000) }).strict();
+export const blogCommentSchema = z.object({
+  id: resourceId, postId: resourceId, uid: z.string().min(1).max(128), handle: publicHandle,
+  body: z.string().min(2).max(3000), status: z.enum(["pending", "approved", "hidden"]),
+  createdAt: timestamp, moderatedAt: optionalTimestamp,
+  moderator: z.object({ uid: z.string(), email: z.email() }).strict().nullish().transform((value) => value ?? null),
+}).strict();
+export type BlogComment = z.infer<typeof blogCommentSchema>;
+export type PublicBlogComment = Pick<BlogComment, "id" | "postId" | "handle" | "body" | "createdAt">;
+
+export const challengeInputSchema = z.object({
+  slug, title: shortText.min(3), description: z.string().trim().min(20).max(20000),
+  category: shortText.min(2), difficulty: z.enum(["beginner", "intermediate", "advanced"]),
+  resourceUrl: link.default(""), opensAt: timestamp, closesAt: optionalTimestamp,
+  status: z.enum(["draft", "published", "closed"]).default("draft"),
+  flag: z.string().trim().max(500).default(""),
+}).strict();
+export const challengeSchema = challengeInputSchema.omit({ flag: true }).extend({
+  id: resourceId, createdAt: timestamp, updatedAt: timestamp,
+  author: z.object({ uid: z.string(), email: z.email() }).strict(),
+}).strict();
+export type Challenge = z.infer<typeof challengeSchema>;
+export const challengeSubmissionSchema = z.object({ flag: z.string().trim().min(1).max(500) }).strict();
+export const challengeSolveSchema = z.object({
+  challengeId: resourceId, uid: z.string().min(1).max(128), handle: publicHandle, solvedAt: timestamp,
+}).strict();
+export type ChallengeSolve = z.infer<typeof challengeSolveSchema>;
+export type PublicChallengeSolve = Pick<ChallengeSolve, "handle" | "solvedAt">;
+export const challengeAttemptSchema = z.object({
+  id: resourceId, uid: z.string().min(1).max(128), correct: z.boolean(), createdAt: timestamp,
+}).strict();
+export type ChallengeAttempt = z.infer<typeof challengeAttemptSchema>;
+export type ChallengeAttemptView = ChallengeAttempt & { handle: string };
+
+export const eventInputSchema = z.object({
+  title: shortText.min(3), description: z.string().trim().min(10).max(10000), location: shortText,
+  startsAt: timestamp, endsAt: optionalTimestamp, registrationUrl: link.default(""),
+  status: z.enum(["draft", "published", "cancelled"]).default("draft"),
+}).strict();
+export const eventSchema = eventInputSchema.extend({
+  id: resourceId, createdAt: timestamp, updatedAt: timestamp,
+  author: z.object({ uid: z.string(), email: z.email() }).strict(),
+}).strict();
+export type CommunityEvent = z.infer<typeof eventSchema>;
+
+export const joiningApplicationSchema = z.object({
+  name: z.string().trim().min(2).max(100), email: z.email().max(254), handle: publicHandle,
+  discipline: shortText.min(2), portfolioUrl: link.default(""),
+  message: z.string().trim().min(20).max(5000), website: z.string().max(200).default(""),
+}).strict();
+
+export const auditEventSchema = z.object({
+  id: resourceId, at: timestamp, actor: z.object({ uid: z.string(), email: z.email(), role: z.enum(["owner", "editor", "viewer"]) }).strict(),
+  resource: z.enum(["blog", "comment", "challenge", "event", "application", "profile"]),
+  resourceId, action: z.string().max(80), summary: z.string().max(500),
+}).strict();
+export type AuditEvent = z.infer<typeof auditEventSchema>;
 
 export const memberRoleSchema = z.enum(["owner", "editor", "viewer"]);
 export const contactSchema = z.object({
