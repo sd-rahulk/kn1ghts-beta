@@ -70,6 +70,10 @@ async function evaluate(expression) {
   if (result.exceptionDetails) throw new Error(result.exceptionDetails.text ?? "Browser evaluation failed");
   return result.result.value;
 }
+function sanitizeFragmentId(id) {
+  if (!/^[A-Za-z][A-Za-z0-9_-]*$/.test(id)) throw new Error(`Unsafe fragment id: ${id}`);
+  return id;
+}
 
 async function setViewport(viewport) {
   await send("Emulation.setDeviceMetricsOverride", {
@@ -189,11 +193,13 @@ async function testInteractions() {
     // in-page links, and resolve targets by id because an href is not a valid CSS selector.
     const navigation = await evaluate(`Array.from(document.querySelectorAll('.menu-overlay nav a'), (link, index) => ({ index, href: link.getAttribute('href') || '' }))`);
     for (const { index, href } of navigation.filter((link) => link.href.startsWith("#"))) {
+      const safeId = sanitizeFragmentId(href.slice(1));
+      const safeHref = `#${safeId}`;
       await evaluate(`document.querySelector('.menu-toggle').click()`);
       await delay(40);
       await evaluate(`document.querySelectorAll('.menu-overlay nav a')[${index}].click()`);
       await delay(1000);
-      jumps.push(await evaluate(`(() => { const target = document.getElementById(${JSON.stringify(href.slice(1))}); return { href: ${JSON.stringify(href)}, id: target?.id ?? null, top: target ? Math.round(target.getBoundingClientRect().top) : null, expanded: document.querySelector('.menu-toggle').getAttribute('aria-expanded') }; })()`));
+      jumps.push(await evaluate(`(() => { const target = document.getElementById(${JSON.stringify(safeId)}); return { href: ${JSON.stringify(safeHref)}, id: target?.id ?? null, top: target ? Math.round(target.getBoundingClientRect().top) : null, expanded: document.querySelector('.menu-toggle').getAttribute('aria-expanded') }; })()`));
     }
   }
   await evaluate(`window.scrollTo(0, document.documentElement.scrollHeight * .55)`);

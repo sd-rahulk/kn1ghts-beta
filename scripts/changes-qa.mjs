@@ -41,6 +41,10 @@ async function shot(name) {
   const result = await send("Page.captureScreenshot", { format: "png" });
   await writeFile(`responsive_screenshots/changes-${name}.png`, Buffer.from(result.data, "base64"));
 }
+function sanitizeFragmentId(id) {
+  if (!/^[A-Za-z][A-Za-z0-9_-]*$/.test(id)) throw new Error(`Unsafe fragment id: ${id}`);
+  return id;
+}
 // Where an anchor jump settles: the target's top minus html scroll-padding and its scroll-margin,
 // unless the page cannot scroll that far (first section at 0, sections near the end).
 const expectedTopExpression = (id) => `(() => { const node = document.getElementById(${JSON.stringify(id)}); const offset = (parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0) + (parseFloat(getComputedStyle(node).scrollMarginTop) || 0); const top = node.getBoundingClientRect().top + scrollY; return top - Math.min(Math.max(top - offset, 0), document.documentElement.scrollHeight - innerHeight); })()`;
@@ -76,8 +80,9 @@ for (const [width, height] of viewports) {
     await delay(850);
     if (position === 0) await shot(`${width}-menu`);
     await evaluate(`document.querySelectorAll('.menu-overlay nav a')[${link.index}].click()`);
-    const target = `document.getElementById(${JSON.stringify(link.id)})`;
-    const expectedTop = await evaluate(expectedTopExpression(link.id));
+    const safeId = sanitizeFragmentId(link.id);
+    const target = `document.getElementById(${JSON.stringify(safeId)})`;
+    const expectedTop = await evaluate(expectedTopExpression(safeId));
     await waitFor(`Math.abs(${target}.getBoundingClientRect().top - ${expectedTop}) < 8`);
     const jump = await evaluate(`(() => { const target = ${target}; return { top: Math.round(target.getBoundingClientRect().top), open: document.querySelector('.menu-toggle').getAttribute('aria-expanded'), inert: document.querySelector('#story').inert }; })()`);
     assert.equal(jump.open, "false");
