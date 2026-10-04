@@ -41,6 +41,9 @@ async function shot(name) {
   const result = await send("Page.captureScreenshot", { format: "png" });
   await writeFile(`responsive_screenshots/changes-${name}.png`, Buffer.from(result.data, "base64"));
 }
+// Where an anchor jump settles: the target's top minus html scroll-padding and its scroll-margin,
+// unless the page cannot scroll that far (first section at 0, sections near the end).
+const expectedTopExpression = (id) => `(() => { const node = document.getElementById(${JSON.stringify(id)}); const offset = (parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0) + (parseFloat(getComputedStyle(node).scrollMarginTop) || 0); const top = node.getBoundingClientRect().top + scrollY; return top - Math.min(Math.max(top - offset, 0), document.documentElement.scrollHeight - innerHeight); })()`;
 const contactTopExpression = `(() => { const top = document.querySelector('#contact').getBoundingClientRect().top + scrollY; return Math.max(90, top - (document.documentElement.scrollHeight - innerHeight)); })()`;
 await mkdir("responsive_screenshots", { recursive: true });
 await send("Page.enable");
@@ -62,20 +65,24 @@ for (const [width, height] of viewports) {
   const skipped = await evaluate(`({ locked: document.documentElement.classList.contains('intro-lock'), loaded: document.querySelector('.experience').classList.contains('is-loaded'), skip: !!document.querySelector('.intro-skip'), y: scrollY })`);
   assert.deepEqual(skipped, { locked: false, loaded: true, skip: false, y: 0 });
   await shot(`${width}-hero`);
-  const links = await evaluate(`Array.from(document.querySelectorAll('.menu-overlay nav a'), a => ({ label: a.textContent, href: a.getAttribute('href'), exists: !!document.querySelector(a.getAttribute('href')) }))`);
-  assert.equal(links.length, 6);
-  assert.ok(links.every((link) => link.exists));
-  for (let index = 0; index < links.length; index++) {
+  // Navigation is CMS-driven: any number of links, some of them external URLs. Only fragment links have an
+  // in-page target, resolved by id (an href is never a safe CSS selector); external links are checked, not clicked.
+  const links = await evaluate(`Array.from(document.querySelectorAll('.menu-overlay nav a'), (a, index) => { const href = a.getAttribute('href') || ''; const id = href.startsWith('#') ? href.slice(1) : null; return { index, label: a.textContent, href, id, exists: id ? !!document.getElementById(id) : null, target: a.target, rel: a.rel }; })`);
+  const internal = links.filter((link) => link.id);
+  assert.ok(internal.every((link) => link.exists), JSON.stringify({ width, internal }));
+  for (const link of links.filter((entry) => /^https?:/i.test(entry.href))) assert.ok(link.target === "_blank" && link.rel.includes("noreferrer"), JSON.stringify({ width, link }));
+  for (const [position, link] of internal.entries()) {
     await evaluate("document.querySelector('.menu-toggle').click()");
     await delay(850);
-    if (index === 0) await shot(`${width}-menu`);
-    await evaluate(`document.querySelectorAll('.menu-overlay nav a')[${index}].click()`);
-    const expectedTop = index === 0 ? 0 : index === 5 ? await evaluate(contactTopExpression) : 74;
-    await waitFor(`Math.abs(document.querySelector('${links[index].href}').getBoundingClientRect().top - ${expectedTop}) < 8`);
-    const jump = await evaluate(`(() => { const target = document.querySelector('${links[index].href}'); return { top: Math.round(target.getBoundingClientRect().top), open: document.querySelector('.menu-toggle').getAttribute('aria-expanded'), inert: document.querySelector('#story').inert }; })()`);
+    if (position === 0) await shot(`${width}-menu`);
+    await evaluate(`document.querySelectorAll('.menu-overlay nav a')[${link.index}].click()`);
+    const target = `document.getElementById(${JSON.stringify(link.id)})`;
+    const expectedTop = await evaluate(expectedTopExpression(link.id));
+    await waitFor(`Math.abs(${target}.getBoundingClientRect().top - ${expectedTop}) < 8`);
+    const jump = await evaluate(`(() => { const target = ${target}; return { top: Math.round(target.getBoundingClientRect().top), open: document.querySelector('.menu-toggle').getAttribute('aria-expanded'), inert: document.querySelector('#story').inert }; })()`);
     assert.equal(jump.open, "false");
     assert.equal(jump.inert, false);
-    assert.ok(Math.abs(jump.top - expectedTop) <= 10, JSON.stringify({ width, index, jump }));
+    assert.ok(Math.abs(jump.top - expectedTop) <= 10, JSON.stringify({ width, link: link.href, jump }));
   }
   await shot(`${width}-contact`);
   const form = await evaluate(`({ fields: Array.from(document.querySelectorAll('.contact-form input,.contact-form textarea'), n => n.name), disabled: document.querySelector('.contact-form button').disabled, overflow: document.documentElement.scrollWidth - innerWidth, blur: getComputedStyle(document.querySelector('.disciplines')).backdropFilter })`);

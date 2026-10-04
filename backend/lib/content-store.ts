@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import initial from "../content/default.json";
 import { database } from "./firebase-admin";
 import { HttpError } from "./http";
-import { changeState, ConflictError, type CmsState } from "./revisions";
+import { changeState, ConflictError, normalizeState, type CmsState } from "./revisions";
 import { siteSchema, type Actor, type Revision, type SiteContent } from "./schema";
 
 export const defaultContent = () => siteSchema.parse(initial);
@@ -20,22 +20,32 @@ export async function getDraft() {
   throw new HttpError(409, "Content is being updated. Please reload in a moment.");
 }
 export async function getCms(): Promise<CmsState> {
-  const value = (await database().ref("cms").get()).val();
-  if (!value) return { version: 0, draft: defaultContent(), published: null, publishedAt: null, revisions: {} };
-  return { ...value, version: value.version ?? 0, draft: siteSchema.parse(value.draft), published: value.published ? siteSchema.parse(value.published) : null, publishedAt: value.publishedAt ?? null, revisions: value.revisions ?? {} };
+  return normalizeState((await database().ref("cms").get()).val(), defaultContent);
 }
 export async function commit(options: { content: SiteContent; expectedVersion: number; kind: Revision["kind"]; actor: Actor; note: string; restoreId?: string }) {
   const at = Date.now(), id = `${at}-${randomUUID()}`;
   const cached = await getCms();
-  let conflict = false, missing = false;
+  // Recorded by the attempt that aborts; every attempt starts clean so an earlier pass cannot leak in.
+  const attempt: { failure?: "conflict" | "missing" | Error } = {};
   const result = await database().ref("cms").transaction((raw) => {
-    const current: CmsState = raw ?? cached;
-    const restored = options.restoreId ? current.revisions?.[options.restoreId]?.content : options.content;
-    if (!restored) { missing = true; return undefined; }
-    try { return changeState(current, { ...options, content: restored, id, at }); }
-    catch (error) { if (error instanceof ConflictError) { conflict = true; return undefined; } throw error; }
+    attempt.failure = undefined;
+    try {
+      // A null first pass means nothing is cached locally. The server only accepts a write computed from
+      // the value it actually holds, so it reruns this with that value whenever `cached` is out of date.
+      const current = raw === null ? cached : normalizeState(raw, defaultContent);
+      const restored = options.restoreId ? current.revisions[options.restoreId]?.content : options.content;
+      if (!restored) { attempt.failure = "missing"; return undefined; }
+      return changeState(current, { ...options, content: restored, id, at });
+    } catch (error) {
+      // Never throw from the update function: the SDK reruns it while handling a server response,
+      // where an exception escapes the transaction and leaves this request waiting.
+      attempt.failure = error instanceof ConflictError ? "conflict" : error instanceof Error ? error : new Error("The update could not be prepared.");
+      return undefined;
+    }
   });
-  if (!result.committed) throw new HttpError(missing ? 404 : 409, missing ? "That revision is unavailable." : conflict ? "Someone else updated the content. Reload before saving." : "The update could not be committed.");
+  const { failure } = attempt;
+  if (failure instanceof Error) throw failure;
+  if (!result.committed) throw new HttpError(failure === "missing" ? 404 : 409, failure === "missing" ? "That revision is unavailable." : failure === "conflict" ? "Someone else updated the content. Reload before saving." : "The update could not be committed.");
   return { version: result.snapshot.child("version").val() as number, revisionId: id };
 }
 export async function history(limit = 30, before?: string) {

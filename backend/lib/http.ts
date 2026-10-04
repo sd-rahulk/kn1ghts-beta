@@ -4,7 +4,7 @@ import { ZodError } from "zod";
 import { NextResponse } from "next/server";
 
 export class HttpError extends Error {
-  constructor(public status: number, message: string) { super(message); }
+  constructor(public status: number, message: string, public code?: string) { super(message); }
 }
 export function equalSecret(left: string, right: string) {
   const a = Buffer.from(left), b = Buffer.from(right);
@@ -39,7 +39,7 @@ export function json(data: unknown, status = 200) {
 export async function handler(run: () => Promise<Response>) {
   try { return await run(); }
   catch (error) {
-    if (error instanceof HttpError) return json({ error: error.message }, error.status);
+    if (error instanceof HttpError) return json({ error: error.message, ...(error.code ? { code: error.code } : {}) }, error.status);
     if (error instanceof ZodError) return json({ error: error.issues.slice(0, 8).map((issue) => `${issue.path.join(".") || "Content"}: ${issue.message}`).join("\n") }, 400);
     console.error("Backend operation failed", error instanceof Error ? error.name : "Unknown error");
     return json({ error: "The operation could not be completed. Please try again." }, 500);

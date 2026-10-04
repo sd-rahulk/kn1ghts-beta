@@ -172,22 +172,29 @@ async function testLoader() {
 async function testInteractions() {
   await setViewport({ width: 390, height: 844, dpr: 3, mobile: true });
   await navigate();
-  const initial = await evaluate(`(() => ({ expanded: document.querySelector('.menu-toggle').getAttribute('aria-expanded'), bodyOverflow: document.body.style.overflow }))()`);
-  await evaluate(`document.querySelector('.menu-toggle').click()`);
-  await delay(900);
-  const opened = await evaluate(`(() => ({ expanded: document.querySelector('.menu-toggle').getAttribute('aria-expanded'), bodyOverflow: document.body.style.overflow, overlayHidden: document.querySelector('.menu-overlay').getAttribute('aria-hidden'), pointerEvents: getComputedStyle(document.querySelector('.menu-overlay')).pointerEvents, focused: document.activeElement?.textContent?.trim(), storyInert: document.querySelector('#story')?.inert ?? false, scrollable: document.querySelector('.menu-overlay').scrollHeight >= document.querySelector('.menu-overlay').clientHeight }))()`);
-  await screenshot("feature-menu-open-mobile");
-  await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape" });
-  await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape" });
-  await delay(120);
-  const escaped = await evaluate(`(() => ({ expanded: document.querySelector('.menu-toggle').getAttribute('aria-expanded'), bodyOverflow: document.body.style.overflow, overlayHidden: document.querySelector('.menu-overlay').getAttribute('aria-hidden') }))()`);
+  let initial = null, opened = null, escaped = null;
   const jumps = [];
-  for (let index = 0; index < 6; index++) {
+  // The header renders no menu button when navigation has no visible links.
+  if (await evaluate("Boolean(document.querySelector('.menu-toggle'))")) {
+    initial = await evaluate(`(() => ({ expanded: document.querySelector('.menu-toggle').getAttribute('aria-expanded'), bodyOverflow: document.body.style.overflow }))()`);
     await evaluate(`document.querySelector('.menu-toggle').click()`);
-    await delay(40);
-    await evaluate(`document.querySelectorAll('.menu-overlay nav a')[${index}].click()`);
-    await delay(1000);
-    jumps.push(await evaluate(`(() => { const link = document.querySelectorAll('.menu-overlay nav a')[${index}]; const target = document.querySelector(link.getAttribute('href')); return { id: target.id, top: Math.round(target.getBoundingClientRect().top), expanded: document.querySelector('.menu-toggle').getAttribute('aria-expanded') }; })()`));
+    await delay(900);
+    opened = await evaluate(`(() => ({ expanded: document.querySelector('.menu-toggle').getAttribute('aria-expanded'), bodyOverflow: document.body.style.overflow, overlayHidden: document.querySelector('.menu-overlay').getAttribute('aria-hidden'), pointerEvents: getComputedStyle(document.querySelector('.menu-overlay')).pointerEvents, focused: document.activeElement?.textContent?.trim(), storyInert: document.querySelector('#story')?.inert ?? false, scrollable: document.querySelector('.menu-overlay').scrollHeight >= document.querySelector('.menu-overlay').clientHeight }))()`);
+    await screenshot("feature-menu-open-mobile");
+    await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape" });
+    await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape" });
+    await delay(120);
+    escaped = await evaluate(`(() => ({ expanded: document.querySelector('.menu-toggle').getAttribute('aria-expanded'), bodyOverflow: document.body.style.overflow, overlayHidden: document.querySelector('.menu-overlay').getAttribute('aria-hidden') }))()`);
+    // Navigation comes from the CMS (0–20 links, possibly external): read the real list, follow only the
+    // in-page links, and resolve targets by id because an href is not a valid CSS selector.
+    const navigation = await evaluate(`Array.from(document.querySelectorAll('.menu-overlay nav a'), (link, index) => ({ index, href: link.getAttribute('href') || '' }))`);
+    for (const { index, href } of navigation.filter((link) => link.href.startsWith("#"))) {
+      await evaluate(`document.querySelector('.menu-toggle').click()`);
+      await delay(40);
+      await evaluate(`document.querySelectorAll('.menu-overlay nav a')[${index}].click()`);
+      await delay(1000);
+      jumps.push(await evaluate(`(() => { const target = document.getElementById(${JSON.stringify(href.slice(1))}); return { href: ${JSON.stringify(href)}, id: target?.id ?? null, top: target ? Math.round(target.getBoundingClientRect().top) : null, expanded: document.querySelector('.menu-toggle').getAttribute('aria-expanded') }; })()`));
+    }
   }
   await evaluate(`window.scrollTo(0, document.documentElement.scrollHeight * .55)`);
   await delay(80);
