@@ -1,7 +1,17 @@
 import { createHmac } from "node:crypto";
+import { isIP } from "node:net";
 import { NextResponse } from "next/server";
 import { contactSchema } from "@/backend/lib/schema";
 import { getSiteContent } from "@/lib/site-content";
+
+// A proxy that appends (rather than overwrites) builds "client, proxy1, …": every entry left of the
+// one it added is client-controlled, so only the last entry is trusted. Anything that is not a plain
+// IP address (ports, "unknown", obfuscated identifiers) is rejected instead of becoming a rate-limit key.
+function trustedClientIp(value: string | null) {
+  const entry = value?.split(",").at(-1)?.trim().toLowerCase() ?? "";
+  const address = entry.startsWith("::ffff:") && isIP(entry.slice(7)) === 4 ? entry.slice(7) : entry;
+  return isIP(address) ? address : null;
+}
 
 export async function POST(request: Request) {
   const reply = (message: string, status: number) => NextResponse.json({ error: message }, { status, headers: { "Cache-Control": "no-store" } });
@@ -26,8 +36,9 @@ export async function POST(request: Request) {
   if (body.data.website) return NextResponse.json({ ok: true });
   if (!(await getSiteContent()).settings.contact.enabled) return reply("The contact channel is unavailable.", 503);
   // Only trust an IP header your deployment proxy overwrites. Otherwise use email plus the backend's global limit.
-  const header = process.env.CONTACT_TRUSTED_IP_HEADER;
-  const client = header ? request.headers.get(header) || body.data.email.toLowerCase() : body.data.email.toLowerCase();
+  const header = process.env.CONTACT_TRUSTED_IP_HEADER?.trim();
+  const ip = header ? trustedClientIp(request.headers.get(header)) : null;
+  const client = ip ? `ip:${ip}` : `email:${body.data.email.toLowerCase()}`;
   const requestKey = createHmac("sha256", process.env.CONTACT_API_SECRET).update(client).digest("hex");
   try {
     const response = await fetch(new URL("/api/public/contact", process.env.BACKEND_URL), {

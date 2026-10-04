@@ -53,7 +53,7 @@ npm.cmd run dev
 | Public website | http://localhost:3000 |
 | Emulator inspection UI | http://127.0.0.1:4000 |
 
-Demo owner: `owner@kn1ghts.test`; password: `Kn1ghts-local-only-2026!`. The same password works for `editor@kn1ghts.test` and `viewer@kn1ghts.test`. These accounts exist only in the local emulators. The seed script is deliberately restricted to `demo-kn1ghts` on the configured loopback ports. Emulator data is temporary unless you use Firebase CLI import/export. Emulator hosts are rejected when `NODE_ENV=production`.
+Before seeding, set `EMULATOR_SEED_PASSWORD` in `backend/.env.local` to a password of your choice (12+ characters, used only by the local emulators). The seed script, integration suite, and browser QA read it from there; it is never printed or committed. Demo owner: `owner@kn1ghts.test`. The same password works for `editor@kn1ghts.test` and `viewer@kn1ghts.test`. These accounts exist only in the local emulators. The seed script is deliberately restricted to `demo-kn1ghts` on the configured loopback ports. Emulator data is temporary unless you use Firebase CLI import/export. Emulator hosts are rejected when `NODE_ENV=production`.
 
 The seed contains the current public content. Change a field, save a draft with a note, preview it, then publish. Refresh the public website to see published content. A public page load reads the published snapshot; it does not subscribe every visitor to private admin events.
 
@@ -118,7 +118,7 @@ Firebase's [session cookie documentation](https://firebase.google.com/docs/auth/
 
 ## Validation
 
-If the inbox reports a missing database index, deploy `database.rules.json`. To add just the inbox index to an existing ruleset while preserving its permissions, run `node scripts/check-firebase.mjs --repair-index` from `backend/`. The script backs up the previous rules in the ignored `.firebase/` folder, adds `messages/.indexOn: ["createdAt"]`, and verifies the inbox query without displaying messages. Without the flag it only checks the query.
+If the inbox reports a missing database index, deploy `database.rules.json`. To add just the inbox index to an existing ruleset while preserving its permissions, run `node scripts/check-firebase.mjs --repair-index` from `backend/`. The script backs up the previous rules in the ignored `.firebase/` folder, adds `messages/.indexOn: ["createdAt"]`, and verifies the inbox query without displaying messages. Without the flag it reads the deployed rules, fails if the `createdAt` index is absent (an unindexed query would still succeed), and then checks the query. Firebase documents no conditional write for rules: the repair only writes when Firebase returns a version tag for them, so a concurrent deployment cannot be overwritten. Otherwise it changes nothing unless you add `--allow-unconditional-rules-write`, confirming no other rules deployment is in progress. Deploying `database.rules.json` with the Firebase CLI remains the preferred fix.
 
 ```powershell
 npm.cmd run lint

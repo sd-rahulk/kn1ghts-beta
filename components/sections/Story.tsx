@@ -9,8 +9,10 @@ function Text({ value }: { value: string }) {
 function Tagline({ value }: { value: string }) {
   return value.split("/").map((part, index) => <Fragment key={index}>{index > 0 && <i aria-hidden="true">/</i>}{part.trim()}</Fragment>);
 }
-function Link({ site, href, children, ...props }: { site: SiteContent; href: string; children: React.ReactNode } & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href">) {
-  if (!href || !availableLink(site, href)) return null;
+// `fallback` renders in place of the link when it is empty or points at a hidden section, so content
+// that only happens to be linked (a title, an empty state) stays visible.
+function Link({ site, href, children, fallback = null, ...props }: { site: SiteContent; href: string; children: React.ReactNode; fallback?: React.ReactNode } & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href">) {
+  if (!href || !availableLink(site, href)) return fallback;
   return <a href={href} {...(href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})} {...props}>{children}</a>;
 }
 function Index({ section, index }: { section: SiteSection; index: number }) {
@@ -19,9 +21,11 @@ function Index({ section, index }: { section: SiteSection; index: number }) {
 function Copy({ section, index, className = "chapter-copy align-left" }: { section: SiteSection; index: number; className?: string }) {
   return <div className={className} data-reveal><Index section={section} index={index} /><h2><Text value={section.title} /></h2>{section.description && <p>{section.description}</p>}</div>;
 }
+// Date-only values parse as UTC midnight; format in UTC so the month never shifts with the runtime's
+// time zone and the server and browser render the same text.
 function date(value: string, fallback: string) {
   const parsed = new Date(value);
-  return value && Number.isFinite(parsed.valueOf()) ? new Intl.DateTimeFormat("en", { month: "short", year: "numeric" }).format(parsed).toUpperCase() : fallback;
+  return value && Number.isFinite(parsed.valueOf()) ? new Intl.DateTimeFormat("en", { month: "short", year: "numeric", timeZone: "UTC" }).format(parsed).toUpperCase() : fallback;
 }
 
 function Section({ section: s, index, site, contactReady }: { section: SiteSection; index: number; site: SiteContent; contactReady: boolean }) {
@@ -66,13 +70,13 @@ function Section({ section: s, index, site, contactReady }: { section: SiteSecti
     </section>;
     case "projects": return <section {...base} className="chapter projects-chapter">
       <Copy section={s} index={index} className="chapter-copy align-right" />
-      {s.items.length ? <div className="project-list">{s.items.map((item, i) => <article key={item.id} data-reveal><span>{String(i + 1).padStart(2, "0")} / {item.label || item.tags[0]}</span><strong><Link site={site} href={item.href}>{item.title}</Link>{!item.href && item.title}</strong><p>{item.body}</p><Link site={site} href={item.href} aria-label={item.title}>↗</Link></article>)}</div> : <Link site={site} className="project-note" href={f.emptyHref || ""} data-reveal><span>{f.emptyLabel}</span><strong><Text value={f.emptyTitle || ""} /><b aria-hidden="true">↗</b></strong><p>{f.emptyDescription}</p></Link>}
+      {s.items.length ? <div className="project-list">{s.items.map((item, i) => <article key={item.id} data-reveal><span>{String(i + 1).padStart(2, "0")} / {item.label || item.tags[0]}</span><strong><Link site={site} href={item.href} fallback={item.title}>{item.title}</Link></strong><p>{item.body}</p><Link site={site} href={item.href} aria-label={item.title}>↗</Link></article>)}</div> : <Link site={site} className="project-note" href={f.emptyHref || ""} data-reveal fallback={<div className="project-note" data-reveal><span>{f.emptyLabel}</span><strong><Text value={f.emptyTitle || ""} /></strong><p>{f.emptyDescription}</p></div>}><span>{f.emptyLabel}</span><strong><Text value={f.emptyTitle || ""} /><b aria-hidden="true">↗</b></strong><p>{f.emptyDescription}</p></Link>}
     </section>;
     case "team": return <section {...base} className="chapter team-chapter" style={{ "--team-height": `${76 + Math.ceil(Math.max(s.items.length, 1) / 2) * 77}dvh` } as React.CSSProperties}>
       <Copy section={s} index={index} className="team-intro" /><div className="team-grid">{s.items.map((item, i) => <article className="team-card" key={item.id} data-cursor={site.settings.labels.profile} data-reveal><MemberPortrait src={item.imageUrl || null} name={item.title} /><div className="portrait-scan" aria-hidden="true" /><span>{f.itemLabel} / {String(i + 1).padStart(2, "0")}</span><h3>{item.title}</h3><p>{item.body}</p><em>{item.meta || item.tags.join(" · ")}</em><Link site={site} href={item.href} className="member-link">↗</Link></article>)}</div>
     </section>;
     case "journal": return <section {...base} className="chapter journal-chapter">
-      <Copy section={s} index={index} />{s.items.length ? <div className="journal-list">{s.items.map((item, i) => <article key={item.id} data-reveal><span>{String(i + 1).padStart(2, "0")} / {item.label || f.itemLabel}</span><div><h3>{item.href ? <Link site={site} href={item.href}>{item.title} ↗</Link> : item.title}</h3><p>{item.body}</p></div><time>{date(item.date, site.settings.labels.fieldReport)}</time></article>)}</div> : <div className="content-note" data-reveal><span>{f.emptyLabel}</span><strong>{f.emptyTitle}</strong><p>{f.emptyDescription}</p></div>}
+      <Copy section={s} index={index} />{s.items.length ? <div className="journal-list">{s.items.map((item, i) => <article key={item.id} data-reveal><span>{String(i + 1).padStart(2, "0")} / {item.label || f.itemLabel}</span><div><h3><Link site={site} href={item.href} fallback={item.title}>{item.title} ↗</Link></h3><p>{item.body}</p></div><time>{date(item.date, site.settings.labels.fieldReport)}</time></article>)}</div> : <div className="content-note" data-reveal><span>{f.emptyLabel}</span><strong>{f.emptyTitle}</strong><p>{f.emptyDescription}</p></div>}
     </section>;
     case "recruitment": return <section {...base} className="chapter recruitment-chapter"><div className="recruitment-copy" data-reveal><Index section={s} index={index} /><h2><Text value={s.title} /></h2><p>{s.description}</p><Link site={site} className="network-cta" href={f.ctaHref || ""}><span>{f.ctaLabel}</span><b aria-hidden="true">↗</b></Link></div><div className="recruitment-mark" aria-hidden="true">{f.mark}</div></section>;
     case "finale": return <section {...base} className="chapter finale"><div className="final-copy" data-reveal><h2 className="sr-only">{s.title}</h2><p className="final-tagline"><Tagline value={f.tagline || ""} /></p><span>{s.eyebrow}</span><p>{s.description}</p><Link site={site} className="network-cta magnetic" href={f.ctaHref || ""} data-cursor="ENTER"><span>{f.ctaLabel}</span><b aria-hidden="true">↗</b></Link></div></section>;

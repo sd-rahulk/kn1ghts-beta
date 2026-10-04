@@ -1,5 +1,12 @@
 import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import nextEnv from "@next/env";
+
+// The local-only account password chosen for the seed script, read from backend/.env.local.
+nextEnv.loadEnvConfig(fileURLToPath(new URL("..", import.meta.url)));
+const password = process.env.EMULATOR_SEED_PASSWORD;
+assert.ok(password, "Set EMULATOR_SEED_PASSWORD in backend/.env.local, as used by the seed script.");
 
 const pages = await (await fetch("http://localhost:9222/json")).json();
 const page = pages.find((item) => item.type === "page");
@@ -27,7 +34,7 @@ try {
   await waitFor("Boolean(document.querySelector('input[type=email]'))");
   await screenshot("admin-login-desktop");
   await evaluate("document.querySelector('input[type=email]').focus()"); await send("Input.insertText", { text: "owner@kn1ghts.test" });
-  await evaluate("document.querySelector('input[type=password]').focus()"); await send("Input.insertText", { text: "Kn1ghts-local-only-2026!" });
+  await evaluate("document.querySelector('input[type=password]').focus()"); await send("Input.insertText", { text: password });
   await evaluate("document.querySelector('button.primary').click()");
   await waitFor("Boolean(document.querySelector('.admin-shell'))");
   assert.equal(await overflow(), false, "Desktop sections overflow"); await screenshot("admin-sections-desktop");

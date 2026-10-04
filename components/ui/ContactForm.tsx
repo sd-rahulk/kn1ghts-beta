@@ -11,12 +11,14 @@ export function ContactForm({ settings, ready }: { settings: SiteContent["settin
     if (!enabled || sending) return;
     const form = event.currentTarget, values = new FormData(form);
     setSending(true); setStatus("");
+    const failed = "Your message could not be delivered. Please try again.";
     try {
       const response = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.fromEntries(values)), signal: AbortSignal.timeout(15000) });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.error || "Your message could not be delivered. Please try again.");
+      // A platform error page (502/504, HTML, plain text) is not JSON; fall back to the generic message.
+      const result: { error?: unknown } = await response.json().catch(() => ({}));
+      if (!response.ok) { setStatus(typeof result.error === "string" && result.error ? result.error : failed); return; }
       form.reset(); setStatus(settings.successMessage);
-    } catch (error) { setStatus(error instanceof Error ? error.message : "Your message could not be delivered. Please try again."); }
+    } catch { setStatus(failed); }
     finally { setSending(false); }
   }
   return <form className="contact-form" onSubmit={submit} aria-busy={sending}>
