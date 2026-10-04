@@ -1,12 +1,17 @@
 import assert from "node:assert/strict";
+import { loadEnvConfig } from "@next/env";
 import { randomUUID } from "node:crypto";
 import baseline from "../content/default.json";
 
 // Deliberately restricted to local emulators; never run against production.
 const base = "http://localhost:3001", publicBase = "http://localhost:3000";
 const db = "http://127.0.0.1:9000";
-const password = "Kn1ghts-local-only-2026!";
-const platformSecret = "local-platform-secret-only-for-emulator-2026";
+loadEnvConfig(process.cwd());
+// The same local-only password the seed script used (backend/.env.local).
+const password = process.env.EMULATOR_SEED_PASSWORD ?? "";
+if (!password) throw new Error("Set EMULATOR_SEED_PASSWORD in backend/.env.local, as used by the seed script.");
+const platformSecret = process.env.PLATFORM_API_SECRET ?? "";
+if (!platformSecret) throw new Error("Set PLATFORM_API_SECRET in backend/.env.local before running integration tests.");
 class Client {
   cookies = new Map<string, string>();
   csrf = "";

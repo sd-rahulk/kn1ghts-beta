@@ -1235,12 +1235,14 @@ export function CyberWorld({ progress, pointer, opening, glitch, hud }: {
     const a = anchors.current;
     if (a.wait-- <= 0) {
       const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      const at = (id: string, fallback: number) => {
-        const node = document.getElementById(id);
+      // Section ids are editable in the CMS, so anchor on the section type Story always renders.
+      // Without a finale section, the footer wrapper still marks where the page actually ends.
+      const at = (selector: string, fallback: number) => {
+        const node = document.querySelector(selector);
         return node ? Math.min(1, (node.getBoundingClientRect().top + window.scrollY) / max) : fallback;
       };
-      a.updates = at("updates", 0.1);
-      a.contact = at("finale", 0.9);
+      a.updates = at('.story > [data-section-type="updates"]', 0.1);
+      a.contact = at('.story > [data-section-type="finale"], .story > .site-footer-wrap', 0.9);
       a.wait = 30;
     }
     const scroll = done ? progress.current : 0;

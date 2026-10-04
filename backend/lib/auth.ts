@@ -33,5 +33,5 @@ export async function requireActor(write = false, owner = false) {
 export async function verifyMutation(request: Request) {
   checkOrigin(request);
   const token = (await cookies()).get(csrfCookieName)?.value ?? "";
-  if (!equalSecret(token, request.headers.get("x-csrf-token") ?? "")) throw new HttpError(403, "The request verification token is missing or expired. Refresh and try again.");
+  if (!equalSecret(token, request.headers.get("x-csrf-token") ?? "")) throw new HttpError(403, "The request verification token is missing or expired. Refresh and try again.", "csrf");
 }
