@@ -140,6 +140,10 @@
     .countdown-digit { padding: 1rem 1.5rem; font-size: 3.75rem; line-height: 1; }
   }
 
+  /* Sparks rising up the page behind everything (see Background). Each starts below the viewport,
+     fades in, climbs and turns, then fades out above the top. */
+  .spark { position: absolute; top: 0; border-radius: 9999px; pointer-events: none; opacity: 0; animation: spark-rise 15s linear infinite; }
+
   /* A soft ember halo behind small copies of the logo, so its navy does not sink into the page. */
   .logo-halo { background: radial-gradient(circle, #ff7a3d59 0%, #ff7a3d1f 45%, transparent 70%); border-radius: 9999px; }
   .logo-halo img { filter: drop-shadow(0 0 4px #ff9a3d8c); }
@@ -163,6 +167,12 @@
   0% { background-position: 0%; }
   50% { background-position: 100%; }
   100% { background-position: 0%; }
+}
+@keyframes spark-rise {
+  0% { opacity: 0; transform: translateY(100vh) rotate(0deg); }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-100vh) rotate(720deg); }
 }
 @keyframes hero-pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
