@@ -91,9 +91,9 @@ function Hero({ section: s, site }: { section: SiteSection; site: SiteContent })
       <h1 className="sr-only">{s.title}</h1>
       <div className="relative inline-block mb-8">
         {/* Glow sits behind the logo so it does not tint the logo's own colours. */}
-        <div className="absolute -inset-8 bg-flame/30 rounded-full blur-3xl animate-pulse pointer-events-none" />
+        <div className="absolute inset-0 bg-magenta/20 rounded-full blur-3xl animate-pulse pointer-events-none" />
         <div className="relative w-[280px] h-[280px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] mx-auto animate-float intro-float" data-intro-target>
-          <Image src={LOGO} alt="" fill priority sizes="(max-width: 768px) 280px, (max-width: 1024px) 400px, 500px" className="intro-logo object-contain drop-shadow-[0_0_30px_rgba(255,122,61,0.5)]" />
+          <Image src={LOGO} alt="" fill priority sizes="(max-width: 768px) 280px, (max-width: 1024px) 400px, 500px" className="intro-logo object-contain drop-shadow-[0_0_30px_rgba(255,0,110,0.5)]" />
         </div>
       </div>
       {s.description && <p className="intro-fade text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed" style={{ "--i": 1 } as React.CSSProperties}>{s.description}</p>}

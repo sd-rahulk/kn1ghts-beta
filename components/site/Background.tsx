@@ -1,5 +1,5 @@
-// Rising sparks: warm-weighted mix of the palette, at the reference's 60% / 45% strength.
-const SPARK_COLORS = ["rgba(255, 122, 61, 0.6)", "rgba(255, 194, 75, 0.6)", "rgba(255, 122, 61, 0.6)", "rgba(255, 90, 43, 0.5)", "rgba(122, 163, 224, 0.45)"];
+// Rising sparks: the reference's exact particle colours, with ember in place of its purple.
+const SPARK_COLORS = ["rgba(255, 0, 110, 0.6)", "rgba(0, 217, 255, 0.6)", "rgba(255, 122, 61, 0.6)", "rgba(6, 255, 165, 0.4)"];
 
 // Deterministic pseudo-random values, so the server and browser render identical sparks.
 function seeded(index: number, salt: number) {
@@ -25,9 +25,9 @@ const sparks = Array.from({ length: 30 }, (_, i) => {
 export function Background() {
   return <div className="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
     <div className="absolute inset-0 cyber-grid opacity-30" />
-    <div className="absolute top-1/4 left-1/4 -translate-x-1/2 w-[32rem] h-[32rem] bg-flame/15 rounded-full blur-3xl animate-pulse" />
-    <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 w-[32rem] h-[32rem] bg-cyan/10 rounded-full blur-3xl animate-pulse delay-1000" />
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-magenta/[0.07] rounded-full blur-3xl" />
+    <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-magenta/10 rounded-full blur-3xl animate-pulse" />
+    <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan/10 rounded-full blur-3xl animate-pulse delay-1000" />
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-ember/5 rounded-full blur-3xl" />
     {sparks.map((style, i) => <div key={i} className="spark" style={style} />)}
     <div className="absolute inset-0 pointer-events-none opacity-5">
       <div className="absolute inset-0" style={{ backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 255, 255, 0.03) 2px, rgba(255, 255, 255, 0.03) 4px)" }} />

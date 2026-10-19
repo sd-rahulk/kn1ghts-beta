@@ -6,16 +6,17 @@
 /* Molten Forge: ember into molten gold, cooled by tempered steel blue, on warm soot black.
    Chosen to sit beside the logo's gold outline and steel-blue spear. */
 @theme {
-  --color-ink: #0c0a0c;        /* page background: near-neutral soot, so warm and cool light both read */
-  --color-ink-deep: #080607;   /* darker bands, footer, inputs */
-  --color-panel: #171214;      /* cards */
-  --color-edge: #2c2226;       /* borders */
+  /* Background neutrals: the reference site's exact values. */
+  --color-ink: #0a0a0f;        /* page background */
+  --color-ink-deep: #050508;   /* darker bands, footer, inputs */
+  --color-panel: #121218;      /* cards */
+  --color-edge: #1a1a24;       /* borders */
   --color-flame: #ff5a2b;      /* hottest end of the ember gradient */
   --color-ember: #ff7a3d;      /* lead accent */
   --color-gold: #ffc24b;       /* molten gold, third accent */
   --color-steel: #7aa3e0;      /* tempered steel, cool second accent */
-  --color-magenta: #ff006e;    /* the reference site's magenta: background light bridging ember and cyan */
-  --color-cyan: #00d9ff;       /* the reference site's cyan: background light opposite the ember */
+  --color-magenta: #ff006e;    /* the reference site's magenta: background light on the left */
+  --color-cyan: #00d9ff;       /* the reference site's cyan: background light on the right */
 
   /* Warm greys, so body text sits in the same family as the soot background. */
   --color-gray-300: #ddd3c8;
@@ -104,7 +105,7 @@
   }
 
   .cyber-grid {
-    background-image: linear-gradient(#ff7a3d0b 1px, transparent 1px), linear-gradient(90deg, #ff7a3d0b 1px, transparent 1px);
+    background-image: linear-gradient(#00d9ff0d 1px, transparent 1px), linear-gradient(90deg, #00d9ff0d 1px, transparent 1px);
     background-size: 50px 50px;
   }
 
@@ -128,8 +129,9 @@
   .hero-bg { position: relative; overflow: hidden; }
   .hero-bg::before {
     content: ""; position: absolute; inset: 0;
-    /* Ember on the left, cyan on the right, magenta low in the middle bridging the two. */
-    background: radial-gradient(circle at 18% 42%, #ff5a2b52 0%, #ff5a2b1a 35%, transparent 60%), radial-gradient(circle at 82% 48%, #00d9ff38 0%, #00d9ff12 35%, transparent 60%), radial-gradient(circle at 50% 88%, #ff006e3d 0%, #ff006e12 30%, transparent 55%);
+    /* The reference's exact hero light (magenta left, cyan right), with our ember in place of its
+       purple at the bottom, at the same strength and position. */
+    background: radial-gradient(circle at 20%, #ff006e26 0%, transparent 50%), radial-gradient(circle at 80%, #00d9ff26 0%, transparent 50%), radial-gradient(circle at 50% 80%, #ff7a3d1a 0%, transparent 50%);
     animation: hero-pulse 8s ease-in-out infinite;
   }
 
