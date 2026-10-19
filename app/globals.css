@@ -14,7 +14,8 @@
   --color-ember: #ff7a3d;      /* lead accent */
   --color-gold: #ffc24b;       /* molten gold, third accent */
   --color-steel: #7aa3e0;      /* tempered steel, cool second accent */
-  --color-cobalt: #2f6bff;     /* saturated blue used only for background light, so the cool side glows */
+  --color-magenta: #ff006e;    /* the reference site's magenta: background light bridging ember and cyan */
+  --color-cyan: #00d9ff;       /* the reference site's cyan: background light opposite the ember */
 
   /* Warm greys, so body text sits in the same family as the soot background. */
   --color-gray-300: #ddd3c8;
@@ -127,8 +128,8 @@
   .hero-bg { position: relative; overflow: hidden; }
   .hero-bg::before {
     content: ""; position: absolute; inset: 0;
-    /* Forge light on the left blending into cobalt on the right, with a low gold glow underneath. */
-    background: radial-gradient(circle at 18% 45%, #ff5a2b52 0%, #ff5a2b1a 35%, transparent 60%), radial-gradient(circle at 82% 50%, #2f6bff45 0%, #2f6bff14 35%, transparent 60%), radial-gradient(circle at 50% 85%, #ffaa2829 0%, transparent 50%);
+    /* Ember on the left, cyan on the right, magenta low in the middle bridging the two. */
+    background: radial-gradient(circle at 18% 42%, #ff5a2b52 0%, #ff5a2b1a 35%, transparent 60%), radial-gradient(circle at 82% 48%, #00d9ff38 0%, #00d9ff12 35%, transparent 60%), radial-gradient(circle at 50% 88%, #ff006e3d 0%, #ff006e12 30%, transparent 55%);
     animation: hero-pulse 8s ease-in-out infinite;
   }
 

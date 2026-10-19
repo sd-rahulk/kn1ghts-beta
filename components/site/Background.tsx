@@ -26,8 +26,8 @@ export function Background() {
   return <div className="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
     <div className="absolute inset-0 cyber-grid opacity-30" />
     <div className="absolute top-1/4 left-1/4 -translate-x-1/2 w-[32rem] h-[32rem] bg-flame/15 rounded-full blur-3xl animate-pulse" />
-    <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 w-[32rem] h-[32rem] bg-cobalt/15 rounded-full blur-3xl animate-pulse delay-1000" />
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold/[0.06] rounded-full blur-3xl" />
+    <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 w-[32rem] h-[32rem] bg-cyan/10 rounded-full blur-3xl animate-pulse delay-1000" />
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-magenta/[0.07] rounded-full blur-3xl" />
     {sparks.map((style, i) => <div key={i} className="spark" style={style} />)}
     <div className="absolute inset-0 pointer-events-none opacity-5">
       <div className="absolute inset-0" style={{ backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 255, 255, 0.03) 2px, rgba(255, 255, 255, 0.03) 4px)" }} />
