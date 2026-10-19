@@ -1,31 +1,45 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
+import type { IconType } from "react-icons";
+import { FaShieldAlt } from "react-icons/fa";
 import { AuthProvider } from "./AuthProvider";
 import type { SiteContent } from "@/backend/lib/schema";
+import { Pill } from "@/components/site/Pill";
+import { SiteChrome } from "@/components/site/SiteChrome";
+import { SplitTitle } from "@/components/site/Title";
+import { container } from "@/components/site/ui";
 
-const navigation = [
-  ["POW", "/pow"], ["TEAM", "/team"], ["EVENTS", "/events"],
-  ["WEEKLY", "/inhouse-weekly"], ["BLOG", "/blog"], ["JOIN", "/contact"],
-] as const;
-
-export function CommunityShell({ children, settings }: { children: ReactNode; settings: SiteContent["settings"] }) {
-  const themed = { "--ink": settings.theme.ink, "--deep": settings.theme.deep, "--tactical": settings.theme.tactical, "--paper": settings.theme.paper, "--soft": settings.theme.soft, "--acid": settings.theme.accent } as React.CSSProperties;
-  return <AuthProvider><div className="community-root" style={themed}>
-    <header className="community-header">
-      <Link className="community-wordmark" href="/">{settings.name}<span>{settings.registrationMark}</span></Link>
-      <nav aria-label="Primary navigation">{navigation.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}</nav>
-      <Link className="account-link" href="/account">ACCOUNT</Link>
-    </header>
-    {children}
-    <footer className="community-footer"><span>{settings.headerLine}</span><div>{settings.footerLinks.map((link) => <a key={`${link.label}-${link.href}`} href={link.href.startsWith("#") ? `/${link.href}` : link.href} {...(link.href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}>{link.label}</a>)}</div><span>{settings.copyright}</span></footer>
-  </div></AuthProvider>;
+export function CommunityShell({ children, site }: { children: ReactNode; site: SiteContent }) {
+  return <AuthProvider><SiteChrome site={site}>{children}</SiteChrome></AuthProvider>;
 }
 
-export function PageLead({ title, description, meta }: { title: string; description: string; meta: string }) {
-  return <header className="page-lead"><span>{meta}</span><h1>{title}</h1><p>{description}</p></header>;
+export function PageLead({ title, description, meta, icon = FaShieldAlt }: { title: string; description: string; meta: string; icon?: IconType }) {
+  return <div className="pt-20"><section className="relative py-24 hero-bg">
+    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div className="text-center">
+      <Pill icon={icon}>{meta}</Pill>
+      <h1 className="font-cyber text-5xl md:text-6xl font-bold mb-6 break-words"><SplitTitle value={title} /></h1>
+      <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">{description}</p>
+    </div></div>
+  </section></div>;
 }
 
-export function EmptyState({ children }: { children: ReactNode }) { return <div className="community-empty">{children}</div>; }
+export function PageBody({ children, narrow = false, alt = false }: { children: ReactNode; narrow?: boolean; alt?: boolean }) {
+  return <section className={`relative py-20 ${alt ? "bg-ink-deep/30" : ""}`}><div className={narrow ? "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" : container}>{children}</div></section>;
+}
+
+// "Important Dates" style heading: the glowing lead word, then white.
+export function SectionTitle({ glow, rest = "", tone = "neon-verdigris", className = "text-center mb-12" }: { glow: string; rest?: string; tone?: "neon-verdigris" | "neon-brass"; className?: string }) {
+  return <h2 className={`font-cyber text-3xl font-bold ${className}`}><span className={tone}>{glow}</span>{rest && <> <span className="text-white">{rest}</span></>}</h2>;
+}
+
+// Contact-page layout: a short brief on the left, the form card on the right.
+export function FormLayout({ aside, children }: { aside: ReactNode; children: ReactNode }) {
+  return <PageBody narrow><div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
+    <div className="lg:col-span-2">{aside}</div>
+    <div className="lg:col-span-3"><div className="cyber-card p-8">{children}</div></div>
+  </div></PageBody>;
+}
+
+export function EmptyState({ children }: { children: ReactNode }) { return <div className="cyber-card p-12 text-center text-gray-400 max-w-3xl mx-auto">{children}</div>; }
 
 export function formatDate(value: number) {
   return new Intl.DateTimeFormat("en-IN", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
