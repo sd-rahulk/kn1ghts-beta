@@ -155,6 +155,14 @@
     .countdown-digit { padding: 1rem 1.5rem; font-size: 3.75rem; line-height: 1; }
   }
 
+  /* Home-page logo intro (see LogoIntro). While html[data-intro] is set the hero waits; removing it
+     fades the logo in and lifts the rest of the hero in order. */
+  .intro-logo { transition: opacity 0.6s ease-out; }
+  .intro-fade { transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: calc(var(--i, 0) * 90ms); }
+  html[data-intro] .intro-logo { opacity: 0; }
+  html[data-intro] .intro-fade { opacity: 0; transform: translateY(18px); }
+  html[data-intro] .intro-float { animation: none; }
+
   /* Spam honeypot: present for bots, invisible and unreachable for people. */
   .contact-trap { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 

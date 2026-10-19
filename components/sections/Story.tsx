@@ -1,10 +1,13 @@
+import Image from "next/image";
 import type { ReactNode } from "react";
 import type { IconType } from "react-icons";
 import { FaBookOpen, FaBug, FaBullhorn, FaCalendarAlt, FaCode, FaCrosshairs, FaEnvelope, FaFileCode, FaFlag, FaLayerGroup, FaLock, FaNetworkWired, FaNewspaper, FaSatelliteDish, FaSearch, FaShieldAlt, FaTerminal, FaTools, FaTrophy, FaUserShield, FaUsers } from "react-icons/fa";
 import { availableLink, type SiteContent, type SiteSection } from "@/backend/lib/schema";
 import { MemberPortrait } from "@/components/ui/MemberPortrait";
 import { ContactForm } from "@/components/ui/ContactForm";
+import { LogoIntro } from "@/components/site/LogoIntro";
 import { Arrow, Pill } from "@/components/site/Pill";
+import { LOGO } from "@/components/site/ui";
 import { Plain, Title } from "@/components/site/Title";
 import { accent, card, container, mutedButton, secondaryButton, textLink } from "@/components/site/ui";
 import type { HomePlatformData } from "@/lib/platform-api";
@@ -83,20 +86,23 @@ function Hero({ section: s, site }: { section: SiteSection; site: SiteContent })
   const f = s.fields;
   const path = (f.path || "").split("\n").map((entry) => entry.trim()).filter(Boolean);
   return <section id={s.id} data-section-type={s.type} className="hero-bg min-h-screen flex items-center justify-center pt-20">
+    <LogoIntro />
     <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-      {s.eyebrow && <div><Pill icon={FaShieldAlt}>{s.eyebrow}</Pill></div>}
+      <h1 className="sr-only">{s.title}</h1>
+      {s.eyebrow && <div className="intro-fade" style={{ "--i": 0 } as React.CSSProperties}><Pill icon={FaShieldAlt}>{s.eyebrow}</Pill></div>}
       <div className="relative inline-block mb-8">
-        <div className="relative mx-auto animate-float py-6">
-          <h1 className="font-cyber font-black tracking-wider gradient-text text-[13vw] sm:text-6xl md:text-8xl lg:text-9xl leading-none drop-shadow-[0_0_30px_rgba(255,0,110,0.5)]">{s.title}</h1>
-        </div>
+        {/* Glow sits behind the logo so it does not tint the logo's own colours. */}
         <div className="absolute inset-0 bg-vapor-pink/20 rounded-full blur-3xl animate-pulse pointer-events-none" />
+        <div className="relative w-[280px] h-[280px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] mx-auto animate-float intro-float" data-intro-target>
+          <Image src={LOGO} alt="" fill priority sizes="(max-width: 768px) 280px, (max-width: 1024px) 400px, 500px" className="intro-logo object-contain drop-shadow-[0_0_30px_rgba(255,0,110,0.5)]" />
+        </div>
       </div>
-      {s.description && <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">{s.description}</p>}
-      {f.tagline && <div className="inline-flex items-center space-x-3 bg-vapor-card/80 border border-vapor-border rounded-full px-6 py-3 mb-12">
+      {s.description && <p className="intro-fade text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed" style={{ "--i": 1 } as React.CSSProperties}>{s.description}</p>}
+      {f.tagline && <div className="intro-fade" style={{ "--i": 2 } as React.CSSProperties}><div className="inline-flex items-center space-x-3 bg-vapor-card/80 border border-vapor-border rounded-full px-6 py-3 mb-12">
         <span className="w-2 h-2 bg-vapor-mint rounded-full animate-pulse" />
         <span className="font-mono text-vapor-cyan tracking-wider">{f.tagline}</span>
-      </div>}
-      {path.length > 0 && <div className="mb-12">
+      </div></div>}
+      {path.length > 0 && <div className="intro-fade mb-12" style={{ "--i": 3 } as React.CSSProperties}>
         {f.mindset && <h3 className="font-cyber text-lg text-gray-400 mb-6 uppercase tracking-wider">{f.mindset.replace(/\s*\n\s*/g, " ")}</h3>}
         <ol className="flex flex-wrap justify-center gap-4 md:gap-6">
           {path.map((step, index) => <li key={index} className="text-center">
@@ -105,14 +111,16 @@ function Hero({ section: s, site }: { section: SiteSection; site: SiteContent })
           </li>)}
         </ol>
       </div>}
-      <div className="flex flex-col sm:flex-row justify-center gap-4">
+      <div className="intro-fade flex flex-col sm:flex-row justify-center gap-4" style={{ "--i": 4 } as React.CSSProperties}>
         <Link site={site} className="cyber-button" href={f.ctaHref || ""}>{f.ctaLabel}</Link>
         <Link site={site} className={secondaryButton} href={f.scrollHref || ""}>{f.scrollLabel}</Link>
       </div>
     </div>
-    <Link site={site} href={f.scrollHref || ""} className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce" aria-label={f.scrollLabel}>
-      <span className="w-6 h-10 border-2 border-vapor-cyan/50 rounded-full flex justify-center"><span className="w-1 h-3 bg-vapor-cyan rounded-full mt-2 animate-pulse" /></span>
-    </Link>
+    <div className="intro-fade absolute bottom-8 left-1/2" style={{ "--i": 5 } as React.CSSProperties}>
+      <Link site={site} href={f.scrollHref || ""} className="block -translate-x-1/2 animate-bounce" aria-label={f.scrollLabel}>
+        <span className="w-6 h-10 border-2 border-vapor-cyan/50 rounded-full flex justify-center"><span className="w-1 h-3 bg-vapor-cyan rounded-full mt-2 animate-pulse" /></span>
+      </Link>
+    </div>
   </section>;
 }
 

@@ -1,5 +1,7 @@
 // Class strings shared across pages, copied from the reference design so every form,
 // link and card renders identically wherever it appears.
+export const LOGO = "/brand/kn1ghts-logo.png";
+
 export const pageLinks = [
   { label: "Home", href: "/" }, { label: "POW", href: "/pow" }, { label: "Team", href: "/team" },
   { label: "Events", href: "/events" }, { label: "Weekly", href: "/inhouse-weekly" }, { label: "Blog", href: "/blog" },

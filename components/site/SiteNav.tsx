@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { pageLinks } from "./ui";
-import { Wordmark } from "./Wordmark";
+import { Brand } from "./Wordmark";
 
 export function SiteNav({ name, mark }: { name: string; mark: string }) {
   const pathname = usePathname();
@@ -27,8 +27,8 @@ export function SiteNav({ name, mark }: { name: string; mark: string }) {
   return <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || open ? "bg-vapor-darker/95 backdrop-blur-md shadow-[0_0_20px_rgba(255,0,110,0.2)]" : "bg-transparent"}`} aria-label="Primary navigation">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between h-20">
-        <Link className="flex items-center group" href="/" aria-label={`${name} home`}>
-          <Wordmark name={name} mark={mark} className="text-2xl sm:text-3xl transition-all duration-300 group-hover:drop-shadow-[0_0_15px_rgba(0,217,255,0.6)]" />
+        <Link className="flex items-center group transition-all duration-300 hover:drop-shadow-[0_0_15px_rgba(0,217,255,0.6)]" href="/" aria-label={`${name} home`}>
+          <Brand name={name} mark={mark} size="h-12 w-12 sm:h-14 sm:w-14" text="text-xl sm:text-2xl" />
         </Link>
         <div className="hidden lg:flex items-center space-x-1">
           {pageLinks.map((link) => <Link key={link.href} href={link.href} aria-current={active(link.href) ? "page" : undefined} className={`nav-link px-4 py-2 font-medium tracking-wide transition-colors duration-300 ${active(link.href) ? "text-vapor-cyan" : "text-gray-300 hover:text-vapor-pink"}`}>{link.label}</Link>)}

@@ -4,7 +4,7 @@ import { FaDiscord, FaEnvelope, FaGithub, FaInstagram, FaLink, FaLinkedin, FaYou
 import { FaXTwitter } from "react-icons/fa6";
 import { availableLink, type SiteContent } from "@/backend/lib/schema";
 import { accent, pageLinks } from "./ui";
-import { Wordmark } from "./Wordmark";
+import { Brand } from "./Wordmark";
 
 function socialIcon(href: string): IconType {
   if (href.startsWith("mailto:")) return FaEnvelope;
@@ -35,8 +35,8 @@ export function SiteFooter({ site }: { site: SiteContent }) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
         <div className="lg:col-span-1">
-          <Link className="inline-block group mb-4" href="/" aria-label={`${settings.name} home`}>
-            <Wordmark name={settings.name} mark={settings.registrationMark} className="text-2xl transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(255,0,110,0.6)]" />
+          <Link className="inline-block mb-4 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(255,0,110,0.6)]" href="/" aria-label={`${settings.name} home`}>
+            <Brand name={settings.name} mark={settings.registrationMark} size="h-12 w-12" text="text-xl" />
           </Link>
           <p className="text-gray-400 text-sm leading-relaxed mb-6">{settings.description}</p>
           {social.length > 0 && <div className="flex space-x-4">
