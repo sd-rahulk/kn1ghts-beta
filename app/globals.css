@@ -130,8 +130,8 @@
   .hero-bg::before {
     content: ""; position: absolute; inset: 0;
     /* The reference's exact hero light (magenta left, cyan right), with our ember in place of its
-       purple at the bottom, at the same strength and position. */
-    background: radial-gradient(circle at 20%, #ff006e26 0%, transparent 50%), radial-gradient(circle at 80%, #00d9ff26 0%, transparent 50%), radial-gradient(circle at 50% 80%, #ff7a3d1a 0%, transparent 50%);
+       purple at the bottom, at the same strength and position, plus a faint ember glow at the top. */
+    background: radial-gradient(circle at 50% 0%, #ff7a3d14 0%, transparent 40%), radial-gradient(circle at 20%, #ff006e26 0%, transparent 50%), radial-gradient(circle at 80%, #00d9ff26 0%, transparent 50%), radial-gradient(circle at 50% 80%, #ff7a3d1a 0%, transparent 50%);
     animation: hero-pulse 8s ease-in-out infinite;
   }
 
