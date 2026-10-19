@@ -36,7 +36,7 @@ export function SiteFooter({ site }: { site: SiteContent }) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
         <div className="lg:col-span-1">
           <Link className="inline-block mb-4 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(255,122,61,0.6)]" href="/" aria-label={`${settings.name} home`}>
-            <Brand name={settings.name} mark={settings.registrationMark} size="h-12 w-12" text="text-xl" />
+            <Brand name={settings.name} size="h-12 w-12" text="text-xl" />
           </Link>
           <p className="text-gray-400 text-sm leading-relaxed mb-6">{settings.description}</p>
           {social.length > 0 && <div className="flex space-x-4">

@@ -89,7 +89,6 @@ function Hero({ section: s, site }: { section: SiteSection; site: SiteContent })
     <LogoIntro />
     <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
       <h1 className="sr-only">{s.title}</h1>
-      {s.eyebrow && <div className="intro-fade" style={{ "--i": 0 } as React.CSSProperties}><Pill icon={FaShieldAlt}>{s.eyebrow}</Pill></div>}
       <div className="relative inline-block mb-8">
         {/* Glow sits behind the logo so it does not tint the logo's own colours. */}
         <div className="absolute inset-0 bg-ember/20 rounded-full blur-3xl animate-pulse pointer-events-none" />

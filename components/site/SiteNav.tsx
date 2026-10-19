@@ -7,7 +7,7 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { pageLinks } from "./ui";
 import { Brand } from "./Wordmark";
 
-export function SiteNav({ name, mark }: { name: string; mark: string }) {
+export function SiteNav({ name }: { name: string }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -28,7 +28,7 @@ export function SiteNav({ name, mark }: { name: string; mark: string }) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between h-20">
         <Link className="flex items-center group transition-all duration-300 hover:drop-shadow-[0_0_15px_rgba(255,194,75,0.6)]" href="/" aria-label={`${name} home`}>
-          <Brand name={name} mark={mark} size="h-12 w-12 sm:h-14 sm:w-14" text="text-xl sm:text-2xl" />
+          <Brand name={name} size="h-12 w-12 sm:h-14 sm:w-14" text="text-xl sm:text-2xl" />
         </Link>
         <div className="hidden lg:flex items-center space-x-1">
           {pageLinks.map((link) => <Link key={link.href} href={link.href} aria-current={active(link.href) ? "page" : undefined} className={`nav-link px-4 py-2 font-medium tracking-wide transition-colors duration-300 ${active(link.href) ? "text-steel" : "text-gray-300 hover:text-ember"}`}>{link.label}</Link>)}
