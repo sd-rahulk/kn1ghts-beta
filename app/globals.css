@@ -6,14 +6,15 @@
 /* Molten Forge: ember into molten gold, cooled by tempered steel blue, on warm soot black.
    Chosen to sit beside the logo's gold outline and steel-blue spear. */
 @theme {
-  --color-ink: #0e0b09;        /* page background (soot) */
-  --color-ink-deep: #090706;   /* darker bands, footer, inputs */
-  --color-panel: #181310;      /* cards */
-  --color-edge: #2e241d;       /* borders */
+  --color-ink: #0c0a0c;        /* page background: near-neutral soot, so warm and cool light both read */
+  --color-ink-deep: #080607;   /* darker bands, footer, inputs */
+  --color-panel: #171214;      /* cards */
+  --color-edge: #2c2226;       /* borders */
   --color-flame: #ff5a2b;      /* hottest end of the ember gradient */
   --color-ember: #ff7a3d;      /* lead accent */
   --color-gold: #ffc24b;       /* molten gold, third accent */
   --color-steel: #7aa3e0;      /* tempered steel, cool second accent */
+  --color-cobalt: #2f6bff;     /* saturated blue used only for background light, so the cool side glows */
 
   /* Warm greys, so body text sits in the same family as the soot background. */
   --color-gray-300: #ddd3c8;
@@ -126,7 +127,8 @@
   .hero-bg { position: relative; overflow: hidden; }
   .hero-bg::before {
     content: ""; position: absolute; inset: 0;
-    background: radial-gradient(circle at 20%, #ff7a3d24 0%, transparent 50%), radial-gradient(circle at 80%, #7aa3e01f 0%, transparent 50%), radial-gradient(circle at 50% 80%, #ffc24b14 0%, transparent 50%);
+    /* Forge light on the left blending into cobalt on the right, with a low gold glow underneath. */
+    background: radial-gradient(circle at 18% 45%, #ff5a2b52 0%, #ff5a2b1a 35%, transparent 60%), radial-gradient(circle at 82% 50%, #2f6bff45 0%, #2f6bff14 35%, transparent 60%), radial-gradient(circle at 50% 85%, #ffaa2829 0%, transparent 50%);
     animation: hero-pulse 8s ease-in-out infinite;
   }
 
