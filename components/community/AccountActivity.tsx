@@ -49,9 +49,9 @@ export function AccountActivity() {
   }
 
   if (authLoading || !user) return null;
-  const stateColor = { approved: "text-vapor-mint", hidden: "text-vapor-pink", pending: "text-gray-400" } as const;
+  const stateColor = { approved: "text-gold", hidden: "text-ember", pending: "text-gray-400" } as const;
   return <section aria-labelledby="account-comments-title">
-    <div className="flex items-end justify-between gap-6 mb-8"><div><p className="font-mono text-sm text-gray-400 mb-2">YOUR CONTRIBUTIONS</p><h2 id="account-comments-title" className="font-cyber text-3xl font-bold"><span className="neon-cyan">Comments</span></h2></div><span className="font-cyber text-4xl font-bold gradient-text">{items.length.toString().padStart(2, "0")}</span></div>
+    <div className="flex items-end justify-between gap-6 mb-8"><div><p className="font-mono text-sm text-gray-400 mb-2">YOUR CONTRIBUTIONS</p><h2 id="account-comments-title" className="font-cyber text-3xl font-bold"><span className="neon-steel">Comments</span></h2></div><span className="font-cyber text-4xl font-bold gradient-text">{items.length.toString().padStart(2, "0")}</span></div>
     {!user.emailVerified ? <p className="text-gray-400">Verify your email to comment on field notes.</p> : loading ? <p className="text-gray-400">Loading your comments…</p> : error ? <p className={formStatusError} role="alert">{error}</p> : items.length ? <div className="space-y-4">{items.map((item) => <article className="cyber-card p-6" key={item.id}>
       <div className="flex flex-wrap items-center justify-between gap-2"><span className={`font-mono text-xs uppercase ${stateColor[item.status]}`}>{item.status}</span><time className="font-mono text-xs text-gray-500">{new Date(item.createdAt).toLocaleString()}</time></div>
       <p className="mt-3 text-gray-300 whitespace-pre-wrap break-words">{item.body}</p>

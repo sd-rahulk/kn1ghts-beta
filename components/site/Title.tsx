@@ -3,7 +3,7 @@ import { Fragment } from "react";
 // CMS titles mark their emphasis as [[text]] and break lines with \n. The reference design sets
 // headings on one line: emphasised words glow, the rest is white. A title without emphasis uses
 // the animated gradient instead.
-export function Title({ value, glow = "neon-cyan" }: { value: string; glow?: "neon-cyan" | "neon-pink" | "neon-purple" }) {
+export function Title({ value, glow = "neon-steel" }: { value: string; glow?: "neon-steel" | "neon-ember" | "neon-gold" }) {
   const text = value.replace(/\s*\n\s*/g, " ");
   if (!text.includes("[[")) return <span className="gradient-text">{text}</span>;
   return text.split(/(\[\[[\s\S]*?\]\])/).filter(Boolean).map((part, index) => part.startsWith("[[")

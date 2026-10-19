@@ -23,11 +23,11 @@ export function PageLead({ title, description, meta, icon = FaShieldAlt }: { tit
 }
 
 export function PageBody({ children, narrow = false, alt = false }: { children: ReactNode; narrow?: boolean; alt?: boolean }) {
-  return <section className={`relative py-20 ${alt ? "bg-vapor-darker/30" : ""}`}><div className={narrow ? "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" : container}>{children}</div></section>;
+  return <section className={`relative py-20 ${alt ? "bg-ink-deep/30" : ""}`}><div className={narrow ? "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" : container}>{children}</div></section>;
 }
 
 // "Important Dates" style heading: the glowing lead word, then white.
-export function SectionTitle({ glow, rest = "", tone = "neon-pink", className = "text-center mb-12" }: { glow: string; rest?: string; tone?: "neon-pink" | "neon-cyan"; className?: string }) {
+export function SectionTitle({ glow, rest = "", tone = "neon-ember", className = "text-center mb-12" }: { glow: string; rest?: string; tone?: "neon-ember" | "neon-steel"; className?: string }) {
   return <h2 className={`font-cyber text-3xl font-bold ${className}`}><span className={tone}>{glow}</span>{rest && <> <span className="text-white">{rest}</span></>}</h2>;
 }
 

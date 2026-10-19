@@ -3,27 +3,22 @@
 @source not "../backend";
 @source not "../responsive_screenshots";
 
+/* Molten Forge: ember into molten gold, cooled by tempered steel blue, on warm soot black.
+   Chosen to sit beside the logo's gold outline and steel-blue spear. */
 @theme {
-  --color-vapor-dark: #0a0a0f;
-  --color-vapor-darker: #050508;
-  --color-vapor-card: #121218;
-  --color-vapor-border: #1a1a24;
-  --color-vapor-pink: #ff006e;
-  --color-vapor-magenta: #ff1694;
-  --color-vapor-hot-pink: #ff6ec7;
-  --color-vapor-cyan: #00d9ff;
-  --color-vapor-aqua: #00f0ff;
-  --color-vapor-mint: #06ffa5;
-  --color-vapor-purple: #8000ff;
-  --color-vapor-violet: #9d4edd;
-  --color-vapor-lavender: #c77dff;
-  --color-vapor-rose: #f72585;
-  --color-vapor-yellow: #ffff00;
+  --color-ink: #0e0b09;        /* page background (soot) */
+  --color-ink-deep: #090706;   /* darker bands, footer, inputs */
+  --color-panel: #181310;      /* cards */
+  --color-edge: #2e241d;       /* borders */
+  --color-flame: #ff5a2b;      /* hottest end of the ember gradient */
+  --color-ember: #ff7a3d;      /* lead accent */
+  --color-gold: #ffc24b;       /* molten gold, third accent */
+  --color-steel: #7aa3e0;      /* tempered steel, cool second accent */
 
-  /* Tailwind v3 grays, so text tones match the reference exactly. */
-  --color-gray-300: #d1d5db;
-  --color-gray-400: #9ca3af;
-  --color-gray-500: #6b7280;
+  /* Warm greys, so body text sits in the same family as the soot background. */
+  --color-gray-300: #ddd3c8;
+  --color-gray-400: #ab9f92;
+  --color-gray-500: #7f7468;
 
   --font-sans: var(--font-inter), sans-serif;
   --font-cyber: var(--font-orbitron), sans-serif;
@@ -37,20 +32,8 @@
 }
 
 @layer base {
-  :root {
-    --vapor-dark: #0a0a0f;
-    --vapor-darker: #050508;
-    --vapor-card: #121218;
-    --vapor-border: #1a1a24;
-    --vapor-pink: #ff006e;
-    --vapor-magenta: #ff1694;
-    --vapor-cyan: #00d9ff;
-    --vapor-mint: #06ffa5;
-    --vapor-purple: #8000ff;
-    --vapor-violet: #9d4edd;
-  }
   html { scroll-behavior: smooth; }
-  body { background-color: var(--vapor-dark); color: #e0e0e0; min-height: 100vh; font-family: var(--font-sans); overflow-x: hidden; }
+  body { background-color: var(--color-ink); color: #f6efe8; min-height: 100vh; font-family: var(--font-sans); overflow-x: hidden; }
 
   h1 { font-family: var(--font-cyber); font-size: 2.25rem; font-weight: 700; line-height: 2.5rem; }
   h2 { font-family: var(--font-cyber); font-size: 1.875rem; font-weight: 600; line-height: 2.25rem; }
@@ -69,91 +52,97 @@
   }
 
   ::-webkit-scrollbar { width: 8px; }
-  ::-webkit-scrollbar-track { background: var(--vapor-darker); }
-  ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--vapor-pink), var(--vapor-purple)); border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, var(--vapor-magenta), var(--vapor-violet)); }
-  ::selection { background: var(--vapor-pink); color: #fff; }
+  ::-webkit-scrollbar-track { background: var(--color-ink-deep); }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--color-ember), var(--color-gold)); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, var(--color-flame), var(--color-ember)); }
+  ::selection { background: var(--color-ember); color: #150903; }
 
   /* Anchors land below the fixed 80px navigation. */
   [id] { scroll-margin-top: 5rem; }
 }
 
 @layer components {
+  /* Bright ember-to-gold fill, so the label is dark for contrast. */
   .cyber-button {
     position: relative; display: inline-block; text-align: center;
     padding: 0.75rem 2rem; border: 2px solid transparent;
-    font-family: var(--font-cyber); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #fff;
-    background-image: linear-gradient(to right, #ff006e, #8000ff, #00d9ff); background-size: 200% 200%;
+    font-family: var(--font-cyber); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #150903;
+    background-image: linear-gradient(to right, #ff6a33, #ffb347, #ff6a33); background-size: 200% 200%;
     animation: gradient-shift 4s infinite;
     transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
   }
-  .cyber-button:hover:not(:disabled) { box-shadow: 0 0 30px #ff006e80, 0 0 60px #00d9ff4d; transform: scale(1.05); }
+  .cyber-button:hover:not(:disabled) { box-shadow: 0 0 30px #ff7a3d80, 0 0 60px #ffc24b40; transform: scale(1.05); }
   .cyber-button::before {
     content: ""; position: absolute; inset: 0; z-index: -10; opacity: 0; filter: blur(15px);
-    background-image: linear-gradient(to right, #00d9ff, #8000ff, #ff006e);
+    background-image: linear-gradient(to right, #ffc24b, #ff7a3d, #ff5a2b);
     transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .cyber-button:hover:not(:disabled)::before { opacity: 0.7; }
   .cyber-button:disabled { opacity: 0.5; cursor: not-allowed; }
 
   .cyber-card {
-    position: relative; overflow: hidden; border: 1px solid #1a1a24; border-radius: 0.5rem; background-color: #121218;
+    position: relative; overflow: hidden; border: 1px solid var(--color-edge); border-radius: 0.5rem; background-color: var(--color-panel);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .cyber-card:hover { box-shadow: 0 0 20px #ff006e33; border-color: #ff006e80; }
+  .cyber-card:hover { box-shadow: 0 0 20px #ff7a3d33; border-color: #ff7a3d80; }
+  /* Steel edge-light along the top: the cool counterpoint to the warm card. */
   .cyber-card::before {
     content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background-image: linear-gradient(to right, transparent, #00d9ff, transparent);
+    background-image: linear-gradient(to right, transparent, var(--color-steel), transparent);
   }
 
-  .neon-pink { color: #ff006e; text-shadow: 0 0 10px var(--vapor-pink), 0 0 20px var(--vapor-pink), 0 0 40px var(--vapor-pink); }
-  .neon-cyan { color: #00d9ff; text-shadow: 0 0 10px var(--vapor-cyan), 0 0 20px var(--vapor-cyan), 0 0 40px var(--vapor-cyan); }
-  .neon-purple { color: #8000ff; text-shadow: 0 0 10px var(--vapor-purple), 0 0 20px var(--vapor-purple), 0 0 40px var(--vapor-purple); }
+  .neon-ember { color: var(--color-ember); text-shadow: 0 0 10px #ff7a3d, 0 0 20px #ff7a3d99, 0 0 40px #ff5a2b66; }
+  .neon-steel { color: var(--color-steel); text-shadow: 0 0 10px #7aa3e0, 0 0 20px #7aa3e099, 0 0 40px #7aa3e066; }
+  .neon-gold { color: var(--color-gold); text-shadow: 0 0 10px #ffc24b, 0 0 20px #ffc24b99, 0 0 40px #ff9a3d66; }
 
   .gradient-text {
     color: transparent; -webkit-background-clip: text; background-clip: text;
-    background-image: linear-gradient(to right, #ff006e, #8000ff, #00d9ff); background-size: 200% 200%;
+    background-image: linear-gradient(to right, #ff5a2b, #ff9a3d, #ffd36b, #ff9a3d); background-size: 200% 200%;
     animation: gradient-shift 4s infinite;
   }
 
   .cyber-grid {
-    background-image: linear-gradient(#00d9ff0d 1px, transparent 1px), linear-gradient(90deg, #00d9ff0d 1px, transparent 1px);
+    background-image: linear-gradient(#ff7a3d0b 1px, transparent 1px), linear-gradient(90deg, #ff7a3d0b 1px, transparent 1px);
     background-size: 50px 50px;
   }
 
   .nav-link { position: relative; transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
   .nav-link::after {
     content: ""; position: absolute; bottom: 0; left: 0; width: 0; height: 0.125rem;
-    background-image: linear-gradient(to right, #ff006e, #00d9ff);
+    background-image: linear-gradient(to right, var(--color-ember), var(--color-gold));
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .nav-link:hover::after { width: 100%; }
 
   .cyber-input, .cyber-textarea {
-    width: 100%; padding: 0.75rem 1rem; border: 1px solid #1a1a24; border-radius: 0.5rem;
-    background-color: #050508; color: #fff; font: inherit; font-size: 1rem;
+    width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--color-edge); border-radius: 0.5rem;
+    background-color: var(--color-ink-deep); color: #f6efe8; font: inherit; font-size: 1rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .cyber-input::placeholder, .cyber-textarea::placeholder { color: #6b7280; }
-  .cyber-input:focus, .cyber-textarea:focus { border-color: #00d9ff; box-shadow: 0 0 10px #00d9ff4d; outline: 2px solid transparent; outline-offset: 2px; }
+  .cyber-input::placeholder, .cyber-textarea::placeholder { color: var(--color-gray-500); }
+  .cyber-input:focus, .cyber-textarea:focus { border-color: var(--color-steel); box-shadow: 0 0 10px #7aa3e04d; outline: 2px solid transparent; outline-offset: 2px; }
   .cyber-textarea { resize: none; }
 
   .hero-bg { position: relative; overflow: hidden; }
   .hero-bg::before {
     content: ""; position: absolute; inset: 0;
-    background: radial-gradient(circle at 20%, #ff006e26 0%, transparent 50%), radial-gradient(circle at 80%, #00d9ff26 0%, transparent 50%), radial-gradient(circle at 50% 80%, #8000ff1a 0%, transparent 50%);
+    background: radial-gradient(circle at 20%, #ff7a3d24 0%, transparent 50%), radial-gradient(circle at 80%, #7aa3e01f 0%, transparent 50%), radial-gradient(circle at 50% 80%, #ffc24b14 0%, transparent 50%);
     animation: hero-pulse 8s ease-in-out infinite;
   }
 
   .countdown-digit {
-    position: relative; padding: 0.75rem 1rem; border: 1px solid #1a1a24; border-radius: 0.5rem; background-color: #121218;
+    position: relative; padding: 0.75rem 1rem; border: 1px solid var(--color-edge); border-radius: 0.5rem; background-color: var(--color-panel);
     font-family: var(--font-cyber); font-size: 2.25rem; font-weight: 700; line-height: 2.5rem;
-    box-shadow: 0 0 20px #ff006e4d;
+    box-shadow: 0 0 20px #ff7a3d4d;
   }
-  .countdown-digit::before { content: ""; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background-color: #1a1a24; }
+  .countdown-digit::before { content: ""; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background-color: var(--color-edge); }
   @media (min-width: 768px) {
     .countdown-digit { padding: 1rem 1.5rem; font-size: 3.75rem; line-height: 1; }
   }
+
+  /* A soft ember halo behind small copies of the logo, so its navy does not sink into the page. */
+  .logo-halo { background: radial-gradient(circle, #ff7a3d59 0%, #ff7a3d1f 45%, transparent 70%); border-radius: 9999px; }
+  .logo-halo img { filter: drop-shadow(0 0 4px #ff9a3d8c); }
 
   /* Home-page logo intro (see LogoIntro). While html[data-intro] is set the hero waits; removing it
      fades the logo in and lifts the rest of the hero in order. */
@@ -166,7 +155,7 @@
   /* Spam honeypot: present for bots, invisible and unreachable for people. */
   .contact-trap { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 
-  .skip-link { position: fixed; top: 1rem; left: 1rem; z-index: 100; transform: translateY(-200%); padding: 0.5rem 1rem; border-radius: 0.25rem; background: #ff006e; color: #fff; }
+  .skip-link { position: fixed; top: 1rem; left: 1rem; z-index: 100; transform: translateY(-200%); padding: 0.5rem 1rem; border-radius: 0.25rem; background: var(--color-ember); color: #150903; }
   .skip-link:focus { transform: none; }
 }
 

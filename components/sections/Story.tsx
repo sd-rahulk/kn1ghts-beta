@@ -44,7 +44,7 @@ function Link({ site, href, children, fallback = null, ...props }: { site: SiteC
   return <a href={href} {...(href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})} {...props}>{children}</a>;
 }
 function Block({ section, alt, narrow = false, children }: { section: SiteSection; alt: boolean; narrow?: boolean; children: ReactNode }) {
-  return <section id={section.id} data-section-type={section.type} className={`relative py-24 ${alt ? "bg-vapor-darker/30" : ""}`}>
+  return <section id={section.id} data-section-type={section.type} className={`relative py-24 ${alt ? "bg-ink-deep/30" : ""}`}>
     <div className={narrow ? "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" : container}>{children}</div>
   </section>;
 }
@@ -58,7 +58,7 @@ function Head({ section }: { section: SiteSection }) {
 function Card({ icon: Icon, index, label, title, body, link }: { icon: IconType; index: number; label?: string; title: ReactNode; body?: string; link?: ReactNode }) {
   return <article className={`${card} flex flex-col`}>
     <Icon className={`w-12 h-12 ${accent(index).text} mb-4 group-hover:scale-110 transition-transform duration-300`} aria-hidden="true" />
-    {label && <p className="font-mono text-sm text-vapor-pink uppercase mb-2">{label}</p>}
+    {label && <p className="font-mono text-sm text-ember uppercase mb-2">{label}</p>}
     <h3 className="font-cyber text-xl font-semibold text-white mb-2">{title}</h3>
     {body && <p className="text-gray-400 leading-relaxed">{body}</p>}
     {link && <div className="mt-auto pt-4">{link}</div>}
@@ -66,7 +66,7 @@ function Card({ icon: Icon, index, label, title, body, link }: { icon: IconType;
 }
 function Empty({ label, title, description, children }: { label?: string; title?: string; description?: string; children?: ReactNode }) {
   return <div className="cyber-card p-12 text-center max-w-3xl mx-auto">
-    {label && <p className="font-mono text-sm text-vapor-pink uppercase tracking-wider mb-4">{label}</p>}
+    {label && <p className="font-mono text-sm text-ember uppercase tracking-wider mb-4">{label}</p>}
     {title && <h3 className="font-cyber text-2xl md:text-3xl font-bold text-white mb-4"><Plain value={title} /></h3>}
     {description && <p className="text-gray-400">{description}</p>}
     {children && <div className="mt-6">{children}</div>}
@@ -77,8 +77,8 @@ function ViewAll({ site, href, children }: { site: SiteContent; href: string; ch
 }
 function CallToAction({ icon: Icon, children }: { icon: IconType; children: ReactNode }) {
   return <div className="cyber-card p-12 relative overflow-hidden text-center">
-    <div className="absolute inset-0 bg-gradient-to-br from-vapor-pink/10 via-vapor-purple/10 to-vapor-cyan/10" />
-    <div className="relative z-10"><Icon className="w-16 h-16 text-vapor-pink mx-auto mb-6" aria-hidden="true" />{children}</div>
+    <div className="absolute inset-0 bg-gradient-to-br from-ember/10 via-gold/10 to-steel/10" />
+    <div className="relative z-10"><Icon className="w-16 h-16 text-ember mx-auto mb-6" aria-hidden="true" />{children}</div>
   </div>;
 }
 
@@ -92,15 +92,15 @@ function Hero({ section: s, site }: { section: SiteSection; site: SiteContent })
       {s.eyebrow && <div className="intro-fade" style={{ "--i": 0 } as React.CSSProperties}><Pill icon={FaShieldAlt}>{s.eyebrow}</Pill></div>}
       <div className="relative inline-block mb-8">
         {/* Glow sits behind the logo so it does not tint the logo's own colours. */}
-        <div className="absolute inset-0 bg-vapor-pink/20 rounded-full blur-3xl animate-pulse pointer-events-none" />
+        <div className="absolute inset-0 bg-ember/20 rounded-full blur-3xl animate-pulse pointer-events-none" />
         <div className="relative w-[280px] h-[280px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] mx-auto animate-float intro-float" data-intro-target>
-          <Image src={LOGO} alt="" fill priority sizes="(max-width: 768px) 280px, (max-width: 1024px) 400px, 500px" className="intro-logo object-contain drop-shadow-[0_0_30px_rgba(255,0,110,0.5)]" />
+          <Image src={LOGO} alt="" fill priority sizes="(max-width: 768px) 280px, (max-width: 1024px) 400px, 500px" className="intro-logo object-contain drop-shadow-[0_0_30px_rgba(255,122,61,0.5)]" />
         </div>
       </div>
       {s.description && <p className="intro-fade text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed" style={{ "--i": 1 } as React.CSSProperties}>{s.description}</p>}
-      {f.tagline && <div className="intro-fade" style={{ "--i": 2 } as React.CSSProperties}><div className="inline-flex items-center space-x-3 bg-vapor-card/80 border border-vapor-border rounded-full px-6 py-3 mb-12">
-        <span className="w-2 h-2 bg-vapor-mint rounded-full animate-pulse" />
-        <span className="font-mono text-vapor-cyan tracking-wider">{f.tagline}</span>
+      {f.tagline && <div className="intro-fade" style={{ "--i": 2 } as React.CSSProperties}><div className="inline-flex items-center space-x-3 bg-panel/80 border border-edge rounded-full px-6 py-3 mb-12">
+        <span className="w-2 h-2 bg-gold rounded-full animate-pulse" />
+        <span className="font-mono text-steel tracking-wider">{f.tagline}</span>
       </div></div>}
       {path.length > 0 && <div className="intro-fade mb-12" style={{ "--i": 3 } as React.CSSProperties}>
         {f.mindset && <h3 className="font-cyber text-lg text-gray-400 mb-6 uppercase tracking-wider">{f.mindset.replace(/\s*\n\s*/g, " ")}</h3>}
@@ -118,7 +118,7 @@ function Hero({ section: s, site }: { section: SiteSection; site: SiteContent })
     </div>
     <div className="intro-fade absolute bottom-8 left-1/2" style={{ "--i": 5 } as React.CSSProperties}>
       <Link site={site} href={f.scrollHref || ""} className="block -translate-x-1/2 animate-bounce" aria-label={f.scrollLabel}>
-        <span className="w-6 h-10 border-2 border-vapor-cyan/50 rounded-full flex justify-center"><span className="w-1 h-3 bg-vapor-cyan rounded-full mt-2 animate-pulse" /></span>
+        <span className="w-6 h-10 border-2 border-steel/50 rounded-full flex justify-center"><span className="w-1 h-3 bg-steel rounded-full mt-2 animate-pulse" /></span>
       </Link>
     </div>
   </section>;
@@ -138,13 +138,13 @@ function Section({ section: s, alt, site, platform, contactReady }: { section: S
       return <Block {...props}><div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
           {s.eyebrow && <Pill icon={icon}>{s.eyebrow}</Pill>}
-          <h2 className="font-cyber text-4xl font-bold mb-6"><Title value={s.title} glow="neon-pink" /></h2>
-          {f.secondHeading && <h2 className="font-cyber text-4xl font-bold mb-6"><Title value={f.secondHeading} glow="neon-pink" /></h2>}
+          <h2 className="font-cyber text-4xl font-bold mb-6"><Title value={s.title} glow="neon-ember" /></h2>
+          {f.secondHeading && <h2 className="font-cyber text-4xl font-bold mb-6"><Title value={f.secondHeading} glow="neon-ember" /></h2>}
           {s.description && <div className="space-y-4 text-gray-300 leading-relaxed"><p>{s.description}</p></div>}
         </div>
         {rail.length > 0 && <div className="cyber-card p-8 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-vapor-pink/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-vapor-cyan/20 rounded-full blur-3xl" />
+          <div className="absolute top-0 right-0 w-32 h-32 bg-ember/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-steel/20 rounded-full blur-3xl" />
           <div className="relative z-10 grid grid-cols-1 gap-6">{rail.map((entry, i) => <div key={i} className="text-center p-4">
             <div className="font-cyber text-4xl font-bold gradient-text mb-2">{pad(i + 1)}</div>
             <div className="text-gray-400 text-sm font-mono uppercase tracking-wider">{entry}</div>
@@ -155,10 +155,10 @@ function Section({ section: s, alt, site, platform, contactReady }: { section: S
     case "disciplines": return <Block {...props}><Head section={s} />
       <div className={`grid grid-cols-1 sm:grid-cols-2 ${s.items.length >= 4 ? "lg:grid-cols-4" : "lg:grid-cols-3"} gap-6`}>{s.items.map((item, i) => {
         const Icon = disciplineIcon(item.title, i);
-        return <div key={item.id} className="relative group"><div className="cyber-card p-8 text-center h-full flex flex-col items-center justify-center group-hover:border-vapor-cyan/50 transition-all duration-300">
-          <Icon className="w-16 h-16 text-vapor-purple mb-4 group-hover:text-vapor-cyan transition-colors duration-300" aria-hidden="true" />
+        return <div key={item.id} className="relative group"><div className="cyber-card p-8 text-center h-full flex flex-col items-center justify-center group-hover:border-steel/50 transition-all duration-300">
+          <Icon className="w-16 h-16 text-gold mb-4 group-hover:text-steel transition-colors duration-300" aria-hidden="true" />
           <h3 className="font-cyber text-lg font-semibold text-white mb-2">{item.title}</h3>
-          {item.body && <p className="font-mono text-sm text-vapor-pink">{item.body}</p>}
+          {item.body && <p className="font-mono text-sm text-ember">{item.body}</p>}
         </div></div>;
       })}</div>
     </Block>;
@@ -180,12 +180,12 @@ function Section({ section: s, alt, site, platform, contactReady }: { section: S
     </Block>;
     case "team": return <Block {...props}><Head section={s} />
       <div className={`grid grid-cols-1 sm:grid-cols-2 ${s.items.length >= 4 ? "lg:grid-cols-4" : "lg:grid-cols-3"} gap-6`}>{s.items.map((item, i) => <article key={item.id} className="cyber-card group hover:-translate-y-2 transition-all duration-300 overflow-hidden">
-        <div className="relative aspect-square w-full bg-vapor-darker overflow-hidden"><MemberPortrait src={item.imageUrl || null} name={item.title} /></div>
+        <div className="relative aspect-square w-full bg-ink-deep overflow-hidden"><MemberPortrait src={item.imageUrl || null} name={item.title} /></div>
         <div className="p-4">
-          <p className="font-mono text-xs text-vapor-cyan uppercase mb-1">{f.itemLabel} / {pad(i + 1)}</p>
+          <p className="font-mono text-xs text-steel uppercase mb-1">{f.itemLabel} / {pad(i + 1)}</p>
           <h3 className="font-cyber text-base font-semibold text-white mb-1">{item.title}</h3>
           <p className="text-gray-400 text-xs leading-relaxed">{item.body}</p>
-          {(item.meta || item.tags.length > 0) && <p className="font-mono text-xs text-vapor-pink mt-2">{item.meta || item.tags.join(" · ")}</p>}
+          {(item.meta || item.tags.length > 0) && <p className="font-mono text-xs text-ember mt-2">{item.meta || item.tags.join(" · ")}</p>}
           <Link site={site} href={item.href} className={`${textLink} text-sm mt-3`} aria-label={`${item.title} profile`}>{site.settings.labels.profile}<Arrow /></Link>
         </div>
       </article>)}</div>
@@ -196,8 +196,8 @@ function Section({ section: s, alt, site, platform, contactReady }: { section: S
     </Block>;
     case "events": return <Block {...props}><Head section={s} />
       {platform.events.length ? <div className={`grid grid-cols-1 ${columns(platform.events.length)} gap-6`}>{platform.events.map((event) => <article key={event.id} className="cyber-card p-6 text-center group hover:-translate-y-2 transition-all duration-300">
-        <div className="w-14 h-14 bg-vapor-purple/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-vapor-purple/30 transition-colors duration-300"><FaCalendarAlt className="w-7 h-7 text-vapor-purple" aria-hidden="true" /></div>
-        <p className="font-mono text-vapor-cyan text-sm mb-2">{date(new Date(event.startsAt).toISOString(), site.settings.labels.fieldReport)}</p>
+        <div className="w-14 h-14 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-gold/30 transition-colors duration-300"><FaCalendarAlt className="w-7 h-7 text-gold" aria-hidden="true" /></div>
+        <p className="font-mono text-steel text-sm mb-2">{date(new Date(event.startsAt).toISOString(), site.settings.labels.fieldReport)}</p>
         <h3 className="font-cyber text-lg font-semibold text-white mb-1">{event.title}</h3>
         <p className="text-gray-400 text-sm">{event.description}</p>
       </article>)}</div> : <Empty label="EVENTS / 00" title="No upcoming events are published." />}
@@ -206,11 +206,11 @@ function Section({ section: s, alt, site, platform, contactReady }: { section: S
     case "challenge": return <Block {...props} narrow><Head section={s} />
       <CallToAction icon={FaFlag}>
         {platform.challenge ? <>
-          <p className="font-mono text-sm text-vapor-cyan uppercase tracking-wider mb-4">{platform.challenge.category} / {platform.challenge.difficulty}</p>
+          <p className="font-mono text-sm text-steel uppercase tracking-wider mb-4">{platform.challenge.category} / {platform.challenge.difficulty}</p>
           <h3 className="font-cyber text-3xl md:text-4xl font-bold text-white mb-4">{platform.challenge.title}</h3>
           <p className="text-gray-400 max-w-xl mx-auto mb-8 text-lg">{platform.challenge.description}</p>
         </> : <>
-          <p className="font-mono text-sm text-vapor-cyan uppercase tracking-wider mb-4">WEEKLY / STANDBY</p>
+          <p className="font-mono text-sm text-steel uppercase tracking-wider mb-4">WEEKLY / STANDBY</p>
           <h3 className="font-cyber text-3xl md:text-4xl font-bold text-white mb-4">Next challenge incoming.</h3>
           <p className="text-gray-400 max-w-xl mx-auto mb-8 text-lg">The next in-house brief will appear here after it is published.</p>
         </>}
@@ -223,18 +223,18 @@ function Section({ section: s, alt, site, platform, contactReady }: { section: S
       <ViewAll site={site} href="/blog">EXPLORE THE BLOG</ViewAll>
     </Block>;
     case "recruitment": return <Block {...props} narrow><CallToAction icon={icon}>
-      {s.eyebrow && <p className="font-mono text-sm text-vapor-cyan uppercase tracking-wider mb-4">{s.eyebrow}</p>}
+      {s.eyebrow && <p className="font-mono text-sm text-steel uppercase tracking-wider mb-4">{s.eyebrow}</p>}
       <h2 className="font-cyber text-3xl md:text-4xl font-bold text-white mb-4"><Title value={s.title} /></h2>
       <p className="text-gray-400 max-w-xl mx-auto mb-8 text-lg">{s.description}</p>
       <div className="flex flex-col sm:flex-row justify-center gap-4"><Link site={site} className="cyber-button" href={f.ctaHref || ""}>{f.ctaLabel}</Link></div>
     </CallToAction></Block>;
     case "finale": return <Block {...props} narrow><CallToAction icon={icon}>
-      {s.eyebrow && <p className="font-mono text-sm text-vapor-cyan uppercase tracking-wider mb-4">{s.eyebrow}</p>}
+      {s.eyebrow && <p className="font-mono text-sm text-steel uppercase tracking-wider mb-4">{s.eyebrow}</p>}
       <h2 className="font-cyber text-3xl md:text-4xl font-bold mb-4"><span className="sr-only">{s.title} — </span><span className="gradient-text">{f.tagline || s.title}</span></h2>
       <p className="text-gray-400 max-w-xl mx-auto mb-8 text-lg">{s.description}</p>
       <div className="flex flex-col sm:flex-row justify-center gap-4"><Link site={site} className="cyber-button" href={f.ctaHref || ""}>{f.ctaLabel}</Link></div>
     </CallToAction></Block>;
-    case "contact": return <section id={s.id} data-section-type={s.type} className={`relative py-20 ${alt ? "bg-vapor-darker/30" : ""}`} aria-labelledby={`${s.id}-heading`}>
+    case "contact": return <section id={s.id} data-section-type={s.type} className={`relative py-20 ${alt ? "bg-ink-deep/30" : ""}`} aria-labelledby={`${s.id}-heading`}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"><div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
         <div className="lg:col-span-2">
           {s.eyebrow && <Pill icon={icon}>{s.eyebrow}</Pill>}
@@ -247,9 +247,9 @@ function Section({ section: s, alt, site, platform, contactReady }: { section: S
     default: return <Block {...props}><Head section={s} />
       {s.items.length > 0 && <div className={`grid grid-cols-1 ${columns(s.items.length)} gap-6`}>{s.items.map((item, i) => item.imageUrl
         ? <article key={item.id} className="cyber-card group hover:-translate-y-2 transition-all duration-300 overflow-hidden">
-          <div className="relative aspect-square w-full bg-vapor-darker overflow-hidden"><MemberPortrait src={item.imageUrl} name={item.title} /></div>
+          <div className="relative aspect-square w-full bg-ink-deep overflow-hidden"><MemberPortrait src={item.imageUrl} name={item.title} /></div>
           <div className="p-4">
-            {item.label && <p className="font-mono text-xs text-vapor-cyan uppercase mb-1">{item.label}</p>}
+            {item.label && <p className="font-mono text-xs text-steel uppercase mb-1">{item.label}</p>}
             <h3 className="font-cyber text-base font-semibold text-white mb-1">{item.title}</h3>
             <p className="text-gray-400 text-xs leading-relaxed">{item.body}</p>
             <Link site={site} className={`${textLink} text-sm mt-3`} href={item.href}>{item.meta || item.title}<Arrow /></Link>

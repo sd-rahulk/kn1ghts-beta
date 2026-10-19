@@ -9,7 +9,7 @@ export const metadata = { title: "Sign in | KN1GHTS" };
 export default function SignInPage() {
   return <>
     <PageLead meta="SIGN IN" title="RETURN TO THE ARENA." description="Sign in with your verified email to submit weekly challenge flags and join moderated blog discussions." icon={FaSignInAlt} />
-    <FormLayout aside={<><SectionTitle glow="Sign" rest="in" tone="neon-cyan" className="mb-4" /><p className="text-gray-400 leading-relaxed mb-6">New here?</p><Link className={textLink} href="/sign-up">CREATE AN ACCOUNT<Arrow /></Link></>}>
+    <FormLayout aside={<><SectionTitle glow="Sign" rest="in" tone="neon-steel" className="mb-4" /><p className="text-gray-400 leading-relaxed mb-6">New here?</p><Link className={textLink} href="/sign-up">CREATE AN ACCOUNT<Arrow /></Link></>}>
       <AuthForm mode="sign-in" />
     </FormLayout>
   </>;

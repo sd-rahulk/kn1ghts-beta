@@ -26,23 +26,23 @@ export function SiteFooter({ site }: { site: SiteContent }) {
   const { settings } = site;
   const social = settings.footerLinks.filter((link) => /^(https?:|mailto:)/.test(link.href));
   const columns = [
-    { title: "Explore", heading: "text-vapor-pink", hover: "hover:text-vapor-cyan", links: settings.navigation.filter((link) => availableLink(site, link.href)) },
-    { title: "Community", heading: "text-vapor-cyan", hover: "hover:text-vapor-pink", links: pageLinks.filter((link) => link.href !== "/") },
-    { title: "Connect", heading: "text-vapor-purple", hover: "hover:text-vapor-mint", links: settings.footerLinks.filter((link) => availableLink(site, link.href)) },
+    { title: "Explore", heading: "text-ember", hover: "hover:text-steel", links: settings.navigation.filter((link) => availableLink(site, link.href)) },
+    { title: "Community", heading: "text-steel", hover: "hover:text-ember", links: pageLinks.filter((link) => link.href !== "/") },
+    { title: "Connect", heading: "text-gold", hover: "hover:text-gold", links: settings.footerLinks.filter((link) => availableLink(site, link.href)) },
   ];
-  return <footer className="relative bg-vapor-darker border-t border-vapor-border">
-    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-vapor-pink to-transparent" />
+  return <footer className="relative bg-ink-deep border-t border-edge">
+    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-ember to-transparent" />
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
         <div className="lg:col-span-1">
-          <Link className="inline-block mb-4 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(255,0,110,0.6)]" href="/" aria-label={`${settings.name} home`}>
+          <Link className="inline-block mb-4 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(255,122,61,0.6)]" href="/" aria-label={`${settings.name} home`}>
             <Brand name={settings.name} mark={settings.registrationMark} size="h-12 w-12" text="text-xl" />
           </Link>
           <p className="text-gray-400 text-sm leading-relaxed mb-6">{settings.description}</p>
           {social.length > 0 && <div className="flex space-x-4">
             {social.map((link, index) => {
               const Icon = socialIcon(link.href);
-              return <a key={`${link.label}-${link.href}`} href={link.href} {...external(link.href)} className={`p-2 bg-vapor-card border border-vapor-border rounded-lg text-gray-400 ${accent(index + 1).hover} transition-all duration-300`} aria-label={link.label}><Icon className="w-5 h-5" /></a>;
+              return <a key={`${link.label}-${link.href}`} href={link.href} {...external(link.href)} className={`p-2 bg-panel border border-edge rounded-lg text-gray-400 ${accent(index + 1).hover} transition-all duration-300`} aria-label={link.label}><Icon className="w-5 h-5" /></a>;
             })}
           </div>}
         </div>
@@ -53,7 +53,7 @@ export function SiteFooter({ site }: { site: SiteContent }) {
           </ul>
         </div>)}
       </div>
-      <div className="mt-12 pt-8 border-t border-vapor-border">
+      <div className="mt-12 pt-8 border-t border-edge">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-center">
           <p className="text-gray-500 text-sm">{settings.copyright}</p>
           <p className="text-gray-500 text-sm font-mono">{settings.headerLine}</p>

@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type { IconType } from "react-icons";
 
 export function Pill({ icon: Icon, children, className = "mb-6" }: { icon: IconType; children: ReactNode; className?: string }) {
-  return <div className={`inline-flex items-center space-x-2 bg-vapor-card/80 border border-vapor-border rounded-full px-4 py-2 ${className}`}><Icon className="text-vapor-pink" aria-hidden="true" /><span className="font-mono text-sm text-gray-400">{children}</span></div>;
+  return <div className={`inline-flex items-center space-x-2 bg-panel/80 border border-edge rounded-full px-4 py-2 ${className}`}><Icon className="text-ember" aria-hidden="true" /><span className="font-mono text-sm text-gray-400">{children}</span></div>;
 }
 
 export function Arrow() {

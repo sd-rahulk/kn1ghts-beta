@@ -29,6 +29,6 @@ export default async function Home({ searchParams }: Props) {
   const contactReady = Boolean(process.env.BACKEND_URL && process.env.CONTACT_API_SECRET) && !preview;
   return <SiteChrome site={site}>
     <Story site={site} platform={platform} contactReady={contactReady} />
-    {preview && <div className="fixed z-[100] left-1/2 bottom-4 -translate-x-1/2 whitespace-nowrap px-4 py-3 bg-vapor-card border border-vapor-pink rounded-lg font-mono text-sm text-vapor-pink" role="status">DRAFT PREVIEW · Not published</div>}
+    {preview && <div className="fixed z-[100] left-1/2 bottom-4 -translate-x-1/2 whitespace-nowrap px-4 py-3 bg-panel border border-ember rounded-lg font-mono text-sm text-ember" role="status">DRAFT PREVIEW · Not published</div>}
   </SiteChrome>;
 }
