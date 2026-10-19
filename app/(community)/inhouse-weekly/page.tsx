@@ -23,10 +23,10 @@ export default async function WeeklyPage() {
       </div></PageBody>
       <PageBody narrow alt>
         <SectionTitle glow="Leaderboard" />
-        {data.leaderboard.length ? <div className="space-y-4">{data.leaderboard.map((solve, index) => <div className={`relative pl-8 border-l-2 rounded-r-lg p-6 ${index === 0 ? "border-ember bg-ember/10 ring-1 ring-ember/50" : "border-edge bg-panel"}`} key={`${solve.handle}-${solve.solvedAt}`}>
-          <div className={`absolute left-0 top-6 w-4 h-4 -translate-x-1/2 rounded-full ${index === 0 ? "bg-ember" : "bg-panel border-2 border-edge"}`} />
+        {data.leaderboard.length ? <div className="space-y-4">{data.leaderboard.map((solve, index) => <div className={`relative pl-8 border-l-2 rounded-r-lg p-6 ${index === 0 ? "border-verdigris bg-verdigris/10 ring-1 ring-verdigris/50" : "border-edge bg-panel"}`} key={`${solve.handle}-${solve.solvedAt}`}>
+          <div className={`absolute left-0 top-6 w-4 h-4 -translate-x-1/2 rounded-full ${index === 0 ? "bg-verdigris" : "bg-panel border-2 border-edge"}`} />
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="flex items-center space-x-3"><span className="font-mono text-steel">{String(index + 1).padStart(2, "0")}</span><h3 className="font-cyber text-xl font-semibold text-white">{solve.handle}</h3></div>
+            <div className="flex items-center space-x-3"><span className="font-mono text-brass">{String(index + 1).padStart(2, "0")}</span><h3 className="font-cyber text-xl font-semibold text-white">{solve.handle}</h3></div>
             <time className="font-mono text-sm text-gray-400">{formatDate(solve.solvedAt)}</time>
           </div>
         </div>)}</div> : <EmptyState>No solves recorded yet.</EmptyState>}
@@ -35,7 +35,7 @@ export default async function WeeklyPage() {
     {data.archive.length > 0 && <PageBody><SectionTitle glow="Previous" rest="challenges" />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">{data.archive.map((challenge, index) => <article className={`${card} flex flex-col`} key={challenge.id}>
         <FaFlag className={`w-12 h-12 ${accent(index).text} mb-4 group-hover:scale-110 transition-transform duration-300`} aria-hidden="true" />
-        <p className="font-mono text-sm text-ember uppercase mb-2">{challenge.category} / {challenge.difficulty}</p>
+        <p className="font-mono text-sm text-verdigris uppercase mb-2">{challenge.category} / {challenge.difficulty}</p>
         <h3 className="font-cyber text-xl font-semibold text-white mb-2">{challenge.title}</h3>
         <p className="text-gray-400 leading-relaxed">{challenge.description.slice(0, 220)}</p>
       </article>)}</div>

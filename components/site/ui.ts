@@ -9,23 +9,23 @@ export const pageLinks = [
 ];
 
 export const container ="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8";
-export const label = "block text-sm font-mono text-steel";
+export const label = "block text-sm font-mono text-brass";
 export const input = "cyber-input mt-2";
 export const textarea = "cyber-textarea mt-2";
 export const primaryButton = "cyber-button";
-export const secondaryButton = "px-8 py-3 font-cyber font-semibold text-steel uppercase tracking-wider border-2 border-steel rounded hover:bg-steel/10 transition-all duration-300 text-center disabled:opacity-50";
-export const mutedButton = "px-8 py-3 font-cyber font-semibold text-gray-300 uppercase tracking-wider border-2 border-edge rounded hover:border-gold hover:text-gold transition-all duration-300 text-center";
-export const textAction = "justify-self-start font-mono text-sm text-gray-400 hover:text-ember transition-colors duration-300 disabled:opacity-50";
-export const textLink = "inline-flex items-center gap-2 font-mono text-steel hover:text-ember transition-colors duration-300";
+export const secondaryButton = "px-8 py-3 font-cyber font-semibold text-brass uppercase tracking-wider border-2 border-brass rounded hover:bg-brass/10 transition-all duration-300 text-center disabled:opacity-50";
+export const mutedButton = "px-8 py-3 font-cyber font-semibold text-gray-300 uppercase tracking-wider border-2 border-edge rounded hover:border-patina hover:text-patina transition-all duration-300 text-center";
+export const textAction = "justify-self-start font-mono text-sm text-gray-400 hover:text-verdigris transition-colors duration-300 disabled:opacity-50";
+export const textLink = "inline-flex items-center gap-2 font-mono text-brass hover:text-verdigris transition-colors duration-300";
 export const formStatus = "min-h-5 font-mono text-sm text-gray-400 whitespace-pre-wrap";
-export const formStatusError = "min-h-5 font-mono text-sm text-ember whitespace-pre-wrap";
+export const formStatusError = "min-h-5 font-mono text-sm text-brass whitespace-pre-wrap";
 export const tag = "px-2 py-1 bg-edge text-gray-400 text-xs font-mono rounded uppercase";
 export const card = "cyber-card p-6 group hover:-translate-y-2 transition-all duration-300";
 
-// Accent rotation used for icons and hover states: ember, tempered steel, molten gold.
+// Accent rotation used for icons and hover states: verdigris, brass, light patina.
 export const accents = [
-  { text: "text-ember", tile: "bg-ember/20", hover: "hover:text-ember hover:border-ember/50" },
-  { text: "text-steel", tile: "bg-steel/20", hover: "hover:text-steel hover:border-steel/50" },
-  { text: "text-gold", tile: "bg-gold/20", hover: "hover:text-gold hover:border-gold/50" },
+  { text: "text-verdigris", tile: "bg-verdigris/20", hover: "hover:text-verdigris hover:border-verdigris/50" },
+  { text: "text-brass", tile: "bg-brass/20", hover: "hover:text-brass hover:border-brass/50" },
+  { text: "text-patina", tile: "bg-patina/20", hover: "hover:text-patina hover:border-patina/50" },
 ] as const;
 export const accent = (index: number) => accents[index % accents.length];

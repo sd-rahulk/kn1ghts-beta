@@ -17,7 +17,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#0a0a0f",
+  themeColor: "#0c1011",
 };
 
 // Runs before first paint: decides whether the home-page logo intro plays, so the hero never flashes

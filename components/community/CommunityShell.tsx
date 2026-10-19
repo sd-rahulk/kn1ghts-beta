@@ -27,7 +27,7 @@ export function PageBody({ children, narrow = false, alt = false }: { children: 
 }
 
 // "Important Dates" style heading: the glowing lead word, then white.
-export function SectionTitle({ glow, rest = "", tone = "neon-ember", className = "text-center mb-12" }: { glow: string; rest?: string; tone?: "neon-ember" | "neon-steel"; className?: string }) {
+export function SectionTitle({ glow, rest = "", tone = "neon-verdigris", className = "text-center mb-12" }: { glow: string; rest?: string; tone?: "neon-verdigris" | "neon-brass"; className?: string }) {
   return <h2 className={`font-cyber text-3xl font-bold ${className}`}><span className={tone}>{glow}</span>{rest && <> <span className="text-white">{rest}</span></>}</h2>;
 }
 

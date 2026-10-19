@@ -16,7 +16,7 @@ export default async function TeamPage() {
       <div className="p-4">
         <h2 className="font-cyber text-base font-semibold text-white mb-1">{member.title}</h2>
         <p className="text-gray-400 text-xs leading-relaxed">{member.body}</p>
-        {(member.meta || member.tags.length > 0) && <p className="font-mono text-xs text-ember mt-2">{member.meta || member.tags.join(" · ")}</p>}
+        {(member.meta || member.tags.length > 0) && <p className="font-mono text-xs text-verdigris mt-2">{member.meta || member.tags.join(" · ")}</p>}
         {member.href && <a className={`${textLink} text-sm mt-3`} href={member.href} target="_blank" rel="noreferrer">PROFILE<Arrow /></a>}
       </div>
     </article>)}</div> : <EmptyState>No team profiles are published.</EmptyState>}</PageBody>

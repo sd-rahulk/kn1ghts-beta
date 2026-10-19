@@ -26,16 +26,16 @@ export function SiteFooter({ site }: { site: SiteContent }) {
   const { settings } = site;
   const social = settings.footerLinks.filter((link) => /^(https?:|mailto:)/.test(link.href));
   const columns = [
-    { title: "Explore", heading: "text-ember", hover: "hover:text-steel", links: settings.navigation.filter((link) => availableLink(site, link.href)) },
-    { title: "Community", heading: "text-steel", hover: "hover:text-ember", links: pageLinks.filter((link) => link.href !== "/") },
-    { title: "Connect", heading: "text-gold", hover: "hover:text-gold", links: settings.footerLinks.filter((link) => availableLink(site, link.href)) },
+    { title: "Explore", heading: "text-verdigris", hover: "hover:text-brass", links: settings.navigation.filter((link) => availableLink(site, link.href)) },
+    { title: "Community", heading: "text-brass", hover: "hover:text-verdigris", links: pageLinks.filter((link) => link.href !== "/") },
+    { title: "Connect", heading: "text-patina", hover: "hover:text-patina", links: settings.footerLinks.filter((link) => availableLink(site, link.href)) },
   ];
   return <footer className="relative bg-ink-deep border-t border-edge">
-    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-ember to-transparent" />
+    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-verdigris to-transparent" />
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
         <div className="lg:col-span-1">
-          <Link className="inline-block mb-4 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(255,122,61,0.6)]" href="/" aria-label={`${settings.name} home`}>
+          <Link className="inline-block mb-4 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(79,184,169,0.6)]" href="/" aria-label={`${settings.name} home`}>
             <Brand name={settings.name} size="h-12 w-12" text="text-xl" />
           </Link>
           <p className="text-gray-400 text-sm leading-relaxed mb-6">{settings.description}</p>

@@ -3,25 +3,22 @@
 @source not "../backend";
 @source not "../responsive_screenshots";
 
-/* Molten Forge: ember into molten gold, cooled by tempered steel blue, on warm soot black.
-   Chosen to sit beside the logo's gold outline and steel-blue spear. */
+/* Verdigris & Brass: the blue-green patina of weathered copper with antique brass, on gunmetal.
+   Reads like old armour; the brass sits beside the logo's gold outline. */
 @theme {
-  /* Background neutrals: the reference site's exact values. */
-  --color-ink: #0a0a0f;        /* page background */
-  --color-ink-deep: #050508;   /* darker bands, footer, inputs */
-  --color-panel: #121218;      /* cards */
-  --color-edge: #1a1a24;       /* borders */
-  --color-flame: #ff5a2b;      /* hottest end of the ember gradient */
-  --color-ember: #ff7a3d;      /* lead accent */
-  --color-gold: #ffc24b;       /* molten gold, third accent */
-  --color-steel: #7aa3e0;      /* tempered steel, cool second accent */
-  --color-magenta: #ff006e;    /* the reference site's magenta: background light on the left */
-  --color-cyan: #00d9ff;       /* the reference site's cyan: background light on the right */
+  --color-ink: #0c1011;        /* page background (gunmetal) */
+  --color-ink-deep: #080b0c;   /* darker bands, footer, inputs */
+  --color-panel: #141b1c;      /* cards */
+  --color-edge: #243133;       /* borders */
+  --color-verdigris: #4fb8a9;  /* lead accent */
+  --color-verdigris-deep: #3a9e90;
+  --color-brass: #d4b06a;      /* antique brass, second accent */
+  --color-patina: #a9d6c4;     /* light patina, third accent */
 
-  /* Warm greys, so body text sits in the same family as the soot background. */
-  --color-gray-300: #ddd3c8;
-  --color-gray-400: #ab9f92;
-  --color-gray-500: #7f7468;
+  /* Cool greys tinted toward the gunmetal background. */
+  --color-gray-300: #cfdcd9;
+  --color-gray-400: #93a6a3;
+  --color-gray-500: #6c7f7c;
 
   --font-sans: var(--font-inter), sans-serif;
   --font-cyber: var(--font-orbitron), sans-serif;
@@ -36,7 +33,7 @@
 
 @layer base {
   html { scroll-behavior: smooth; }
-  body { background-color: var(--color-ink); color: #f6efe8; min-height: 100vh; font-family: var(--font-sans); overflow-x: hidden; }
+  body { background-color: var(--color-ink); color: #ecf3f1; min-height: 100vh; font-family: var(--font-sans); overflow-x: hidden; }
 
   h1 { font-family: var(--font-cyber); font-size: 2.25rem; font-weight: 700; line-height: 2.5rem; }
   h2 { font-family: var(--font-cyber); font-size: 1.875rem; font-weight: 600; line-height: 2.25rem; }
@@ -56,28 +53,28 @@
 
   ::-webkit-scrollbar { width: 8px; }
   ::-webkit-scrollbar-track { background: var(--color-ink-deep); }
-  ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--color-ember), var(--color-gold)); border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, var(--color-flame), var(--color-ember)); }
-  ::selection { background: var(--color-ember); color: #150903; }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--color-verdigris), var(--color-brass)); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, var(--color-verdigris-deep), var(--color-verdigris)); }
+  ::selection { background: var(--color-verdigris); color: #06100f; }
 
   /* Anchors land below the fixed 80px navigation. */
   [id] { scroll-margin-top: 5rem; }
 }
 
 @layer components {
-  /* Bright ember-to-gold fill, so the label is dark for contrast. */
+  /* Verdigris fill with a dark label for contrast. */
   .cyber-button {
     position: relative; display: inline-block; text-align: center;
     padding: 0.75rem 2rem; border: 2px solid transparent;
-    font-family: var(--font-cyber); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #150903;
-    background-image: linear-gradient(to right, #ff6a33, #ffb347, #ff6a33); background-size: 200% 200%;
+    font-family: var(--font-cyber); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #06100f;
+    background-image: linear-gradient(to right, #3a9e90, #5ec4b4, #3a9e90); background-size: 200% 200%;
     animation: gradient-shift 4s infinite;
     transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
   }
-  .cyber-button:hover:not(:disabled) { box-shadow: 0 0 30px #ff7a3d80, 0 0 60px #ffc24b40; transform: scale(1.05); }
+  .cyber-button:hover:not(:disabled) { box-shadow: 0 0 30px #4fb8a980, 0 0 60px #d4b06a40; transform: scale(1.05); }
   .cyber-button::before {
     content: ""; position: absolute; inset: 0; z-index: -10; opacity: 0; filter: blur(15px);
-    background-image: linear-gradient(to right, #ffc24b, #ff7a3d, #ff5a2b);
+    background-image: linear-gradient(to right, #d4b06a, #4fb8a9, #a9d6c4);
     transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .cyber-button:hover:not(:disabled)::before { opacity: 0.7; }
@@ -87,58 +84,58 @@
     position: relative; overflow: hidden; border: 1px solid var(--color-edge); border-radius: 0.5rem; background-color: var(--color-panel);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .cyber-card:hover { box-shadow: 0 0 20px #ff7a3d33; border-color: #ff7a3d80; }
-  /* Steel edge-light along the top: the cool counterpoint to the warm card. */
+  .cyber-card:hover { box-shadow: 0 0 20px #4fb8a933; border-color: #4fb8a980; }
+  /* Brass edge-light along the top of each card. */
   .cyber-card::before {
     content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background-image: linear-gradient(to right, transparent, var(--color-steel), transparent);
+    background-image: linear-gradient(to right, transparent, var(--color-brass), transparent);
   }
 
-  .neon-ember { color: var(--color-ember); text-shadow: 0 0 10px #ff7a3d, 0 0 20px #ff7a3d99, 0 0 40px #ff5a2b66; }
-  .neon-steel { color: var(--color-steel); text-shadow: 0 0 10px #7aa3e0, 0 0 20px #7aa3e099, 0 0 40px #7aa3e066; }
-  .neon-gold { color: var(--color-gold); text-shadow: 0 0 10px #ffc24b, 0 0 20px #ffc24b99, 0 0 40px #ff9a3d66; }
+  .neon-verdigris { color: var(--color-verdigris); text-shadow: 0 0 10px #4fb8a9, 0 0 20px #4fb8a999, 0 0 40px #4fb8a966; }
+  .neon-brass { color: var(--color-brass); text-shadow: 0 0 10px #d4b06a, 0 0 20px #d4b06a99, 0 0 40px #d4b06a66; }
+  .neon-patina { color: var(--color-patina); text-shadow: 0 0 10px #a9d6c4, 0 0 20px #a9d6c499, 0 0 40px #4fb8a966; }
 
+  /* Verdigris through light patina into brass, as in the palette preview. */
   .gradient-text {
     color: transparent; -webkit-background-clip: text; background-clip: text;
-    background-image: linear-gradient(to right, #ff5a2b, #ff9a3d, #ffd36b, #ff9a3d); background-size: 200% 200%;
+    background-image: linear-gradient(to right, #4fb8a9, #a9d6c4, #d4b06a, #a9d6c4); background-size: 200% 200%;
     animation: gradient-shift 4s infinite;
   }
 
   .cyber-grid {
-    background-image: linear-gradient(#00d9ff0d 1px, transparent 1px), linear-gradient(90deg, #00d9ff0d 1px, transparent 1px);
+    background-image: linear-gradient(#4fb8a90d 1px, transparent 1px), linear-gradient(90deg, #4fb8a90d 1px, transparent 1px);
     background-size: 50px 50px;
   }
 
   .nav-link { position: relative; transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
   .nav-link::after {
     content: ""; position: absolute; bottom: 0; left: 0; width: 0; height: 0.125rem;
-    background-image: linear-gradient(to right, var(--color-ember), var(--color-gold));
+    background-image: linear-gradient(to right, var(--color-verdigris), var(--color-brass));
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .nav-link:hover::after { width: 100%; }
 
   .cyber-input, .cyber-textarea {
     width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--color-edge); border-radius: 0.5rem;
-    background-color: var(--color-ink-deep); color: #f6efe8; font: inherit; font-size: 1rem;
+    background-color: var(--color-ink-deep); color: #ecf3f1; font: inherit; font-size: 1rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .cyber-input::placeholder, .cyber-textarea::placeholder { color: var(--color-gray-500); }
-  .cyber-input:focus, .cyber-textarea:focus { border-color: var(--color-steel); box-shadow: 0 0 10px #7aa3e04d; outline: 2px solid transparent; outline-offset: 2px; }
+  .cyber-input:focus, .cyber-textarea:focus { border-color: var(--color-verdigris); box-shadow: 0 0 10px #4fb8a94d; outline: 2px solid transparent; outline-offset: 2px; }
   .cyber-textarea { resize: none; }
 
   .hero-bg { position: relative; overflow: hidden; }
   .hero-bg::before {
     content: ""; position: absolute; inset: 0;
-    /* The reference's exact hero light (magenta left, cyan right), with our ember in place of its
-       purple at the bottom, at the same strength and position, plus a faint ember glow at the top. */
-    background: radial-gradient(circle at 50% 0%, #ff7a3d14 0%, transparent 40%), radial-gradient(circle at 20%, #ff006e26 0%, transparent 50%), radial-gradient(circle at 80%, #00d9ff26 0%, transparent 50%), radial-gradient(circle at 50% 80%, #ff7a3d1a 0%, transparent 50%);
+    /* Verdigris light on the left, brass on the right, light patina low in the middle. */
+    background: radial-gradient(circle at 20%, #4fb8a926 0%, transparent 50%), radial-gradient(circle at 80%, #d4b06a26 0%, transparent 50%), radial-gradient(circle at 50% 80%, #a9d6c414 0%, transparent 50%);
     animation: hero-pulse 8s ease-in-out infinite;
   }
 
   .countdown-digit {
     position: relative; padding: 0.75rem 1rem; border: 1px solid var(--color-edge); border-radius: 0.5rem; background-color: var(--color-panel);
     font-family: var(--font-cyber); font-size: 2.25rem; font-weight: 700; line-height: 2.5rem;
-    box-shadow: 0 0 20px #ff7a3d4d;
+    box-shadow: 0 0 20px #4fb8a94d;
   }
   .countdown-digit::before { content: ""; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background-color: var(--color-edge); }
   @media (min-width: 768px) {
@@ -149,9 +146,9 @@
      fades in, climbs and turns, then fades out above the top. */
   .spark { position: absolute; top: 0; border-radius: 9999px; pointer-events: none; opacity: 0; animation: spark-rise 15s linear infinite; }
 
-  /* A soft ember halo behind small copies of the logo, so its navy does not sink into the page. */
-  .logo-halo { background: radial-gradient(circle, #ff7a3d59 0%, #ff7a3d1f 45%, transparent 70%); border-radius: 9999px; }
-  .logo-halo img { filter: drop-shadow(0 0 4px #ff9a3d8c); }
+  /* A soft verdigris halo behind small copies of the logo, so its navy does not sink into the page. */
+  .logo-halo { background: radial-gradient(circle, #4fb8a959 0%, #4fb8a91f 45%, transparent 70%); border-radius: 9999px; }
+  .logo-halo img { filter: drop-shadow(0 0 4px #a9d6c48c); }
 
   /* Home-page logo intro (see LogoIntro). While html[data-intro] is set the hero waits; removing it
      fades the logo in and lifts the rest of the hero in order. */
@@ -164,7 +161,7 @@
   /* Spam honeypot: present for bots, invisible and unreachable for people. */
   .contact-trap { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 
-  .skip-link { position: fixed; top: 1rem; left: 1rem; z-index: 100; transform: translateY(-200%); padding: 0.5rem 1rem; border-radius: 0.25rem; background: var(--color-ember); color: #150903; }
+  .skip-link { position: fixed; top: 1rem; left: 1rem; z-index: 100; transform: translateY(-200%); padding: 0.5rem 1rem; border-radius: 0.25rem; background: var(--color-verdigris); color: #06100f; }
   .skip-link:focus { transform: none; }
 }
 

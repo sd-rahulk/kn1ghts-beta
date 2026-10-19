@@ -24,7 +24,7 @@ export function AccountPanel() {
   const { user, profile, loading, error: authError, token, refreshProfile, logout } = useMember();
   if (loading) return <p className="text-gray-400">Loading your account…</p>;
   if (!user) return <div className="grid gap-6"><p className="text-gray-400">Sign in to manage your profile and participate.</p><Link className={primaryButton} href="/sign-in">SIGN IN</Link></div>;
-  return <div className="grid gap-6"><div><h2 className="font-cyber text-2xl font-bold mb-2"><span className="gradient-text">{profile ? profile.handle : "Finish your profile"}</span></h2><p className="font-mono text-sm text-gray-400">{user.email}<br /><span className={user.emailVerified ? "text-gold" : "text-ember"}>{user.emailVerified ? "EMAIL VERIFIED" : "EMAIL VERIFICATION REQUIRED"}</span></p></div>{authError && <p className={formStatusError}>{authError}</p>}
+  return <div className="grid gap-6"><div><h2 className="font-cyber text-2xl font-bold mb-2"><span className="gradient-text">{profile ? profile.handle : "Finish your profile"}</span></h2><p className="font-mono text-sm text-gray-400">{user.email}<br /><span className={user.emailVerified ? "text-patina" : "text-verdigris"}>{user.emailVerified ? "EMAIL VERIFIED" : "EMAIL VERIFICATION REQUIRED"}</span></p></div>{authError && <p className={formStatusError}>{authError}</p>}
     <HandleEditor key={profile?.handle ?? "new-profile"} initial={profile?.handle ?? ""} token={token} refreshProfile={refreshProfile} />
     <button className={mutedButton} onClick={() => void logout().then(() => { router.replace("/sign-in"); router.refresh(); })}>SIGN OUT</button>
   </div>;
