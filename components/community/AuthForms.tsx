@@ -3,7 +3,6 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import { clientAuth } from "@/lib/firebase-client";
-import { formStatus, formStatusError, input, label, primaryButton, secondaryButton, textAction } from "@/components/site/ui";
 
 function messageFor(error: unknown) {
   const code = (error as { code?: string }).code;
@@ -52,13 +51,13 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
     catch { setMessage("If the account exists, a password reset email is on its way."); }
     finally { setBusy(false); }
   }
-  return <form className="grid gap-6" onSubmit={submit} aria-busy={busy}>
-    {mode === "sign-up" && <label className={label}>PUBLIC HANDLE<input className={input} value={handle} onChange={(event) => setHandle(event.target.value)} minLength={3} maxLength={24} pattern="[A-Za-z0-9_-]+" autoComplete="nickname" required placeholder="0xhandle" /></label>}
-    <label className={label}>EMAIL<input className={input} type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" maxLength={254} required /></label>
-    <label className={label}>PASSWORD<input className={input} type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete={mode === "sign-up" ? "new-password" : "current-password"} minLength={8} maxLength={128} required /></label>
-    <button className={primaryButton} disabled={busy}>{busy ? "WORKING…" : mode === "sign-up" ? "CREATE ACCOUNT" : "SIGN IN"}</button>
-    {needsVerification && <button className={secondaryButton} type="button" onClick={resend} disabled={busy}>SEND VERIFICATION EMAIL</button>}
-    {mode === "sign-in" && <button className={textAction} type="button" onClick={reset} disabled={busy}>RESET PASSWORD</button>}
-    <p className={error ? formStatusError : formStatus} role="status">{message}</p>
+  return <form className="community-form" onSubmit={submit} aria-busy={busy}>
+    {mode === "sign-up" && <label>PUBLIC HANDLE<input value={handle} onChange={(event) => setHandle(event.target.value)} minLength={3} maxLength={24} pattern="[A-Za-z0-9_-]+" autoComplete="nickname" required placeholder="0xhandle" /></label>}
+    <label>EMAIL<input type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" maxLength={254} required /></label>
+    <label>PASSWORD<input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete={mode === "sign-up" ? "new-password" : "current-password"} minLength={8} maxLength={128} required /></label>
+    <button disabled={busy}>{busy ? "WORKING…" : mode === "sign-up" ? "CREATE ACCOUNT" : "SIGN IN"}</button>
+    {needsVerification && <button type="button" onClick={resend} disabled={busy}>SEND VERIFICATION EMAIL</button>}
+    {mode === "sign-in" && <button className="text-action" type="button" onClick={reset} disabled={busy}>RESET PASSWORD</button>}
+    <p className={`form-status${error ? " error" : ""}`} role="status">{message}</p>
   </form>;
 }

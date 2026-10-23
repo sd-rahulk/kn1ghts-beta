@@ -15,7 +15,7 @@
       { "label": "DISCORD", "href": "https://discord.com/" },
       { "label": "THE TEAM", "href": "#team" }
     ],
-    "theme": { "ink": "#0c1011", "deep": "#080b0c", "tactical": "#141b1c", "paper": "#ecf3f1", "soft": "#93a6a3", "accent": "#4fb8a9" },
+    "theme": { "ink": "#050706", "deep": "#07120e", "tactical": "#142a20", "paper": "#ecede7", "soft": "#8a918c", "accent": "#2ef2c4" },
     "labels": { "skipIntro": "SKIP INTRO", "entering": "ENTERING…", "skipContent": "Skip to content", "openMenu": "Open menu", "closeMenu": "Close menu", "backToTop": "Back to top", "fieldReport": "FIELD REPORT", "profile": "PROFILE" },
     "contact": {
       "enabled": true, "nameLabel": "NAME", "emailLabel": "EMAIL", "messageLabel": "MESSAGE",

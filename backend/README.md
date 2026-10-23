@@ -1,11 +1,11 @@
 # KN1GHTS management
 
-A separate Next.js app in `backend/`, connected to the existing public website through Firebase Realtime Database. Email/password accounts authenticate through Firebase Auth; the server creates a five-day HttpOnly session. The public website's design (layout, Verdigris & Brass colours, logo intro and background effects) lives in its own source code; this app edits the content inside it. The workspace uses the same colours, typefaces and logo.
+A separate Next.js app in `backend/`, connected to the existing public website through Firebase Realtime Database. Email/password accounts authenticate through Firebase Auth; the server creates a five-day HttpOnly session. The public website keeps its cinematic theme and animations.
 
 ## What you can manage
 
 - Add, remove, reorder, hide, and change section layouts. Edit headings, descriptions, buttons, links, images, dates, categories, and items for the existing sections or a new Text & cards section.
-- Edit site identity, search metadata, footer navigation and social links, UI labels, and contact labels. Every field shows where it appears on the site; values the current design no longer displays (for example the registration mark and the old intro labels) are kept in the content but hidden from the editor. Section IDs stay stable so existing links continue to work. Colours and animation are part of the public site's design and live in its source code (`app/globals.css`).
+- Edit site identity, search metadata, navigation, footer links, UI labels, contact labels, and CSS theme colors. Section IDs stay stable so existing links continue to work. Animation/model settings stay in the public site's source code.
 - Save drafts, create a ten-minute preview link, and publish separately. Preview links show the saved draft and disable message submission. Anyone holding the link can see that draft until expiration; disabling its creator's access invalidates it.
 - See revision notes, field changes, editor identity, and timestamps. Download full snapshots or restore a revision into a new draft before publishing it.
 - Receive contact messages in a private inbox with live updates, status, internal notes, and activity records.
