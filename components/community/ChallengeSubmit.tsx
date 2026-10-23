@@ -2,15 +2,14 @@
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { useMember } from "./AuthProvider";
-import { formStatus, input, label, primaryButton, textLink } from "@/components/site/ui";
 
 export function ChallengeSubmit({ challengeId }: { challengeId: string }) {
   const { user, profile, loading, token } = useMember();
   const [flag, setFlag] = useState(""), [busy, setBusy] = useState(false), [message, setMessage] = useState("");
-  if (loading) return <p className={formStatus}>Checking account…</p>;
-  if (!user) return <p className={formStatus}><Link className={textLink} href="/sign-in">SIGN IN</Link> to submit a flag.</p>;
-  if (!user.emailVerified) return <p className={formStatus}>Verify your email before submitting flags.</p>;
-  if (!profile) return <p className={formStatus}><Link className={textLink} href="/account">CHOOSE A HANDLE</Link> before submitting.</p>;
+  if (loading) return <p className="form-status">Checking account…</p>;
+  if (!user) return <p className="form-status"><Link className="row-link" href="/sign-in">SIGN IN</Link> to submit a flag.</p>;
+  if (!user.emailVerified) return <p className="form-status">Verify your email before submitting flags.</p>;
+  if (!profile) return <p className="form-status"><Link className="row-link" href="/account">CHOOSE A HANDLE</Link> before submitting.</p>;
   async function submit(event: FormEvent) {
     event.preventDefault(); setBusy(true); setMessage("");
     try {
@@ -21,5 +20,5 @@ export function ChallengeSubmit({ challengeId }: { challengeId: string }) {
     } catch (reason) { setMessage(reason instanceof Error ? reason.message : "Unable to submit the flag."); }
     finally { setBusy(false); }
   }
-  return <form className="grid gap-6" onSubmit={submit}><label className={label}>FLAG<input className={input} value={flag} onChange={(event) => setFlag(event.target.value)} maxLength={500} autoComplete="off" spellCheck={false} placeholder="KN1GHTS{...}" required /></label><button className={primaryButton} disabled={busy}>{busy ? "CHECKING…" : "SUBMIT FLAG"}</button><p className={formStatus} role="status">{message}</p></form>;
+  return <form className="community-form" onSubmit={submit}><label>FLAG<input value={flag} onChange={(event) => setFlag(event.target.value)} maxLength={500} autoComplete="off" spellCheck={false} placeholder="KN1GHTS{...}" required /></label><button disabled={busy}>{busy ? "CHECKING…" : "SUBMIT FLAG"}</button><p className="form-status" role="status">{message}</p></form>;
 }

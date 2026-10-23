@@ -2,15 +2,14 @@
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { useMember } from "./AuthProvider";
-import { formStatus, label, primaryButton, textarea, textLink } from "@/components/site/ui";
 
 export function CommentForm({ postId }: { postId: string }) {
   const { user, profile, loading, token } = useMember();
   const [body, setBody] = useState(""), [busy, setBusy] = useState(false), [message, setMessage] = useState("");
-  if (loading) return <p className={formStatus}>Checking account…</p>;
-  if (!user) return <p className={formStatus}><Link className={textLink} href="/sign-in">SIGN IN</Link> to join the discussion.</p>;
-  if (!user.emailVerified) return <p className={formStatus}>Verify your email before commenting.</p>;
-  if (!profile) return <p className={formStatus}><Link className={textLink} href="/account">CHOOSE A HANDLE</Link> before commenting.</p>;
+  if (loading) return <p className="form-status">Checking account…</p>;
+  if (!user) return <p className="form-status"><Link className="row-link" href="/sign-in">SIGN IN</Link> to join the discussion.</p>;
+  if (!user.emailVerified) return <p className="form-status">Verify your email before commenting.</p>;
+  if (!profile) return <p className="form-status"><Link className="row-link" href="/account">CHOOSE A HANDLE</Link> before commenting.</p>;
   async function submit(event: FormEvent) {
     event.preventDefault(); setBusy(true); setMessage("");
     try {
@@ -20,5 +19,5 @@ export function CommentForm({ postId }: { postId: string }) {
     } catch (reason) { setMessage(reason instanceof Error ? reason.message : "Unable to submit your comment."); }
     finally { setBusy(false); }
   }
-  return <form className="grid gap-6" onSubmit={submit}><label className={label}>COMMENT<textarea className={textarea} rows={5} value={body} onChange={(event) => setBody(event.target.value)} minLength={2} maxLength={3000} required placeholder="Add something useful to the discussion." /></label><button className={primaryButton} disabled={busy}>{busy ? "SUBMITTING…" : "SUBMIT FOR REVIEW"}</button><p className={formStatus} role="status">{message}</p></form>;
+  return <form className="community-form comment-form" onSubmit={submit}><label>COMMENT<textarea value={body} onChange={(event) => setBody(event.target.value)} minLength={2} maxLength={3000} required placeholder="Add something useful to the discussion." /></label><button disabled={busy}>{busy ? "SUBMITTING…" : "SUBMIT FOR REVIEW"}</button><p className="form-status" role="status">{message}</p></form>;
 }
