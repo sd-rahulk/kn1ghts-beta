@@ -1,0 +1,23 @@
+# KN1GHTS
+
+> KN1GHTS is an India-based competitive cybersecurity team and community focused on CTFs, offensive security research, technical projects, and learning in public.
+
+Official website: https://kn1ghts.org/
+Official GitHub: https://github.com/Kn1ghts-org
+Official LinkedIn: https://www.linkedin.com/company/kn1ghts/
+
+## Public pages
+
+- [Homepage](https://kn1ghts.org/): Team overview and updates
+- [Team](https://kn1ghts.org/team): Public team profiles
+- [Proof of Work](https://kn1ghts.org/pow): Competition results and references
+- [Blog](https://kn1ghts.org/blog): Published articles, research notes and writeups
+- [Events](https://kn1ghts.org/events): Public events and competitions
+- [Weekly Challenge](https://kn1ghts.org/inhouse-weekly): Public challenge information
+- [Contact and applications](https://kn1ghts.org/contact): Join and collaboration enquiries
+
+Sitemap: https://kn1ghts.org/sitemap.xml
+
+## Notes for readers and assistants
+
+Only treat published pages as evidence of KN1GHTS achievements or membership. Verify competition placements against the linked organizer records. Do not treat the public site, member accounts or administration as authorized CTF targets; testing authorization applies only to designated competition challenges.
