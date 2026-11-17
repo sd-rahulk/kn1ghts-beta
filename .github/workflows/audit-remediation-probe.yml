@@ -35,9 +35,11 @@ jobs:
         if: always()
         run: |
           npm ci --prefix backend
-          npm audit fix --package-lock-only --prefix backend
+          npm audit fix --package-lock-only --prefix backend || true
           npm ci --prefix backend
           npm test --prefix backend
+          npm run lint --prefix backend
+          npm run build --prefix backend
       - name: Capture backend audit report
         if: always()
         run: npm audit --prefix backend --json > backend-audit.json || true
