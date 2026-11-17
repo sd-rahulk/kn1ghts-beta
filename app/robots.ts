@@ -1,22 +1,16 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
 
-const excluded = [
-  "/api/",
-  "/account",
-  "/sign-in",
-  "/sign-up",
-  "/admin/",
-  "/?preview=",
-];
+// Allow crawlers to fetch sign-in, sign-up, account and preview pages so their
+// noindex metadata can be seen. Robots disallow would prevent that.
+const disallowed = ["/api/", "/admin/"];
 
-/** Robots rules are crawler guidance, not access control. */
+/** Robots guidance is not an access-control mechanism. */
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      { userAgent: "*", allow: "/", disallow: excluded },
-      { userAgent: "OAI-SearchBot", allow: "/", disallow: excluded },
-      { userAgent: "ChatGPT-User", allow: "/", disallow: excluded },
+      { userAgent: "*", allow: "/", disallow: disallowed },
+      { userAgent: ["OAI-SearchBot", "ChatGPT-User"], allow: "/", disallow: disallowed },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
     host: SITE_URL,
