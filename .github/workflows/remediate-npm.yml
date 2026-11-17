@@ -1,0 +1,65 @@
+name: Remediate vulnerable npm dependencies
+
+# One-time trusted branch maintenance job. This file is removed after the
+# lockfiles are updated; it does not run for pull requests or default-branch pushes.
+on:
+  push:
+    branches:
+      - security/audit-remediation-2026-11
+    paths:
+      - .github/workflows/remediate-npm.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.repository == 'sd-rahulk/kn1ghts-beta' && github.ref == 'refs/heads/security/audit-remediation-2026-11'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Apply only semver-compatible audit fixes to both lockfiles
+        shell: bash
+        run: |
+          npm audit fix --package-lock-only || echo "::warning::Root audit fix left some advisories; verification below is authoritative"
+          npm audit fix --package-lock-only --prefix backend || echo "::warning::Backend audit fix left some advisories; verification below is authoritative"
+          git diff --stat
+      - name: Install with the updated immutable lockfiles
+        run: |
+          npm ci
+          npm ci --prefix backend
+      - name: Frontend quality checks
+        run: |
+          npm run lint
+          npm run build
+          node scripts/seo-smoke.mjs
+      - name: Backend quality checks
+        run: |
+          npm test --prefix backend
+          npm run lint --prefix backend
+          npm run build --prefix backend
+      - name: Require zero high and critical production dependency advisories
+        run: |
+          npm audit --omit=dev --audit-level=high
+          npm audit --prefix backend --omit=dev --audit-level=high
+      - name: Commit verified package manifests and lockfiles
+        shell: bash
+        run: |
+          git add package.json package-lock.json backend/package.json backend/package-lock.json
+          if git diff --cached --quiet; then
+            echo "No dependency updates needed"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "security: apply verified npm audit remediation to frontend and backend"
+          git push origin HEAD:security/audit-remediation-2026-11
