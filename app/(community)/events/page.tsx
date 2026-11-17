@@ -3,7 +3,7 @@ import { EmptyState, PageLead, formatDate } from "@/components/community/Communi
 import { platformOr } from "@/lib/platform-api";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Events | KN1GHTS" };
+export const metadata = { title: "Events", alternates: { canonical: "https://kn1ghts.org/events" }, openGraph: { url: "https://kn1ghts.org/events" } };
 export default async function EventsPage() {
   const { items, now } = await platformOr<{ items: CommunityEvent[]; now: number }>("events", { items: [], now: 0 });
   const upcoming = items.filter((item) => item.startsAt >= now), previous = items.filter((item) => item.startsAt < now).reverse();
