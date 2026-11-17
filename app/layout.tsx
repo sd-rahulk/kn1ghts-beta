@@ -1,10 +1,27 @@
 import type { Metadata, Viewport } from "next";
+import { PUBLIC_PROFILES, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 import "./knights-home.css";
 
 export const metadata: Metadata = {
-  title: "KN1GHTS | Competitive Cybersecurity",
-  description: "Competitive cybersecurity. Offensive research. CTFs.",
+  metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
+  title: { default: "KN1GHTS | Competitive Cybersecurity", template: "%s | KN1GHTS" },
+  description: SITE_DESCRIPTION,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    locale: "en_IN",
+    title: "KN1GHTS | Competitive Cybersecurity",
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+  },
+  twitter: { card: "summary", title: "KN1GHTS | Competitive Cybersecurity", description: SITE_DESCRIPTION },
 };
 
 export const viewport: Viewport = {
@@ -14,6 +31,42 @@ export const viewport: Viewport = {
   themeColor: "#050706",
 };
 
+const organizationId = `${SITE_URL}/#organization`;
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": organizationId,
+      name: SITE_NAME,
+      url: SITE_URL,
+      description: SITE_DESCRIPTION,
+      sameAs: [...PUBLIC_PROFILES],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      description: SITE_DESCRIPTION,
+      inLanguage: "en-IN",
+      publisher: { "@id": organizationId },
+    },
+  ],
+};
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body>{children}</body></html>;
+  return (
+    <html lang="en">
+      <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+          }}
+        />
+        {children}
+      </body>
+    </html>
+  );
 }
