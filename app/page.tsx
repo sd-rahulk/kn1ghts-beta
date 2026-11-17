@@ -12,7 +12,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   try {
     const site = await getSiteContent(preview);
     return {
-      title: site.settings.title,
+      title: { absolute: site.settings.title },
       description: site.settings.description,
       ...(preview
         ? { robots: { index: false, follow: false }, referrer: "no-referrer" as const }
