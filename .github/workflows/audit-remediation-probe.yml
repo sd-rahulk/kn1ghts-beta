@@ -37,6 +37,7 @@ jobs:
           npm ci --prefix backend
           npm audit fix --package-lock-only --prefix backend
           npm ci --prefix backend
+          npm test --prefix backend
           npm audit --prefix backend --omit=dev --audit-level=high
       - name: Upload lockfiles for review
         if: always()
