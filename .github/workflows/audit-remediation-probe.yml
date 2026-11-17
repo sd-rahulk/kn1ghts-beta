@@ -1,0 +1,49 @@
+name: Dependency audit remediation probe
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "package.json"
+      - "package-lock.json"
+      - "backend/package.json"
+      - "backend/package-lock.json"
+      - ".github/workflows/audit-remediation-probe.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit-remediation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24
+          cache: npm
+      - name: Update root lockfile with non-breaking audit fixes
+        run: |
+          npm ci
+          npm audit fix --package-lock-only
+          npm ci
+          npm run lint
+          npm run build
+          node scripts/seo-smoke.mjs
+          npm audit --omit=dev --audit-level=high
+      - name: Update backend lockfile with non-breaking audit fixes
+        if: always()
+        run: |
+          npm ci --prefix backend
+          npm audit fix --package-lock-only --prefix backend
+          npm ci --prefix backend
+          npm audit --prefix backend --omit=dev --audit-level=high
+      - name: Upload lockfiles for review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-audit-lockfiles
+          path: |
+            package-lock.json
+            backend/package-lock.json
+          if-no-files-found: error
