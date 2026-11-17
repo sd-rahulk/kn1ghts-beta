@@ -38,7 +38,12 @@ jobs:
           npm audit fix --package-lock-only --prefix backend
           npm ci --prefix backend
           npm test --prefix backend
-          npm audit --prefix backend --omit=dev --audit-level=high
+      - name: Capture backend audit report
+        if: always()
+        run: npm audit --prefix backend --json > backend-audit.json || true
+      - name: Enforce backend production audit
+        if: always()
+        run: npm audit --prefix backend --omit=dev --audit-level=high
       - name: Upload lockfiles for review
         if: always()
         uses: actions/upload-artifact@v4
@@ -47,4 +52,5 @@ jobs:
           path: |
             package-lock.json
             backend/package-lock.json
+            backend-audit.json
           if-no-files-found: error
