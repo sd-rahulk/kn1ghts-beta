@@ -30,3 +30,7 @@ Pattern notes: chapters use a sticky 100dvh copy stage inside 140dvh to 300dvh s
 Files: `components/ui/Header.tsx`, `components/sections/Story.tsx`
 
 Pattern notes: controls are sharp, unfilled by default, and switch to acid green on hover or keyboard focus. Buttons use mono uppercase labels and physical 1px borders where boundaries are needed.
+
+## Search engine and AI search visibility
+
+The public app now generates `/robots.txt`, `/sitemap.xml`, optional `/llms.txt`, and canonical / structured-data metadata. See [SEO and crawler deployment instructions](docs/SEO_DISCOVERY.md) for Google Search Console, Bing Webmaster Tools, OpenAI crawler access, and the Vercel project owner's deployment checklist.

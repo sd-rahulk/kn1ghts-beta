@@ -3,6 +3,7 @@ import { getSiteContent } from "@/lib/site-content";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { platformOr, type HomePlatformData } from "@/lib/platform-api";
+import { canonicalUrl } from "@/lib/seo";
 
 type Props = { searchParams: Promise<{ preview?: string }> };
 export const dynamic = "force-dynamic";
@@ -10,7 +11,16 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const { preview } = await searchParams;
   try {
     const site = await getSiteContent(preview);
-    return { title: site.settings.title, description: site.settings.description, ...(preview ? { robots: { index: false, follow: false }, referrer: "no-referrer" as const } : {}) };
+    return {
+      title: { absolute: site.settings.title },
+      description: site.settings.description,
+      ...(preview
+        ? { robots: { index: false, follow: false }, referrer: "no-referrer" as const }
+        : {
+            alternates: { canonical: canonicalUrl("/") },
+            openGraph: { url: canonicalUrl("/"), title: site.settings.title, description: site.settings.description },
+          }),
+    };
   } catch { return { title: "Preview unavailable", robots: { index: false, follow: false } }; }
 }
 export default async function Home({ searchParams }: Props) {
