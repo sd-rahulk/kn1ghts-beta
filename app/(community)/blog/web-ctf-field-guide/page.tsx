@@ -72,8 +72,8 @@ export default function WebCTFFieldGuidePage() {
           </p>
           <h2>2. Separate authentication from authorization</h2>
           <p>
-            Authentication answers \"Who is making the request?\" Authorization answers
-            \"May that identity perform this action on this object?\" A valid login does not
+            Authentication answers &ldquo;Who is making the request?&rdquo; Authorization answers
+            &ldquo;May that identity perform this action on this object?&rdquo; A valid login does not
             grant universal access to objects owned by another team. Object identifiers,
             team IDs, and user-controlled parameters are inputs to an authorization decision,
             not proof of permission.
@@ -90,7 +90,7 @@ export default function WebCTFFieldGuidePage() {
             Inspect session creation, expiry, logout, password-reset flows, and role changes.
             For cookie-based sessions, check whether sensitive cookies use Secure, HttpOnly,
             and an appropriate SameSite policy. Confirm that logout or session revocation
-            invalidates the server-side authority, not merely the browser's visible state.
+            invalidates the server-side authority, not merely the browser&apos;s visible state.
           </p>
           <p>
             Cross-site request forgery matters wherever a browser automatically attaches
@@ -116,7 +116,7 @@ export default function WebCTFFieldGuidePage() {
           <p>
             In a competition, the authorization scope is the challenge, not every system
             sharing its hostname or cloud account. Prefer a minimal proof that demonstrates
-            the flaw without copying other users' data, saturating a service, or exploring
+            the flaw without copying other users&apos; data, saturating a service, or exploring
             adjacent infrastructure. If the result crosses a challenge boundary, stop and
             report it to the organizers through their authorized channel.
           </p>
