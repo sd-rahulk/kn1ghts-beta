@@ -37,6 +37,10 @@ try {
   const sitemap = await get("/sitemap.xml");
   assert.match(sitemap, /https:\/\/kn1ghts\.org\//);
   assert.match(sitemap, /https:\/\/kn1ghts\.org\/blog/);
+  assert.match(sitemap, /https:\/\/kn1ghts\.org\/blog\/web-ctf-field-guide/);
+  const guide = await get("/blog/web-ctf-field-guide");
+  assert.match(guide, /Web CTF Security: Authorization, Sessions, and Safe Testing/);
+  assert.match(guide, /https:\\/\\/kn1ghts\\.org\\/blog\\/web-ctf-field-guide/);
   const llms = await get("/llms.txt");
   assert.match(llms, /KN1GHTS/);
   const home = await get("/");
