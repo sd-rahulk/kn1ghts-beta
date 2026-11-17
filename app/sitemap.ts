@@ -9,6 +9,7 @@ export const dynamic = "force-dynamic";
 const indexedPaths = [
   "/",
   "/blog",
+  "/blog/web-ctf-field-guide",
   "/events",
   "/team",
   "/pow",
@@ -18,7 +19,10 @@ const indexedPaths = [
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { items } = await platformOr<{ items: BlogPost[] }>("blog", { items: [] });
-  const staticPages = indexedPaths.map((path) => ({ url: canonicalUrl(path) }));
+  const staticPages = indexedPaths.map((path) => ({
+    url: canonicalUrl(path),
+    ...(path === "/blog/web-ctf-field-guide" ? { lastModified: new Date("2026-11-17") } : {}),
+  }));
 
   const posts = items
     .filter((post) => post.status === "published" && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(post.slug))
