@@ -21,18 +21,14 @@ export async function POST(request: Request) {
         postedOrigin === requestOrigin ||
         (incomingHost === parsed.host &&
           (parsed.protocol === "https:" ||
-            (process.env.NODE_ENV !== "production" && parsed.protocol === "http:")))
+            (parsed.protocol === "http:" &&
+              (process.env.NODE_ENV !== "production" ||
+                (["localhost", "127.0.0.1"].includes(parsed.hostname) &&
+                  new URL(requestOrigin).hostname === "localhost")))))
       );
     } catch { /* Invalid Origin is rejected. */ }
   }
   if (!sameOrigin) {
-    if (process.env.CI) {
-      console.warn("Beta origin QA:", {
-        postedOrigin, requestOrigin, incomingHost,
-        forwardedHost: request.headers.get("x-forwarded-host"),
-        forwardedProto: request.headers.get("x-forwarded-proto"),
-      });
-    }
     return new Response("Forbidden", { status: 403, headers: { "Cache-Control": "no-store" } });
   }
   if (!request.headers.get("content-type")?.startsWith("application/x-www-form-urlencoded")) {
