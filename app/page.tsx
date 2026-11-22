@@ -36,10 +36,10 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
       url: canonicalUrl("/"),
       images: [
         {
-          url: canonicalUrl("/kn1ghts-construction-knight.avif"),
-          width: 1440,
-          height: 569,
-          alt: "The kn1ghts mascot, a cheerful tiny knight in a playful construction scene",
+          url: canonicalUrl("/opengraph-image"),
+          width: 1200,
+          height: 630,
+          alt: "kn1ghts cute construction knight brand card",
         },
       ],
     },
@@ -47,7 +47,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
       card: "summary_large_image",
       title,
       description,
-      images: [canonicalUrl("/kn1ghts-construction-knight.avif")],
+      images: [canonicalUrl("/opengraph-image")],
     },
   };
 }
@@ -67,7 +67,7 @@ function ComingSoon() {
       </header>
       <div className={styles.mascotWrap}>
         <Image
-          src="/kn1ghts-construction-knight.avif"
+          src="/kn1ghts-construction-knight.svg"
           className={styles.mascot}
           alt="A happy chubby knight holds a striped construction board, with traffic cones, helmet, barricade, wrench and toolbox."
           width={1440}
