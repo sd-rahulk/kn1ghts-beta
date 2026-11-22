@@ -1,0 +1,29 @@
+.page {
+  box-sizing: border-box;
+  min-height: 100svh;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 3vw, 32px);
+  margin: 0;
+  overflow: hidden;
+  background: #0b0912;
+}
+.knight {
+  display: block;
+  width: min(92vw, 480px);
+  max-height: calc(100svh - 32px);
+  height: auto;
+  object-fit: contain;
+}
+.previewError {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 12px;
+  color: #f0eaf6;
+  font-family: system-ui, sans-serif;
+}
+.previewError h1 { font-size: clamp(26px, 5vw, 42px); }
+.previewError p { color: #bfb6c8; }
+.previewError a { color: #d9bbff; }
