@@ -1,3 +1,15 @@
+# kn1ghts — Cybersecurity & CTF Team in India
+
+**Official website:** [kn1ghts.org](https://kn1ghts.org/)
+
+kn1ghts is an India-based cybersecurity team and community participating in Capture the Flag (CTF) competitions and sharing technical security field notes. The public homepage is a temporary construction splash; the team, research notes, and competition pages are available separately:
+
+- [Team](https://kn1ghts.org/team)
+- [Security field notes](https://kn1ghts.org/blog)
+- [Competition results](https://kn1ghts.org/pow)
+
+---
+
 # KN1GHTS UI Registry
 
 The separate management app lives in [`backend/`](backend/README.md). Its setup guide covers Firebase, email/password login, dynamic public content, contact inbox, publishing, and revision history. Start it with `npm.cmd run backend:dev` after configuring Firebase or the local emulators.
