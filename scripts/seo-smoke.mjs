@@ -47,7 +47,7 @@ try {
   const home = await get("/");
   assert.match(home, /something lovely/);
   assert.match(home, /under construction/i);
-  assert.ok(!home.includes('class="experience"'), "public homepage exposed beta experience");
+  assert.ok(!home.includes('class="experience is-'), "public homepage exposed beta experience");
   assert.match(home, /href="\/team"/);
   assert.match(home, /href="\/blog"/);
 
@@ -58,9 +58,9 @@ try {
 
   const betaGate = await get("/beta");
   assert.match(betaGate, /Preview password/);
-  assert.ok(!betaGate.includes('class="experience"'), "locked beta exposed original homepage");
+  assert.ok(!betaGate.includes('class="experience is-'), "locked beta exposed original homepage");
   const previewBypass = await get("/beta?preview=invalid-token");
-  assert.ok(!previewBypass.includes('class="experience"'), "beta preview parameter bypassed gate");
+  assert.ok(!previewBypass.includes('class="experience is-'), "beta preview parameter bypassed gate");
 
   const foreignPost = await fetch(origin + "/beta/access", {
     method: "POST", headers: { Origin: "https://evil.example", "Content-Type": "application/x-www-form-urlencoded" },
@@ -81,10 +81,14 @@ try {
   });
   assert.equal(rightPost.status, 303);
   const cookie = rightPost.headers.get("set-cookie");
-  assert.ok(cookie?.includes("HttpOnly") && cookie.includes("SameSite=Strict") && cookie.includes("Path=/beta"), "beta cookie must be secure and scoped");
+  assert.ok(
+    cookie && /httponly/i.test(cookie) && /samesite=strict/i.test(cookie) &&
+    /path=\/beta/i.test(cookie) && /;\s*secure/i.test(cookie),
+    "beta cookie must be secure, HttpOnly, same-site and path-scoped",
+  );
   const beta = await fetch(origin + "/beta", { headers: { Cookie: cookie.split(";")[0] } });
   assert.equal(beta.status, 200);
-  assert.ok((await beta.text()).includes('class="experience"'), "valid beta access did not restore cinematic page");
+  assert.ok((await beta.text()).includes('class="experience is-'), "valid beta access did not restore cinematic page");
   assert.match(beta.headers.get("x-robots-tag") ?? "", /noindex/);
 
   const join = await get("/contact");
