@@ -26,6 +26,13 @@ export async function POST(request: Request) {
     } catch { /* Invalid Origin is rejected. */ }
   }
   if (!sameOrigin) {
+    if (process.env.CI) {
+      console.warn("Beta origin QA:", {
+        postedOrigin, requestOrigin, incomingHost,
+        forwardedHost: request.headers.get("x-forwarded-host"),
+        forwardedProto: request.headers.get("x-forwarded-proto"),
+      });
+    }
     return new Response("Forbidden", { status: 403, headers: { "Cache-Control": "no-store" } });
   }
   if (!request.headers.get("content-type")?.startsWith("application/x-www-form-urlencoded")) {
