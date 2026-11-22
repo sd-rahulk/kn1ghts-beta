@@ -4,7 +4,7 @@ import { spawn } from "node:child_process";
 const port = "3176";
 const origin = `http://127.0.0.1:${port}`;
 const server = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "-H", "127.0.0.1", "-p", port], {
-  env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1" },
+  env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1", BETA_ACCESS_PASSWORD: "local-test-only-32-character-long-secret" },
   stdio: ["ignore", "pipe", "pipe"],
 });
 let serverLogs = "";
@@ -44,6 +44,52 @@ try {
   const llms = await get("/llms.txt");
   assert.match(llms, /KN1GHTS/);
   const home = await get("/");
+  assert.match(home, /something lovely/);
+  assert.match(home, /under construction/i);
+  assert.ok(!home.includes('class="experience"'), "public homepage exposed beta experience");
+  assert.match(home, /href="\/team"/);
+  assert.match(home, /href="\/blog"/);
+
+  const publicTeam = await get("/team");
+  assert.match(publicTeam, /TEAM/);
+  const publicBlog = await get("/blog");
+  assert.match(publicBlog, /FIELD NOTES/);
+
+  const betaGate = await get("/beta");
+  assert.match(betaGate, /Preview password/);
+  assert.ok(!betaGate.includes('class="experience"'), "locked beta exposed original homepage");
+  const previewBypass = await get("/beta?preview=invalid-token");
+  assert.ok(!previewBypass.includes('class="experience"'), "beta preview parameter bypassed gate");
+
+  const foreignPost = await fetch(origin + "/beta/access", {
+    method: "POST", headers: { Origin: "https://evil.example", "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ password: "local-test-only-32-character-long-secret" }), redirect: "manual",
+  });
+  assert.equal(foreignPost.status, 403, "cross-origin beta login was accepted");
+
+  const wrongPost = await fetch(origin + "/beta/access", {
+    method: "POST", headers: { Origin: origin, "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ password: "not-the-password" }), redirect: "manual",
+  });
+  assert.equal(wrongPost.status, 303);
+  assert.equal(wrongPost.headers.get("set-cookie"), null);
+
+  const rightPost = await fetch(origin + "/beta/access", {
+    method: "POST", headers: { Origin: origin, "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ password: "local-test-only-32-character-long-secret" }), redirect: "manual",
+  });
+  assert.equal(rightPost.status, 303);
+  const cookie = rightPost.headers.get("set-cookie");
+  assert.ok(cookie?.includes("HttpOnly") && cookie.includes("SameSite=Strict") && cookie.includes("Path=/beta"), "beta cookie must be secure and scoped");
+  const beta = await fetch(origin + "/beta", { headers: { Cookie: cookie.split(";")[0] } });
+  assert.equal(beta.status, 200);
+  assert.ok((await beta.text()).includes('class="experience"'), "valid beta access did not restore cinematic page");
+  assert.match(beta.headers.get("x-robots-tag") ?? "", /noindex/);
+
+  const join = await get("/contact");
+  assert.match(join, /SEND APPLICATION/);
+  const weekly = await get("/inhouse-weekly");
+  assert.match(weekly, /CHALLENGE/);
   assert.match(home, /rel="canonical" href="https:\/\/kn1ghts\.org\/?"/);
   assert.match(home, /"@type":"Organization"/);
   const signin = await get("/sign-in");
