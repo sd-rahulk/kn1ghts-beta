@@ -48,10 +48,16 @@ try {
   assert.match(home, /Cybersecurity &amp; CTF Team in India/);
   assert.ok(home.includes("/kn1ghts-construction-knight.svg"), "mascot asset is missing");
   assert.match(home, /aria-label="kn1ghts"/);
+  const splashMain = home.match(/<main[^>]*>([\\s\\S]*?)<\\/main>/)?.[1] ?? "";
+  const splashText = splashMain.replace(/<svg[\\s\\S]*?<\\/svg>/g, "").replace(/<[^>]+>/g, "").replace(/\\s+/g, "");
+  assert.equal(splashText, "kn1ghts", "splash may only display the kn1ghts title");
   assert.ok(!home.includes("something lovely"), "old public construction wording remains");
+  const ogImage = await fetch(origin + "/opengraph-image", { signal: AbortSignal.timeout(12000) });
+  assert.equal(ogImage.status, 200, "social preview image failed");
+  assert.ok((ogImage.headers.get("content-type") ?? "").includes("image/png"));
   const mascotResponse = await fetch(origin + "/kn1ghts-construction-knight.svg");
   assert.equal(mascotResponse.status, 200, "mascot image is not reachable");
-  assert.match(mascotResponse.headers.get("content-type") ?? "", /image\\/svg\\+xml/);
+  assert.ok((mascotResponse.headers.get("content-type") ?? "").includes("image/svg+xml"), "mascot asset must be SVG");
   assert.ok(!home.includes('class="experience is-'), "public homepage exposed beta experience");
   assert.match(home, /href="\/team"/);
   assert.match(home, /href="\/blog"/);
