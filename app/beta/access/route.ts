@@ -8,8 +8,24 @@ import {
 } from "@/lib/beta-access";
 
 export async function POST(request: Request) {
-  const origin = new URL(request.url).origin;
-  if (request.headers.get("origin") !== origin) {
+  // On some managed Next.js deployments request.url is normalized to an
+  // internal hostname. Match the actual incoming Host header as well.
+  const postedOrigin = request.headers.get("origin");
+  const requestOrigin = new URL(request.url).origin;
+  const incomingHost = request.headers.get("host");
+  let sameOrigin = false;
+  if (postedOrigin) {
+    try {
+      const parsed = new URL(postedOrigin);
+      sameOrigin = postedOrigin === parsed.origin && (
+        postedOrigin === requestOrigin ||
+        (incomingHost === parsed.host &&
+          (parsed.protocol === "https:" ||
+            (process.env.NODE_ENV !== "production" && parsed.protocol === "http:")))
+      );
+    } catch { /* Invalid Origin is rejected. */ }
+  }
+  if (!sameOrigin) {
     return new Response("Forbidden", { status: 403, headers: { "Cache-Control": "no-store" } });
   }
   if (!request.headers.get("content-type")?.startsWith("application/x-www-form-urlencoded")) {
