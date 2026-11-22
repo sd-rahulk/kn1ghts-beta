@@ -54,7 +54,11 @@ try {
   assert.ok(mainStart >= 0 && mainBodyStart > mainStart && mainEnd > mainBodyStart, "homepage main missing");
   const splash = home.slice(mainBodyStart, mainEnd);
   assert.match(splash, /<img /, "homepage image missing");
-  assert.ok(!/<(?:h1|h2|nav|button|a)(?:\s|>)/i.test(splash), "homepage must be image-only");
+  assert.match(splash, /<h1>kn1ghts<\/h1>/i, "homepage must have a semantic brand heading");
+  assert.ok(splash.includes('href="/team"'), "homepage must link to its team");
+  assert.ok(splash.includes('href="/blog"'), "homepage must link to its blog");
+  assert.ok(splash.includes('href="/pow"'), "homepage must link to competition results");
+  assert.match(splash, /cybersecurity and Capture the Flag/i, "nonvisual users need an accessible site summary");
   assert.ok(!home.includes('class="experience is-'), "public homepage exposed beta experience");
   const originalKnight = await fetch(origin + "/kn1ghts-original-knight.webp");
   assert.equal(originalKnight.status, 200, "original knight image is not reachable");
