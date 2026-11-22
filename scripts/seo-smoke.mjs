@@ -45,8 +45,13 @@ try {
   const llms = await get("/llms.txt");
   assert.match(llms, /KN1GHTS/);
   const home = await get("/");
-  assert.match(home, /something lovely/);
-  assert.match(home, /under construction/i);
+  assert.match(home, /Cybersecurity &amp; CTF Team in India/);
+  assert.ok(home.includes("/kn1ghts-construction-knight.avif"), "mascot asset is missing");
+  assert.match(home, /aria-label="kn1ghts"/);
+  assert.ok(!home.includes("something lovely"), "old public construction wording remains");
+  const mascotResponse = await fetch(origin + "/kn1ghts-construction-knight.avif");
+  assert.equal(mascotResponse.status, 200, "mascot image is not reachable");
+  assert.match(mascotResponse.headers.get("content-type") ?? "", /image\\/avif/);
   assert.ok(!home.includes('class="experience is-'), "public homepage exposed beta experience");
   assert.match(home, /href="\/team"/);
   assert.match(home, /href="\/blog"/);
