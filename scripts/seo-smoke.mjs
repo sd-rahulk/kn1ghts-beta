@@ -54,11 +54,11 @@ try {
   assert.ok(mainStart >= 0 && mainBodyStart > mainStart && mainEnd > mainBodyStart, "homepage main missing");
   const splash = home.slice(mainBodyStart, mainEnd);
   assert.match(splash, /<img /, "homepage image missing");
-  assert.ok(!/<(?:h1|h2|nav|button|a)(?:\\s|>)/i.test(splash), "homepage must be image-only");
+  assert.ok(!/<(?:h1|h2|nav|button|a)(?:\s|>)/i.test(splash), "homepage must be image-only");
   assert.ok(!home.includes('class="experience is-'), "public homepage exposed beta experience");
   const originalKnight = await fetch(origin + "/kn1ghts-original-knight.webp");
   assert.equal(originalKnight.status, 200, "original knight image is not reachable");
-  assert.match(originalKnight.headers.get("content-type") ?? "", /image\\/webp/);
+  assert.match(originalKnight.headers.get("content-type") ?? "", /image\/webp/);
 
   const publicTeam = await get("/team");
   assert.match(publicTeam, /TEAM/);
