@@ -81,7 +81,11 @@ try {
   });
   assert.equal(rightPost.status, 303);
   const cookie = rightPost.headers.get("set-cookie");
-  assert.ok(cookie?.includes("HttpOnly") && cookie.includes("SameSite=Strict") && cookie.includes("Path=/beta"), "beta cookie must be secure and scoped");
+  assert.ok(
+    cookie && /httponly/i.test(cookie) && /samesite=strict/i.test(cookie) &&
+    /path=\/beta/i.test(cookie) && /;\s*secure/i.test(cookie),
+    "beta cookie must be secure, HttpOnly, same-site and path-scoped",
+  );
   const beta = await fetch(origin + "/beta", { headers: { Cookie: cookie.split(";")[0] } });
   assert.equal(beta.status, 200);
   assert.ok((await beta.text()).includes('class="experience"'), "valid beta access did not restore cinematic page");
