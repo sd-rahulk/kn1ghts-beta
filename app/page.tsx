@@ -1,32 +1,53 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { SiteExperience } from "@/components/SiteExperience";
 import { getSiteContent } from "@/lib/site-content";
 import type { HomePlatformData } from "@/lib/platform-api";
 import { canonicalUrl } from "@/lib/seo";
-import styles from "./coming-soon.module.css";
+import styles from "./mascot-home.module.css";
 
 type Props = { searchParams: Promise<{ preview?: string }> };
 
 export const dynamic = "force-dynamic";
 
+const title = "kn1ghts | Cybersecurity & CTF Team in India";
+const description =
+  "Meet kn1ghts, an Indian cybersecurity and Capture the Flag (CTF) team. Explore our team, real competition results, and original security field notes.";
+
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const { preview } = await searchParams;
   if (preview) {
     return {
-      title: { absolute: "KN1GHTS — draft preview" },
+      title: { absolute: "kn1ghts — draft preview" },
       robots: { index: false, follow: false, noarchive: true },
       referrer: "no-referrer",
     };
   }
   return {
-    title: { absolute: "KN1GHTS — a little something is on its way" },
-    description: "KN1GHTS is getting a little glow-up. Meet our cybersecurity team and explore the latest field notes while we build.",
+    title: { absolute: title },
+    description,
     alternates: { canonical: canonicalUrl("/") },
     openGraph: {
-      title: "KN1GHTS — under construction",
-      description: "A little something is on its way. Meet the team and read our CTF field notes.",
+      type: "website",
+      siteName: "kn1ghts",
+      title,
+      description,
       url: canonicalUrl("/"),
+      images: [
+        {
+          url: canonicalUrl("/opengraph-image"),
+          width: 1200,
+          height: 630,
+          alt: "kn1ghts cute construction knight brand card",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [canonicalUrl("/opengraph-image")],
     },
   };
 }
@@ -34,46 +55,48 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 function ComingSoon() {
   return (
     <main className={styles.page}>
-      <header className={styles.top}>
-        <span className={styles.brand}>kn1ghts.</span>
-        <span className={styles.smallLabel}>a little corner of the internet</span>
-      </header>
-
-      <section className={styles.middle} aria-labelledby="construction-title">
-        <svg className={styles.doodle} viewBox="0 0 140 140" fill="none" aria-hidden="true">
-          <circle cx="70" cy="66" r="54" fill="#EEF5E9" />
-          <path d="M42 105C47 97 93 97 98 105" stroke="#A5C6AA" strokeWidth="2.3" strokeLinecap="round" />
-          <path d="M70 99V57" stroke="#568672" strokeWidth="3.1" strokeLinecap="round" />
-          <path d="M71 83C52 84 48 72 48 63C61 62 70 67 71 83Z" fill="#B9D5AD" stroke="#568672" strokeWidth="2.1" strokeLinejoin="round" />
-          <path d="M70 70C89 71 96 58 96 49C80 48 72 54 70 70Z" fill="#D0E6C2" stroke="#568672" strokeWidth="2.1" strokeLinejoin="round" />
-          <path d="M70 51C62 48 59 41 62 36C65 31 71 32 74 38C76 31 83 31 86 36C90 43 83 51 70 51Z" fill="#F5B7B8" stroke="#B68086" strokeWidth="2" strokeLinejoin="round" />
-          <path d="M32 36V47M26.5 41.5H37.5" stroke="#D2AA7C" strokeWidth="2.2" strokeLinecap="round" />
-          <path d="M105 75V84M100.5 79.5H109.5" stroke="#B8A3CC" strokeWidth="2" strokeLinecap="round" />
-          <circle cx="100" cy="32" r="2.5" fill="#E5C58D" />
-          <circle cx="35" cy="78" r="2.4" fill="#E7B9C0" />
-        </svg>
-        <span className={styles.eyebrow}>a tiny work in progress</span>
-        <h1 className={styles.heading} id="construction-title">
-          something lovely <em>is growing.</em>
+      <header className={styles.titleWrap}>
+        <h1 className={styles.title} aria-label="kn1ghts">
+          <span>kn</span><span className={styles.one}>1</span><span>ghts</span>
         </h1>
-        <p className={styles.note}>KN1GHTS is under construction. We&apos;ll be back soon ♡</p>
-      </section>
-
-      <footer className={styles.footer}>
-        <span>made with curiosity and a lot of caffeine</span>
-        <nav className={styles.nav} aria-label="Explore KN1GHTS">
-          <Link href="/team">meet the team</Link>
-          <Link href="/blog">field notes</Link>
-        </nav>
-      </footer>
+        <svg className={styles.crown} viewBox="0 0 76 50" fill="none" aria-hidden="true">
+          <path d="M8 15L22 28L38 6L54 28L68 15L61 41H15L8 15Z" fill="#FFD06B" stroke="#D89938" strokeWidth="2.5" strokeLinejoin="round" />
+          <path d="M22 33H55" stroke="#F5AB48" strokeWidth="3" strokeLinecap="round" />
+          <circle cx="38" cy="6" r="4" fill="#FFD06B" />
+        </svg>
+      </header>
+      <div className={styles.mascotWrap}>
+        <Image
+          src="/kn1ghts-construction-knight.svg"
+          className={styles.mascot}
+          alt="A happy chubby knight holds a striped construction board, with traffic cones, helmet, barricade, wrench and toolbox."
+          width={1440}
+          height={569}
+          priority
+          unoptimized
+          sizes="(max-width: 700px) 100vw, 1200px"
+        />
+      </div>
+      <nav className={styles.iconLinks} aria-label="Explore kn1ghts">
+        <Link href="/team" aria-label="Visit the kn1ghts team">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="9" cy="8.2" r="3.1" /><path d="M3.5 19.2v-1.3a5.5 5.5 0 0 1 11 0v1.3M16.9 5.3a3 3 0 0 1 0 5.8M17 13.5a4.5 4.5 0 0 1 3.5 4.4v1.3" />
+          </svg>
+        </Link>
+        <Link href="/blog" aria-label="Read the kn1ghts blog">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 19.5c-2.6-1.6-5.8-1.9-9-1.6V5.2c3.2-.3 6.5 0 9 1.8 2.5-1.8 5.8-2.1 9-1.8v12.7c-3.2-.3-6.4 0-9 1.6ZM12 7v12.5" />
+          </svg>
+        </Link>
+      </nav>
     </main>
   );
 }
 
 export default async function Home({ searchParams }: Props) {
   const { preview } = await searchParams;
-  // Preserve the management app's existing short-lived draft preview links.
-  // Public visitors without a valid token see only the small coming-soon page.
+  // Keep the existing short-lived CMS previews; the backend validates tokens.
+  // They are not the public homepage and remain noindex.
   if (!preview) return <ComingSoon />;
 
   let site;
@@ -82,10 +105,10 @@ export default async function Home({ searchParams }: Props) {
   } catch {
     return (
       <main className={styles.page}>
-        <section className={styles.middle}>
-          <h1 className={styles.heading}>preview unavailable.</h1>
-          <p className={styles.note}>This draft link may have expired or been revoked.</p>
-          <nav className={styles.nav}><Link href="/">back home</Link></nav>
+        <section className={styles.previewError}>
+          <h1>preview unavailable.</h1>
+          <p>This draft link has expired or been revoked.</p>
+          <Link href="/">back home</Link>
         </section>
       </main>
     );

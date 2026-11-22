@@ -6,7 +6,7 @@ import "./knights-home.css";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   applicationName: SITE_NAME,
-  title: { default: "KN1GHTS | Competitive Cybersecurity", template: "%s | KN1GHTS" },
+  title: { default: "kn1ghts | Cybersecurity & CTF Team in India", template: "%s | kn1ghts" },
   description: SITE_DESCRIPTION,
   robots: {
     index: true,
@@ -17,11 +17,11 @@ export const metadata: Metadata = {
     type: "website",
     siteName: SITE_NAME,
     locale: "en_IN",
-    title: "KN1GHTS | Competitive Cybersecurity",
+    title: "kn1ghts | Cybersecurity & CTF Team in India",
     description: SITE_DESCRIPTION,
     url: SITE_URL,
   },
-  twitter: { card: "summary", title: "KN1GHTS | Competitive Cybersecurity", description: SITE_DESCRIPTION },
+  twitter: { card: "summary", title: "kn1ghts | Cybersecurity & CTF Team in India", description: SITE_DESCRIPTION },
 };
 
 export const viewport: Viewport = {
