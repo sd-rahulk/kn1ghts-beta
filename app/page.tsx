@@ -52,7 +52,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   };
 }
 
-ffunction ComingSoon() {
+function ComingSoon() {
   return (
     <main className={styles.page} aria-label="KN1GHTS homepage under construction">
       <Image
@@ -68,7 +68,7 @@ ffunction ComingSoon() {
   );
 }
 
-xport default async function Home({ searchParams }: Props) {
+export default async function Home({ searchParams }: Props) {
   const { preview } = await searchParams;
   // Keep the existing short-lived CMS previews; the backend validates tokens.
   // They are not the public homepage and remain noindex.
