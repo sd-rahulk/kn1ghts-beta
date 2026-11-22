@@ -46,31 +46,19 @@ try {
   assert.match(llms, /KN1GHTS/);
   const home = await get("/");
   assert.match(home, /Cybersecurity &amp; CTF Team in India/);
-  assert.ok(home.includes("/kn1ghts-construction-knight.svg"), "mascot asset is missing");
-  assert.match(home, /aria-label="kn1ghts"/);
-  const startOfMain = home.indexOf("<main");
-  const startOfBody = home.indexOf(">", startOfMain) + 1;
-  const endOfMain = home.indexOf("</main>", startOfBody);
-  assert.ok(startOfMain >= 0 && startOfBody > 0 && endOfMain > startOfBody, "homepage main element missing");
-  let splashContent = home.slice(startOfBody, endOfMain);
-  while (splashContent.includes("<svg")) {
-    const svgStart = splashContent.indexOf("<svg");
-    const svgEnd = splashContent.indexOf("</svg>", svgStart);
-    assert.ok(svgEnd > svgStart, "unclosed decorative SVG");
-    splashContent = splashContent.slice(0, svgStart) + splashContent.slice(svgEnd + 6);
-  }
-  const visibleText = splashContent.replace(/<[^>]*>/g, "").replaceAll(" ", "").trim();
-  assert.equal(visibleText, "kn1ghts", "splash may only display the kn1ghts title");
-  assert.ok(!home.includes("something lovely"), "old public construction wording remains");
-  const ogImage = await fetch(origin + "/opengraph-image", { signal: AbortSignal.timeout(12000) });
-  assert.equal(ogImage.status, 200, "social preview image failed");
-  assert.ok((ogImage.headers.get("content-type") ?? "").includes("image/png"));
-  const mascotResponse = await fetch(origin + "/kn1ghts-construction-knight.svg");
-  assert.equal(mascotResponse.status, 200, "mascot image is not reachable");
-  assert.ok((mascotResponse.headers.get("content-type") ?? "").includes("image/svg+xml"), "mascot asset must be SVG");
+  assert.ok(home.includes("/kn1ghts-original-knight.webp"), "original knight asset missing");
+  assert.match(home, /aria-label="KN1GHTS homepage under construction"/);
+  const mainStart = home.indexOf("<main");
+  const mainBodyStart = home.indexOf(">", mainStart) + 1;
+  const mainEnd = home.indexOf("</main>", mainBodyStart);
+  assert.ok(mainStart >= 0 && mainBodyStart > mainStart && mainEnd > mainBodyStart, "homepage main missing");
+  const splash = home.slice(mainBodyStart, mainEnd);
+  assert.match(splash, /<img /, "homepage image missing");
+  assert.ok(!/<(?:h1|h2|nav|button|a)(?:\s|>)/i.test(splash), "homepage must be image-only");
   assert.ok(!home.includes('class="experience is-'), "public homepage exposed beta experience");
-  assert.match(home, /href="\/team"/);
-  assert.match(home, /href="\/blog"/);
+  const originalKnight = await fetch(origin + "/kn1ghts-original-knight.webp");
+  assert.equal(originalKnight.status, 200, "original knight image is not reachable");
+  assert.match(originalKnight.headers.get("content-type") ?? "", /image\/webp/);
 
   const publicTeam = await get("/team");
   assert.match(publicTeam, /TEAM/);
