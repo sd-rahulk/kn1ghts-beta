@@ -15,7 +15,16 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: process.cwd(),
   poweredByHeader: false,
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    const privatePreviewHeaders = [
+      { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+      { key: "Cache-Control", value: "private, no-store, max-age=0" },
+      { key: "Referrer-Policy", value: "no-referrer" },
+    ];
+    return [
+      { source: "/:path*", headers: securityHeaders },
+      { source: "/beta", headers: privatePreviewHeaders },
+      { source: "/beta/:path*", headers: privatePreviewHeaders },
+    ];
   },
 };
 
