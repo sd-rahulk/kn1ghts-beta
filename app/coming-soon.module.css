@@ -1,0 +1,38 @@
+.page {
+  min-height: 100svh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(22px, 4vw, 54px);
+  background: #fcfbf6;
+  color: #324f47;
+  font-family: ui-rounded, "Trebuchet MS", "Arial Rounded MT Bold", system-ui, sans-serif;
+  cursor: auto;
+  position: relative;
+  overflow: hidden;
+}
+.page :is(a, button, input) { cursor: pointer; }
+.page input { cursor: text; }
+.top { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.brand { font-weight: 800; letter-spacing: -.07em; font-size: 20px; }
+.smallLabel, .footer { font: 500 11px/1.5 ui-monospace, "SFMono-Regular", Consolas, monospace; letter-spacing: .09em; color: #8b9a94; }
+.middle { display: grid; justify-items: center; align-content: center; text-align: center; gap: 0; margin: 40px auto 66px; width: 100%; max-width: 550px; }
+.doodle { width: 124px; height: 124px; margin-bottom: 22px; animation: float 4.3s ease-in-out infinite; }
+.eyebrow { color: #84948b; font: 500 10px ui-monospace, "SFMono-Regular", Consolas, monospace; letter-spacing: .18em; text-transform: uppercase; }
+.heading { margin: 19px 0 12px; font-size: clamp(36px, 6.7vw, 61px); max-width: 500px; font-weight: 750; line-height: 1.12; letter-spacing: -.06em; text-wrap: balance; }
+.heading em { font-style: normal; color: #70a58c; }
+.note { margin: 0; max-width: 360px; color: #788982; font: 400 14px/1.85 ui-rounded, "Trebuchet MS", system-ui, sans-serif; }
+.footer { display: flex; justify-content: space-between; align-items: center; gap: 22px; flex-wrap: wrap; }
+.nav { display: flex; align-items: center; gap: 19px; }
+.nav a { color: #526b5f; border-bottom: 1px solid #bbcec1; text-decoration: none; padding-bottom: 3px; transition: color .15s, border-color .15s; }
+.nav a:hover, .nav a:focus-visible { color: #2f6d50; border-color: #2f6d50; }
+.nav a:focus-visible, .gateInput:focus-visible, .gateButton:focus-visible { outline: 2px solid #70a58c; outline-offset: 4px; }
+.gate { display: grid; gap: 14px; width: min(320px, 100%); margin-top: 26px; text-align: left; }
+.gateLabel { color: #667d71; font-size: 13px; font-weight: 700; }
+.gateInput { padding: 13px 14px; border-radius: 11px; background: #fff; color: #263e34; border: 1px solid #cad6cb; font: inherit; font-size: 15px; width: 100%; }
+.gateButton { border: 0; border-radius: 11px; min-height: 43px; background: #476c56; color: #fff; font: 600 14px ui-rounded, "Trebuchet MS", system-ui, sans-serif; }
+.error { color: #9e544b; font-size: 13px; margin: 0; }
+@keyframes float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-8px) rotate(2deg); } }
+@media (max-width: 520px) { .smallLabel { display: none; } .middle { margin-top: 30px; margin-bottom: 40px; } .doodle { width: 112px; height: 112px; } .footer { flex-direction: column; align-items: flex-start; } }
+@media (prefers-reduced-motion: reduce) { .doodle { animation: none; } .nav a { transition: none; } }

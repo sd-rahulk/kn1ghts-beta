@@ -24,6 +24,7 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: npm run lint
+      - run: node --test scripts/weekly-starter.test.mjs
       - run: npm run build
       - run: node scripts/seo-smoke.mjs
       - run: npm audit --omit=dev --audit-level=high
