@@ -76,10 +76,9 @@ export default async function Home({ searchParams }: Props) {
   // Public visitors without a valid token see only the small coming-soon page.
   if (!preview) return <ComingSoon />;
 
+  let site;
   try {
-    const site = await getSiteContent(preview);
-    const platform: HomePlatformData = { blog: [], events: [], challenge: null };
-    return <SiteExperience data={site} platform={platform} preview contactReady={false} />;
+    site = await getSiteContent(preview);
   } catch {
     return (
       <main className={styles.page}>
@@ -91,4 +90,6 @@ export default async function Home({ searchParams }: Props) {
       </main>
     );
   }
+  const platform: HomePlatformData = { blog: [], events: [], challenge: null };
+  return <SiteExperience data={site} platform={platform} preview contactReady={false} />;
 }
