@@ -48,9 +48,19 @@ try {
   assert.match(home, /Cybersecurity &amp; CTF Team in India/);
   assert.ok(home.includes("/kn1ghts-construction-knight.svg"), "mascot asset is missing");
   assert.match(home, /aria-label="kn1ghts"/);
-  const splashMain = home.match(/<main[^>]*>([\\s\\S]*?)<\\/main>/)?.[1] ?? "";
-  const splashText = splashMain.replace(/<svg[\\s\\S]*?<\\/svg>/g, "").replace(/<[^>]+>/g, "").replace(/\\s+/g, "");
-  assert.equal(splashText, "kn1ghts", "splash may only display the kn1ghts title");
+  const startOfMain = home.indexOf("<main");
+  const startOfBody = home.indexOf(">", startOfMain) + 1;
+  const endOfMain = home.indexOf("</main>", startOfBody);
+  assert.ok(startOfMain >= 0 && startOfBody > 0 && endOfMain > startOfBody, "homepage main element missing");
+  let splashContent = home.slice(startOfBody, endOfMain);
+  while (splashContent.includes("<svg")) {
+    const svgStart = splashContent.indexOf("<svg");
+    const svgEnd = splashContent.indexOf("</svg>", svgStart);
+    assert.ok(svgEnd > svgStart, "unclosed decorative SVG");
+    splashContent = splashContent.slice(0, svgStart) + splashContent.slice(svgEnd + 6);
+  }
+  const visibleText = splashContent.replace(/<[^>]*>/g, "").replaceAll(" ", "").trim();
+  assert.equal(visibleText, "kn1ghts", "splash may only display the kn1ghts title");
   assert.ok(!home.includes("something lovely"), "old public construction wording remains");
   const ogImage = await fetch(origin + "/opengraph-image", { signal: AbortSignal.timeout(12000) });
   assert.equal(ogImage.status, 200, "social preview image failed");
