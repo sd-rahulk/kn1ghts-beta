@@ -10,10 +10,15 @@ export function betaPassword(): string | null {
   return password && password.length >= 24 ? password : null;
 }
 
-export function betaSessionToken(password: string): string {
+function signExpiry(expires: number, password: string): string {
   return createHmac("sha256", password)
-    .update("KN1GHTS-private-beta-session-v1")
+    .update(`KN1GHTS-private-beta-session-v1:${expires}`)
     .digest("hex");
+}
+
+export function betaSessionToken(password: string, now = Date.now()): string {
+  const expires = Math.floor(now / 1000) + BETA_SESSION_SECONDS;
+  return `${expires}.${signExpiry(expires, password)}`;
 }
 
 export function matchesBetaPassword(candidate: string, password: string): boolean {
@@ -22,9 +27,13 @@ export function matchesBetaPassword(candidate: string, password: string): boolea
   return timingSafeEqual(expected, provided);
 }
 
-export function hasBetaSession(cookieValue: string | undefined, password: string): boolean {
-  if (!cookieValue || !/^[a-f0-9]{64}$/.test(cookieValue)) return false;
-  const expected = Buffer.from(betaSessionToken(password), "hex");
-  const provided = Buffer.from(cookieValue, "hex");
+export function hasBetaSession(cookieValue: string | undefined, password: string, now = Date.now()): boolean {
+  if (!cookieValue || !/^\d{10}\.[a-f0-9]{64}$/.test(cookieValue)) return false;
+  const [rawExpiry, signature] = cookieValue.split(".");
+  const expires = Number(rawExpiry);
+  const current = Math.floor(now / 1000);
+  if (!Number.isSafeInteger(expires) || expires < current || expires > current + BETA_SESSION_SECONDS) return false;
+  const expected = Buffer.from(signExpiry(expires, password), "hex");
+  const provided = Buffer.from(signature, "hex");
   return timingSafeEqual(expected, provided);
 }
