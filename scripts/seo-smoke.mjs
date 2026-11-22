@@ -47,7 +47,7 @@ try {
   const home = await get("/");
   assert.match(home, /Cybersecurity &amp; CTF Team in India/);
   assert.ok(home.includes("/kn1ghts-original-knight.webp"), "original knight asset missing");
-  assert.match(home, /aria-label="KN1GHTS homepage under construction"/);
+  assert.match(home, /aria-label="kn1ghts homepage"/);
   const mainStart = home.indexOf("<main");
   const mainBodyStart = home.indexOf(">", mainStart) + 1;
   const mainEnd = home.indexOf("</main>", mainBodyStart);
