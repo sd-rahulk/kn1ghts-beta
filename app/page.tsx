@@ -54,10 +54,23 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 
 function ComingSoon() {
   return (
-    <main className={styles.page} aria-label="KN1GHTS homepage under construction">
+    <main className={styles.page} aria-label="kn1ghts homepage">
+      <div className={styles.accessibleInfo}>
+        <h1>kn1ghts</h1>
+        <p>
+          kn1ghts is a cybersecurity and Capture the Flag (CTF) team in India.
+          Our public team profile and original security field notes are available
+          while the main website is under construction.
+        </p>
+        <nav aria-label="Explore kn1ghts">
+          <Link href="/team">Meet the team</Link>
+          <Link href="/blog">Security field notes</Link>
+          <Link href="/pow">Competition results</Link>
+        </nav>
+      </div>
       <Image
         src="/kn1ghts-original-knight.webp"
-        alt="A happy chibi knight holding an Under Construction sign"
+        alt="kn1ghts mascot: a happy chubby knight holding a construction sign"
         width={480}
         height={439}
         className={styles.knight}
