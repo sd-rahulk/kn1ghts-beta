@@ -5,7 +5,7 @@ import { SiteExperience } from "@/components/SiteExperience";
 import { getSiteContent } from "@/lib/site-content";
 import type { HomePlatformData } from "@/lib/platform-api";
 import { canonicalUrl } from "@/lib/seo";
-import styles from "./coming-soon.module.css";
+import styles from "./mascot-home.module.css";
 
 type Props = { searchParams: Promise<{ preview?: string }> };
 
@@ -38,7 +38,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
         {
           url: canonicalUrl("/kn1ghts-construction-knight.avif"),
           width: 1440,
-          height: 600,
+          height: 569,
           alt: "The kn1ghts mascot, a cheerful tiny knight in a playful construction scene",
         },
       ],
@@ -71,7 +71,7 @@ function ComingSoon() {
           className={styles.mascot}
           alt="A happy chubby knight holds a striped construction board, with traffic cones, helmet, barricade, wrench and toolbox."
           width={1440}
-          height={600}
+          height={569}
           priority
           unoptimized
           sizes="(max-width: 700px) 100vw, 1200px"
