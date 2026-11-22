@@ -38,6 +38,7 @@ try {
   assert.match(sitemap, /https:\/\/kn1ghts\.org\//);
   assert.match(sitemap, /https:\/\/kn1ghts\.org\/blog/);
   assert.match(sitemap, /https:\/\/kn1ghts\.org\/blog\/web-ctf-field-guide/);
+  assert.ok(!sitemap.includes("/beta"), "private preview appeared in sitemap");
   const guide = await get("/blog/web-ctf-field-guide");
   assert.match(guide, /Web CTF Security: Authorization, Sessions, and Safe Testing/);
   assert.ok(guide.includes("https://kn1ghts.org/blog/web-ctf-field-guide"), "guide canonical URL missing");
@@ -94,7 +95,7 @@ try {
   assert.match(home, /"@type":"Organization"/);
   const signin = await get("/sign-in");
   assert.match(signin, /name="robots" content="noindex/);
-  console.log("SEO smoke checks passed: robots, sitemap, llms, canonical, structured data, noindex.");
+  console.log("Public and private smoke checks passed: construction page, Team, Blog, private beta authentication, community routes, SEO.");
 } catch (error) {
   console.error(error);
   console.error(serverLogs.slice(-2500));
