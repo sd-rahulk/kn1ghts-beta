@@ -55,7 +55,7 @@ try {
   assert.match(llms, /KN1GHTS/);
   const home = await get("/");
   assert.match(home, /Cybersecurity &amp; CTF Team in India/);
-  // The broadsheet homepage carries no imagery: the knight asset is no longer
+  // The poster homepage carries no imagery: the knight asset is no longer
   // linked from it (it still exists in public/ and is checked reachable below).
   assert.ok(!home.includes("kn1ghts-original-knight"), "homepage still references the removed knight imagery");
   assert.match(home, /aria-label="KN1GHTS — back to top"/);
@@ -65,18 +65,30 @@ try {
   const mainEnd = home.indexOf("</main>", mainBodyStart);
   assert.ok(mainStart >= 0 && mainBodyStart > mainStart && mainEnd > mainBodyStart, "homepage main missing");
   const splash = home.slice(mainBodyStart, mainEnd);
-  // The broadsheet homepage is typographic by design: no <img> in <main>.
-  // Its proof is the scoreboard of first places and the results table.
-  assert.match(splash, /hero-score/, "homepage scoreboard missing");
-  assert.match(splash, /results-table/, "homepage results table missing");
-  assert.match(splash, /<h1>Four first places in 2026\.<\/h1>/, "homepage must have a semantic fact headline");
+  // The poster homepage is one announcement block: no <img> in <main>, no
+  // scoreboard, no results table, no roster. Its proof is the ticker of
+  // first places and the link to the full record at /pow.
+  assert.ok(!splash.includes("results-table"), "poster homepage still renders the results table");
+  assert.ok(!splash.includes("hero-score"), "poster homepage still renders the scoreboard");
+  assert.ok(!splash.includes("roster"), "poster homepage still renders the roster");
+  assert.match(splash, /poster-ticker/, "homepage announcement ticker missing");
+  assert.match(splash, /cruXipher/, "ticker must name a first-place finish");
+  // The headline is split into per-word spans for the kinetic type
+  // treatment, so the raw HTML has no contiguous "<h1>Four first places
+  // in 2026.</h1>" — strip tags, then match the announcement text.
+  assert.match(home, /<h1[^>]*>/, "homepage must have a semantic fact headline");
+  const homeText = home.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+  assert.ok(homeText.includes("Four first places in 2026."), "homepage must carry the announcement headline");
   // The header nav and footer sit outside <main>, so link checks run on `home`.
   assert.ok(home.includes('href="/team"'), "homepage must link to its team");
   assert.ok(home.includes('href="/blog"'), "homepage must link to its blog");
-  // Results live on the homepage itself now instead of behind /pow: every row
-  // links out to its public CTFtime record.
-  assert.ok(splash.includes('href="https://ctftime.org/team/157907"'), "homepage results must link to their public CTFtime record");
-  assert.match(splash, /175\.732 PTS/, "homepage must show the CTFtime rating");
+  assert.ok(home.includes('href="/pow"'), "announcement must link to the record");
+  // The poster has no sections, so the old in-page anchors must be gone —
+  // every nav link is a real page now (#home and #main are the only
+  // in-page targets that may remain).
+  for (const dead of ['href="#results"', 'href="#team"', 'href="#writeups"', 'href="#about"', 'href="#contact"']) {
+    assert.ok(!home.includes(dead), `poster homepage still links to dead anchor ${dead}`);
+  }
   assert.match(splash, /cybersecurity team that designs and competes in Capture the Flag/i, "nonvisual users need an accessible site summary");
   assert.ok(!home.includes('class="experience is-'), "public homepage exposed beta experience");
   // Unlinked from the homepage but still shipped in public/: it must stay reachable.
@@ -183,9 +195,12 @@ try {
   );
   const beta = await fetch(origin + "/beta", { headers: { Cookie: cookie.split(";")[0] } });
   assert.equal(beta.status, 200);
-  // Valid beta access now serves the redesigned homepage, not the cinematic page.
+  // Valid beta access now serves the poster homepage, not the cinematic page.
   const betaBody = await beta.text();
-  assert.ok(betaBody.includes("Four first places in 2026."), "valid beta access did not restore the redesigned homepage");
+  // Same tag-stripped check as the public homepage: the kinetic headline
+  // is split into per-word spans, so the raw HTML is not contiguous.
+  const betaText = betaBody.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+  assert.ok(betaText.includes("Four first places in 2026."), "valid beta access did not restore the redesigned homepage");
   assert.ok(!betaBody.includes('class="experience is-'), "beta exposed the removed cinematic page");
   assert.match(beta.headers.get("x-robots-tag") ?? "", /noindex/);
 
@@ -197,7 +212,7 @@ try {
   assert.match(home, /"@type":"Organization"/);
   const signin = await get("/sign-in");
   assert.match(signin, /name="robots" content="noindex/);
-  console.log("Public and private smoke checks passed: broadsheet homepage, Team, Blog, private beta authentication, community routes, SEO.");
+  console.log("Public and private smoke checks passed: poster homepage, Team, Blog, private beta authentication, community routes, SEO.");
 } catch (error) {
   console.error(error);
   console.error(serverLogs.slice(-2500));
