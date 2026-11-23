@@ -47,9 +47,9 @@ function ordinal(label: string) {
   return `${n}TH`;
 }
 
-function date(value: string, fallback: string) {
-  const parsed = new Date(value);
-  return value && Number.isFinite(parsed.valueOf())
+function date(value: number | null | undefined, fallback: string) {
+  const parsed = new Date(value ?? Number.NaN);
+  return Number.isFinite(parsed.valueOf())
     ? new Intl.DateTimeFormat("en", { month: "short", year: "numeric", timeZone: "UTC" }).format(parsed).toUpperCase()
     : fallback;
 }
@@ -84,7 +84,7 @@ export function HomePage({
       <HomeHeader site={data} />
       <main id="main" tabIndex={-1}>
         {hero && (
-          <header className="hero" id="home">
+          <header className="hero" id={hero.id}>
             <div className="wrap">
               <div className="hero-kicker">
                 <span>
@@ -97,7 +97,7 @@ export function HomePage({
               </h1>
               <p className="hero-standfirst">{hero.description}</p>
               <p className="hero-cta">
-                <a className="network-cta" href={hero.fields.ctaHref || "#results"}>
+                <a className="network-cta" href={hero.fields.ctaHref || (results ? `#${results.id}` : "#results")}>
                   <span>{hero.fields.ctaLabel || "SEE THE RESULTS"}</span>
                   <b aria-hidden="true">↓</b>
                 </a>
@@ -139,11 +139,11 @@ export function HomePage({
         )}
 
         {about && (
-          <section id="about" aria-labelledby="about-heading">
+          <section id={about.id} aria-labelledby={`${about.id}-heading`}>
             <div className="wrap">
               <div className="section-head">
                 <p className="eyebrow">{about.eyebrow}</p>
-                <h2 id="about-heading">
+                <h2 id={`${about.id}-heading`}>
                   <Text value={about.title} />
                 </h2>
               </div>
@@ -157,27 +157,32 @@ export function HomePage({
                   </p>
                 )}
               </div>
-              {disciplines && disciplines.items.length > 0 && (
-                <ol className="discipline-list">
-                  {disciplines.items.map((item, i) => (
-                    <li key={item.id}>
-                      <span className="num">{String(i + 1).padStart(2, "0")}</span>
-                      <h3>{item.title}</h3>
-                      <p>{item.body}</p>
-                    </li>
-                  ))}
-                </ol>
-              )}
+            </div>
+          </section>
+        )}
+
+        {disciplines && disciplines.items.length > 0 && (
+          <section id={disciplines.id} aria-label="Disciplines">
+            <div className="wrap">
+              <ol className="discipline-list">
+                {disciplines.items.map((item, i) => (
+                  <li key={item.id}>
+                    <span className="num">{String(i + 1).padStart(2, "0")}</span>
+                    <h3>{item.title}</h3>
+                    <p>{item.body}</p>
+                  </li>
+                ))}
+              </ol>
             </div>
           </section>
         )}
 
         {results && results.items.length > 0 && (
-          <section id="results" aria-labelledby="results-heading">
+          <section id={results.id} aria-labelledby={`${results.id}-heading`}>
             <div className="wrap">
               <div className="section-head">
                 <p className="eyebrow">{results.eyebrow}</p>
-                <h2 id="results-heading">
+                <h2 id={`${results.id}-heading`}>
                   <Text value={results.title} />
                 </h2>
                 {results.description && <p>{results.description}</p>}
@@ -238,11 +243,11 @@ export function HomePage({
         )}
 
         {team && team.items.length > 0 && (
-          <section id="team" aria-labelledby="team-heading">
+          <section id={team.id} aria-labelledby={`${team.id}-heading`}>
             <div className="wrap">
               <div className="section-head">
                 <p className="eyebrow">{team.eyebrow}</p>
-                <h2 id="team-heading">
+                <h2 id={`${team.id}-heading`}>
                   <Text value={team.title} />
                 </h2>
                 {team.description && <p>{team.description}</p>}
@@ -270,11 +275,11 @@ export function HomePage({
         )}
 
         {writeups && writeups.items.length > 0 && (
-          <section id="writeups" aria-labelledby="writeups-heading">
+          <section id={writeups.id} aria-labelledby={`${writeups.id}-heading`}>
             <div className="wrap">
               <div className="section-head">
                 <p className="eyebrow">{writeups.eyebrow}</p>
-                <h2 id="writeups-heading">
+                <h2 id={`${writeups.id}-heading`}>
                   <Text value={writeups.title} />
                 </h2>
                 {writeups.description && <p>{writeups.description}</p>}
@@ -377,10 +382,10 @@ export function HomePage({
         )}
 
         {recruitment && (
-          <section aria-labelledby="recruitment-heading">
+          <section id={recruitment.id} aria-labelledby={`${recruitment.id}-heading`}>
             <div className="wrap">
               <div className="recruitment-notice">
-                <h2 id="recruitment-heading">
+                <h2 id={`${recruitment.id}-heading`}>
                   <Text value={recruitment.title} />
                 </h2>
                 <p>{recruitment.description}</p>
@@ -396,11 +401,11 @@ export function HomePage({
         )}
 
         {contact && (
-          <section id="contact" aria-labelledby="contact-heading">
+          <section id={contact.id} aria-labelledby={`${contact.id}-heading`}>
             <div className="wrap contact-grid">
               <div className="section-head">
                 <p className="eyebrow">{contact.eyebrow}</p>
-                <h2 id="contact-heading">
+                <h2 id={`${contact.id}-heading`}>
                   <Text value={contact.title} />
                 </h2>
                 {contact.description && <p>{contact.description}</p>}
