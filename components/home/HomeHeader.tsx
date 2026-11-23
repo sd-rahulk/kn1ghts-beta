@@ -2,38 +2,41 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { SiteContent } from "@/backend/lib/schema";
+import { resolvePosterHref } from "@/components/home/posterLinks";
 
 /*
- * Nav remap — the CMS nav (default.json, frozen) is anchor-based
- * (#results, #team, #writeups, #about, #contact), but the poster homepage
- * has no sections, so those anchors would be dead links. The header
- * therefore remaps CMS labels to the real pages that host that content:
- *
- *   RESULTS  #results  -> /pow       (Proof of Work — the full record)
- *   TEAM     #team     -> /team
- *   WRITEUPS #writeups -> /blog
- *   CONTACT  #contact  -> /contact
- *   ABOUT    #about    -> dropped (no /about page exists)
- *   BLOG     /blog     -> dropped (same destination as WRITEUPS)
- *
- * Labels still come from the CMS; only the destinations are overridden.
- * A CMS nav item with no entry in this map is not rendered — the safe
- * default is to hide it rather than render a dead anchor.
+ * Nav resolution — the CMS nav (default.json) is anchor-based (#results,
+ * #team, ...), but the poster homepage renders no sections, so those
+ * anchors would be dead links. Every published entry is therefore resolved
+ * through resolvePosterHref, which uses the entry's AUTHORED href:
+ * absolute paths and external URLs render unchanged (so a published entry
+ * such as EVENTS -> /events stays in the menus), and fragments map to the
+ * page that hosts that section (#results -> /pow, #team -> /team,
+ * #writeups -> /blog, #contact -> /contact; #home stays, it is the
+ * rendered hero id). Only a fragment with no page on the poster site
+ * (#about, #disciplines, #recruitment) resolves to null and is omitted —
+ * there is no authored destination that works for it. Labels always come
+ * from the CMS, so a relabelled entry (TEAM -> Team) still resolves by
+ * its href. Entries that resolve to the same destination are deduped,
+ * keeping the first label (WRITEUPS and BLOG both point at /blog).
  */
-const PAGE_LINKS: Record<string, string> = {
-  RESULTS: "/pow",
-  TEAM: "/team",
-  WRITEUPS: "/blog",
-  CONTACT: "/contact",
-};
+function resolveNavLinks(navigation: SiteContent["settings"]["navigation"]) {
+  const seen = new Set<string>();
+  const links: { label: string; href: string }[] = [];
+  for (const entry of navigation) {
+    const href = resolvePosterHref(entry.href);
+    if (!href || seen.has(href)) continue;
+    seen.add(href);
+    links.push({ label: entry.label, href });
+  }
+  return links;
+}
 
 export function HomeHeader({ site }: { site: SiteContent }) {
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
-  const links = site.settings.navigation
-    .filter((link) => PAGE_LINKS[link.label] !== undefined)
-    .map((link) => ({ label: link.label, href: PAGE_LINKS[link.label] }));
+  const links = resolveNavLinks(site.settings.navigation);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
