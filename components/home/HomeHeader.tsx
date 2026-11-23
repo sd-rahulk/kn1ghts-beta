@@ -30,6 +30,20 @@ export function HomeHeader({ site }: { site: SiteContent }) {
     };
   }, [open ]);
 
+  // Close the mobile menu if the viewport widens past the mobile
+  // breakpoint: above 860px the toggle is hidden, so a stale open state
+  // would leave the panel visible and scrolling locked with no way to
+  // close it. Resetting `open` also restores body scrolling via the
+  // effect above.
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 860px)");
+    const closeOnDesktop = (event: MediaQueryListEvent) => {
+      if (!event.matches) setOpen(false);
+    };
+    media.addEventListener("change", closeOnDesktop);
+    return () => media.removeEventListener("change", closeOnDesktop);
+  }, []);
+
   return (
     <header className="masthead">
       <div className="masthead-inner">
