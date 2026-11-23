@@ -33,7 +33,7 @@ try {
   await waitForServer();
   const favicon = await fetch(origin + "/icon.png");
   assert.equal(favicon.status, 200, "transparent PNG favicon not served");
-  assert.match(favicon.headers.get("content-type") ?? "", /image\\/png/, "incorrect favicon content type");
+  assert.match(favicon.headers.get("content-type") ?? "", /image\/png/, "incorrect favicon content type");
   const faviconBytes = new Uint8Array(await favicon.arrayBuffer());
   assert.equal(faviconBytes[0], 0x89);
   assert.equal(faviconBytes[1], 0x50);
