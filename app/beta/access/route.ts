@@ -25,9 +25,8 @@ export async function POST(request: Request) {
       const isHttps = parsed.protocol === "https:";
       const isLocalHttp =
         parsed.protocol === "http:" &&
-        (process.env.NODE_ENV !== "production" ||
-          (["localhost", "127.0.0.1"].includes(parsed.hostname) &&
-            new URL(requestOrigin).hostname === "localhost"));
+        ["localhost", "127.0.0.1"].includes(parsed.hostname) &&
+        ["localhost", "127.0.0.1"].includes(new URL(requestOrigin).hostname);
       // Origin headers must be exact serialized origins (no path or credentials).
       const sameOrigin =
         publicOrigins.has(postedOrigin) ||
