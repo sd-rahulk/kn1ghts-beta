@@ -418,3 +418,156 @@ html { scrollbar-width: thin; scrollbar-color: var(--tactical) var(--paper); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
+
+/* ==========================================================================
+   THE POSTER (motion round, 2026-11-24) — appended, no existing rule
+   changed. Homepage is one announcement block; motion is pure CSS:
+   kinetic hero type, results ticker, scroll progress hairline, hero
+   parallax-out, hover physics. No JS, no new dependencies.
+   Every treatment degrades to the full static page: word-rise and the
+   ticker are animation-only (with `animation: none` the content sits in
+   its natural, visible state), and the progress bar / parallax exist
+   only inside @supports. The reduced-motion block below comes after the
+   global one, so its `animation: none !important` wins.
+   ========================================================================== */
+
+/* ---------- Poster hero: one screen ---------- */
+.poster-hero {
+  display: flex; flex-direction: column;
+  min-height: calc(100svh - 65px); /* viewport minus the 64px sticky masthead */
+  padding-bottom: 0;
+}
+.poster-hero > .wrap {
+  flex: 1; display: flex; flex-direction: column; justify-content: center;
+  padding-top: clamp(32px, 5vh, 64px); padding-bottom: clamp(32px, 5vh, 64px);
+}
+.poster-hero h1 {
+  font-size: clamp(3.8rem, 12vw, 10rem);
+  max-width: 14ch;
+}
+
+/* ---------- Kinetic hero type (load) ---------- */
+.hero-word {
+  display: inline-block; overflow: hidden; vertical-align: top;
+  padding-bottom: 0.08em; margin-bottom: -0.08em; /* room for descenders */
+}
+.hero-word-inner {
+  display: inline-block; will-change: transform;
+  animation: word-rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 90ms + 150ms);
+}
+@keyframes word-rise {
+  from { transform: translateY(110%); }
+  to { transform: translateY(0); }
+}
+/* Entrance cascade: kicker -> headline -> standfirst -> CTA -> gate line. */
+.poster-hero .hero-kicker { animation: poster-fade 0.7s ease both; }
+.poster-hero .hero-standfirst { animation: poster-fade 0.7s ease 0.55s both; }
+.poster-hero .hero-cta { animation: poster-fade 0.7s ease 0.7s both; }
+.poster-hero .poster-gate { animation: poster-fade 0.7s ease 0.85s both; }
+@keyframes poster-fade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Recruitment one-liner ---------- */
+.poster-gate {
+  margin: 28px 0 0; padding-top: 20px; border-top: 1px solid var(--hairline);
+  font: 500 11px var(--mono); letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--soft);
+}
+.poster-gate em { font-style: italic; color: var(--flag); }
+.poster-gate a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--flag); text-underline-offset: 3px; }
+.poster-gate a:hover { color: var(--flag); }
+
+/* ---------- Results ticker (the scoreboard, in motion) ---------- */
+.poster-ticker {
+  overflow: hidden; background: var(--ink); color: var(--paper);
+  border-top: 3px solid var(--ink);
+}
+.ticker-track {
+  display: flex; width: max-content;
+  animation: ticker-slide 36s linear infinite;
+}
+.poster-ticker:hover .ticker-track { animation-play-state: paused; }
+.ticker-set { display: flex; align-items: center; }
+.ticker-item {
+  display: inline-flex; align-items: center; gap: 28px; padding: 14px 28px 14px 0;
+  font: 500 12px var(--mono); letter-spacing: 0.12em; text-transform: uppercase;
+  white-space: nowrap;
+}
+.ticker-item::after {
+  content: ""; flex: none; width: 6px; height: 6px;
+  background: var(--flag); transform: rotate(45deg);
+}
+@keyframes ticker-slide {
+  to { transform: translateX(-50%); }
+}
+
+/* ---------- Scroll progress hairline (scroll-driven, @supports only) ---------- */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 200;
+  background: var(--flag); transform: scaleX(0); transform-origin: 0 50%;
+  pointer-events: none;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: progress-grow linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+@keyframes progress-grow {
+  to { transform: scaleX(1); }
+}
+
+/* ---------- Hero parallax-out (scroll-driven, @supports only) ---------- */
+@supports (animation-timeline: view()) {
+  .poster-hero > .wrap {
+    animation: poster-exit linear both;
+    animation-timeline: view();
+    animation-range: exit 0% exit 100%;
+  }
+}
+@keyframes poster-exit {
+  to { transform: translateY(-24px); opacity: 0.35; }
+}
+
+/* ---------- Hover physics ---------- */
+.masthead nav a { position: relative; }
+.masthead nav a::after {
+  content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: 100%;
+  background: var(--flag); transform: scaleX(0); transform-origin: 0 50%;
+  transition: transform 0.25s ease;
+}
+.masthead nav a:hover::after, .masthead nav a:focus-visible::after { transform: scaleX(1); }
+.masthead nav a:hover { border-bottom-color: transparent; }
+.wordmark .one {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.wordmark:hover .one, .wordmark:focus-visible .one {
+  transform: translateY(-2px) rotate(-6deg) scale(1.15);
+}
+.hero-cta .network-cta b { transition: transform 0.25s ease; }
+.hero-cta .network-cta:hover b, .hero-cta .network-cta:focus-visible b {
+  transform: translateX(4px);
+}
+
+/* ---------- Reduced motion: everything stops, content stays visible ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero-word-inner,
+  .poster-hero .hero-kicker,
+  .poster-hero .hero-standfirst,
+  .poster-hero .hero-cta,
+  .poster-hero .poster-gate,
+  .ticker-track,
+  .poster-hero > .wrap { animation: none !important; }
+  .scroll-progress { display: none; }
+  .masthead nav a::after, .wordmark .one, .hero-cta .network-cta b { transition: none; }
+}
+
+/* ---------- Small screens ---------- */
+@media (max-width: 720px) {
+  .poster-hero h1 { font-size: clamp(3.2rem, 14.5vw, 5rem); }
+  .ticker-item { font-size: 11px; padding: 12px 22px 12px 0; gap: 22px; }
+}
