@@ -1,7 +1,22 @@
 import type { Metadata, Viewport } from "next";
+import { Fraunces, IBM_Plex_Mono } from "next/font/google";
 import { PUBLIC_PROFILES, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
-import "./knights-home.css";
+
+const serif = Fraunces({
+  subsets: ["latin"],
+  weight: ["400", "600", "900"],
+  style: ["normal", "italic"],
+  variable: "--font-serif",
+  display: "swap",
+});
+
+const mono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -28,7 +43,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#050706",
+  themeColor: "#F7F3EA",
 };
 
 const organizationId = `${SITE_URL}/#organization`;
@@ -57,7 +72,7 @@ const structuredData = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${serif.variable} ${mono.variable}`}>
       <body>
         <script
           type="application/ld+json"

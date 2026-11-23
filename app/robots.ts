@@ -3,7 +3,9 @@ import { SITE_URL } from "@/lib/seo";
 
 // Allow crawlers to fetch sign-in, sign-up, account and preview pages so their
 // noindex metadata can be seen. Robots disallow would prevent that.
-const disallowed = ["/api/", "/admin/"];
+// Note: there is no /admin/ route in this app (the management app lives in
+// backend/), so it is not listed here.
+const disallowed = ["/api/"];
 
 /** Robots guidance is not an access-control mechanism. */
 export default function robots(): MetadataRoute.Robots {

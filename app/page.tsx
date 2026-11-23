@@ -1,11 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { SiteExperience } from "@/components/SiteExperience";
+import { HomePage } from "@/components/home/HomePage";
 import { getSiteContent } from "@/lib/site-content";
-import type { HomePlatformData } from "@/lib/platform-api";
+import { platformOr, type HomePlatformData } from "@/lib/platform-api";
 import { canonicalUrl } from "@/lib/seo";
-import styles from "./image-only.module.css";
 
 type Props = { searchParams: Promise<{ preview?: string }> };
 
@@ -39,7 +37,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
           url: canonicalUrl("/opengraph-image"),
           width: 1200,
           height: 630,
-          alt: "kn1ghts cute construction knight brand card",
+          alt: "kn1ghts — competitive cybersecurity and CTF team from India",
         },
       ],
     },
@@ -52,55 +50,34 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   };
 }
 
-function ComingSoon() {
-  return (
-    <main className={styles.page} aria-label="kn1ghts homepage">
-      <div className={styles.accessibleInfo}>
-        <h1>kn1ghts</h1>
-        <p>
-          kn1ghts is a cybersecurity and Capture the Flag (CTF) team in India.
-          Our public team profile and original security field notes are available
-          while the main website is under construction.
-        </p>
-        <nav aria-label="Explore kn1ghts">
-          <Link href="/team">Meet the team</Link>
-          <Link href="/blog">Security field notes</Link>
-          <Link href="/pow">Competition results</Link>
-        </nav>
-      </div>
-      <Image
-        src="/kn1ghts-original-knight.webp"
-        alt="kn1ghts mascot: a happy chubby knight holding a construction sign"
-        width={480}
-        height={439}
-        className={styles.knight}
-        priority
-        unoptimized
-      />
-    </main>
-  );
-}
-
 export default async function Home({ searchParams }: Props) {
   const { preview } = await searchParams;
   // Keep the existing short-lived CMS previews; the backend validates tokens.
   // They are not the public homepage and remain noindex.
-  if (!preview) return <ComingSoon />;
-
   let site;
   try {
     site = await getSiteContent(preview);
   } catch {
     return (
-      <main className={styles.page}>
-        <section className={styles.previewError}>
-          <h1>preview unavailable.</h1>
-          <p>This draft link has expired or been revoked.</p>
-          <Link href="/">back home</Link>
-        </section>
+      <main className="preview-error">
+        <h1>preview unavailable.</h1>
+        <p>This draft link has expired or been revoked.</p>
+        <Link href="/">back home</Link>
       </main>
     );
   }
-  const platform: HomePlatformData = { blog: [], events: [], challenge: null };
-  return <SiteExperience data={site} platform={platform} preview contactReady={false} />;
+  // The redesigned homepage lands instantly on real content — no intro, no
+  // gate. Draft previews still render with empty platform data and no
+  // contact form, exactly as before.
+  const platform: HomePlatformData = preview
+    ? { blog: [], events: [], challenge: null }
+    : await platformOr<HomePlatformData>("home", { blog: [], events: [], challenge: null });
+  return (
+    <HomePage
+      data={site}
+      platform={platform}
+      preview={Boolean(preview)}
+      contactReady={Boolean(process.env.BACKEND_URL && process.env.CONTACT_API_SECRET)}
+    />
+  );
 }

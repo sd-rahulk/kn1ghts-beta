@@ -1,45 +1,70 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
+export const alt = "kn1ghts — competitive cybersecurity and CTF team from India";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "kn1ghts, the cybersecurity and CTF team, with a playful knight illustration";
 
-export default function OpenGraphImage() {
+// Light broadsheet card, matching the redesigned site exactly:
+// paper background, ink masthead rule, one red flag mark.
+export default function Image() {
   return new ImageResponse(
-    <div style={{
-      width: "100%", height: "100%", display: "flex", flexDirection: "column",
-      alignItems: "center", justifyContent: "center",
-      background: "linear-gradient(130deg, #fff9f5 0%, #f6edf9 52%, #f0ebff 100%)",
-      fontFamily: "Arial, sans-serif", color: "#443550",
-    }}>
-      <div style={{ display: "flex", fontSize: 152, fontWeight: 800, letterSpacing: -11, lineHeight: 1.1 }}>
-        <span>kn</span><span style={{ color: "#ffb72f" }}>1</span><span>ghts</span>
-      </div>
-      <div style={{ width: 340, height: 260, display: "flex", position: "relative", marginTop: 5 }}>
-        <div style={{
-          position: "absolute", width: 110, height: 63, background: "#e9545a",
-          border: "8px solid #bd4657", borderRadius: 85, top: 5, left: 107, transform: "rotate(-23deg)",
-        }} />
-        <div style={{
-          position: "absolute", width: 222, height: 222, background: "#dcd6e6",
-          border: "10px solid #786777", borderRadius: 115, top: 21, left: 59,
-        }} />
-        <div style={{
-          position: "absolute", width: 179, height: 140, background: "#fff3e8",
-          border: "6px solid #a8888c", borderRadius: 100, top: 92, left: 82,
-          display: "flex", alignItems: "center", justifyContent: "center",
-        }}>
-          <div style={{ width: 18, height: 23, background: "#4b333e", borderRadius: 20, marginRight: 46 }} />
-          <div style={{ width: 18, height: 23, background: "#4b333e", borderRadius: 20 }} />
+    (
+      <div
+        style={{
+          width: "1200px",
+          height: "630px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          backgroundColor: "#F7F3EA",
+          color: "#161513",
+          padding: "72px 84px",
+          fontFamily: "Georgia, 'Times New Roman', serif",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "baseline",
+            justifyContent: "space-between",
+            borderBottom: "4px solid #161513",
+            paddingBottom: "24px",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "baseline", fontSize: 56, fontWeight: 900, letterSpacing: "-3px", lineHeight: 1 }}>
+            kn<span style={{ color: "#B3261E" }}>1</span>ghts
+          </div>
+          <div style={{ fontSize: 22, letterSpacing: "4px", color: "#6B6659" }}>
+            INDIA — 2026 SEASON
+          </div>
         </div>
-        <div style={{
-          position: "absolute", width: 274, height: 88, top: 168, left: 34,
-          background: "repeating-linear-gradient(115deg, #ffc842 0px, #ffc842 50px, #544452 50px, #544452 95px)",
-          border: "11px solid #e9a43e", borderRadius: 20,
-        }} />
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          <div style={{ fontSize: 88, fontWeight: 900, lineHeight: 0.98, letterSpacing: "-3px" }}>
+            Four first places
+          </div>
+          <div style={{ display: "flex", alignItems: "baseline", columnGap: "0.25em", fontSize: 88, fontWeight: 900, lineHeight: 0.98, letterSpacing: "-3px" }}>
+            in <span style={{ fontStyle: "italic", fontWeight: 600 }}>2026.</span>
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            borderTop: "1px solid rgba(22,21,19,0.42)",
+            paddingTop: "20px",
+            fontSize: 24,
+            letterSpacing: "2px",
+            color: "#6B6659",
+          }}
+        >
+          <span>CTFTIME 457 · 175.732 PTS</span>
+          <span>
+            <span style={{ color: "#B3261E" }}>1ST</span> CRUXIPHER · EXPLOITX · AAZHI · BLACKBOX
+          </span>
+        </div>
       </div>
-    </div>,
-    { ...size },
+    ),
+    size,
   );
 }

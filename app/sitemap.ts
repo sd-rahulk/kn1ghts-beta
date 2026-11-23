@@ -15,6 +15,7 @@ const indexedPaths = [
   "/pow",
   "/inhouse-weekly",
   "/contact",
+  "/security",
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
