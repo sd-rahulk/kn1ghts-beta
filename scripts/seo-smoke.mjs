@@ -55,20 +55,31 @@ try {
   assert.match(llms, /KN1GHTS/);
   const home = await get("/");
   assert.match(home, /Cybersecurity &amp; CTF Team in India/);
-  assert.ok(home.includes("/kn1ghts-original-knight.webp"), "original knight asset missing");
-  assert.match(home, /aria-label="kn1ghts homepage"/);
+  // The broadsheet homepage carries no imagery: the knight asset is no longer
+  // linked from it (it still exists in public/ and is checked reachable below).
+  assert.ok(!home.includes("kn1ghts-original-knight"), "homepage still references the removed knight imagery");
+  assert.match(home, /aria-label="KN1GHTS — back to top"/);
+  assert.ok(home.includes("Skip to content"), "homepage skip link missing");
   const mainStart = home.indexOf("<main");
   const mainBodyStart = home.indexOf(">", mainStart) + 1;
   const mainEnd = home.indexOf("</main>", mainBodyStart);
   assert.ok(mainStart >= 0 && mainBodyStart > mainStart && mainEnd > mainBodyStart, "homepage main missing");
   const splash = home.slice(mainBodyStart, mainEnd);
-  assert.match(splash, /<img /, "homepage image missing");
-  assert.match(splash, /<h1>kn1ghts<\/h1>/i, "homepage must have a semantic brand heading");
-  assert.ok(splash.includes('href="/team"'), "homepage must link to its team");
-  assert.ok(splash.includes('href="/blog"'), "homepage must link to its blog");
-  assert.ok(splash.includes('href="/pow"'), "homepage must link to competition results");
-  assert.match(splash, /cybersecurity and Capture the Flag/i, "nonvisual users need an accessible site summary");
+  // The broadsheet homepage is typographic by design: no <img> in <main>.
+  // Its proof is the scoreboard of first places and the results table.
+  assert.match(splash, /hero-score/, "homepage scoreboard missing");
+  assert.match(splash, /results-table/, "homepage results table missing");
+  assert.match(splash, /<h1>Four first places in 2026\.<\/h1>/, "homepage must have a semantic fact headline");
+  // The header nav and footer sit outside <main>, so link checks run on `home`.
+  assert.ok(home.includes('href="/team"'), "homepage must link to its team");
+  assert.ok(home.includes('href="/blog"'), "homepage must link to its blog");
+  // Results live on the homepage itself now instead of behind /pow: every row
+  // links out to its public CTFtime record.
+  assert.ok(splash.includes('href="https://ctftime.org/team/157907"'), "homepage results must link to their public CTFtime record");
+  assert.match(splash, /175\.732 PTS/, "homepage must show the CTFtime rating");
+  assert.match(splash, /cybersecurity team that designs and competes in Capture the Flag/i, "nonvisual users need an accessible site summary");
   assert.ok(!home.includes('class="experience is-'), "public homepage exposed beta experience");
+  // Unlinked from the homepage but still shipped in public/: it must stay reachable.
   const originalKnight = await fetch(origin + "/kn1ghts-original-knight.webp");
   assert.equal(originalKnight.status, 200, "original knight image is not reachable");
   assert.match(originalKnight.headers.get("content-type") ?? "", /image\/webp/);
@@ -118,7 +129,8 @@ try {
   const wwwPost = await fetch(origin + "/beta/access", {
     method: "POST",
     headers: { Origin: "https://www.kn1ghts.org", "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({ password: "local-test-only-32-character-long-secret" }), redirect: "manual",
+    body: new URLSearchParams({ password: "local-test-only-32-character-long-secret" }),
+    redirect: "manual",
   });
   assert.equal(wwwPost.status, 303);
   assert.equal(wwwPost.headers.get("location"), "https://www.kn1ghts.org/beta");
@@ -159,7 +171,8 @@ try {
 
   const rightPost = await fetch(origin + "/beta/access", {
     method: "POST", headers: { Origin: origin, "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({ password: "local-test-only-32-character-long-secret" }), redirect: "manual",
+    body: new URLSearchParams({ password: "local-test-only-32-character-long-secret" }),
+    redirect: "manual",
   });
   assert.equal(rightPost.status, 303);
   const cookie = rightPost.headers.get("set-cookie");
@@ -170,7 +183,10 @@ try {
   );
   const beta = await fetch(origin + "/beta", { headers: { Cookie: cookie.split(";")[0] } });
   assert.equal(beta.status, 200);
-  assert.ok((await beta.text()).includes('class="experience is-'), "valid beta access did not restore cinematic page");
+  // Valid beta access now serves the redesigned homepage, not the cinematic page.
+  const betaBody = await beta.text();
+  assert.ok(betaBody.includes("Four first places in 2026."), "valid beta access did not restore the redesigned homepage");
+  assert.ok(!betaBody.includes('class="experience is-'), "beta exposed the removed cinematic page");
   assert.match(beta.headers.get("x-robots-tag") ?? "", /noindex/);
 
   const join = await get("/contact");
@@ -181,7 +197,7 @@ try {
   assert.match(home, /"@type":"Organization"/);
   const signin = await get("/sign-in");
   assert.match(signin, /name="robots" content="noindex/);
-  console.log("Public and private smoke checks passed: construction page, Team, Blog, private beta authentication, community routes, SEO.");
+  console.log("Public and private smoke checks passed: broadsheet homepage, Team, Blog, private beta authentication, community routes, SEO.");
 } catch (error) {
   console.error(error);
   console.error(serverLogs.slice(-2500));
