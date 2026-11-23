@@ -3,11 +3,37 @@
 import { useEffect, useRef, useState } from "react";
 import type { SiteContent } from "@/backend/lib/schema";
 
+/*
+ * Nav remap — the CMS nav (default.json, frozen) is anchor-based
+ * (#results, #team, #writeups, #about, #contact), but the poster homepage
+ * has no sections, so those anchors would be dead links. The header
+ * therefore remaps CMS labels to the real pages that host that content:
+ *
+ *   RESULTS  #results  -> /pow       (Proof of Work — the full record)
+ *   TEAM     #team     -> /team
+ *   WRITEUPS #writeups -> /blog
+ *   CONTACT  #contact  -> /contact
+ *   ABOUT    #about    -> dropped (no /about page exists)
+ *   BLOG     /blog     -> dropped (same destination as WRITEUPS)
+ *
+ * Labels still come from the CMS; only the destinations are overridden.
+ * A CMS nav item with no entry in this map is not rendered — the safe
+ * default is to hide it rather than render a dead anchor.
+ */
+const PAGE_LINKS: Record<string, string> = {
+  RESULTS: "/pow",
+  TEAM: "/team",
+  WRITEUPS: "/blog",
+  CONTACT: "/contact",
+};
+
 export function HomeHeader({ site }: { site: SiteContent }) {
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
-  const links = site.settings.navigation;
+  const links = site.settings.navigation
+    .filter((link) => PAGE_LINKS[link.label] !== undefined)
+    .map((link) => ({ label: link.label, href: PAGE_LINKS[link.label] }));
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
