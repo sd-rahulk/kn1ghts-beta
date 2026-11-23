@@ -90,6 +90,12 @@ button, a { touch-action: manipulation; }
 }
 .menu-panel nav a span { color: var(--soft); font-size: 11px; }
 
+@media (min-width: 861px) {
+  /* The mobile panel must never display at desktop width, even if its
+     open state is stale after a viewport resize (see HomeHeader). */
+  .menu-panel.is-open { display: none; }
+}
+
 /* ---------- Page frame ---------- */
 .redesign { background: var(--paper); color: var(--ink); }
 .redesign .wrap { width: var(--wrap); margin: 0 auto; }
@@ -376,7 +382,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--tactical) var(--paper); }
   .masthead-inner { grid-template-columns: 1fr auto; }
 }
 @media (max-width: 860px) {
-  .masthead nav { display: none; }
+  .masthead-inner > nav { display: none; }
   .menu-toggle { display: inline-flex; align-items: center; }
   .contact-grid { grid-template-columns: 1fr; }
   .discipline-list li { grid-template-columns: 40px minmax(0, 1fr); }
