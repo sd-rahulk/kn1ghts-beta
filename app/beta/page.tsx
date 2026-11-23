@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
 import type { Metadata } from "next";
-import { SiteExperience } from "@/components/SiteExperience";
+import { HomePage } from "@/components/home/HomePage";
 import { getSiteContent } from "@/lib/site-content";
 import { platformOr, type HomePlatformData } from "@/lib/platform-api";
 import { BETA_COOKIE, betaPassword, hasBetaSession } from "@/lib/beta-access";
@@ -53,7 +53,7 @@ export default async function BetaPage({ searchParams }: Props) {
   }
   const platform = preview ? { blog: [], events: [], challenge: null } :
     await platformOr<HomePlatformData>("home", { blog: [], events: [], challenge: null });
-  return <SiteExperience
+  return <HomePage
     data={site} platform={platform} preview={Boolean(preview)}
     contactReady={Boolean(process.env.BACKEND_URL && process.env.CONTACT_API_SECRET)}
   />;
