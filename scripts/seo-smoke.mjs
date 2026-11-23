@@ -81,6 +81,66 @@ try {
   });
   assert.equal(foreignPost.status, 403, "cross-origin beta login was accepted");
 
+
+  // Simulate Vercel/Cloudflare rewriting the internal request URL or Host.
+  // A real browser posting from kn1ghts.org must still pass the CSRF check.
+  const canonicalPost = await fetch(origin + "/beta/access", {
+    method: "POST",
+    headers: {
+      Origin: "https://kn1ghts.org",
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({ password: "local-test-only-32-character-long-secret" }),
+    redirect: "manual",
+  });
+  assert.equal(canonicalPost.status, 303, "canonical browser origin rejected behind proxy");
+  assert.equal(canonicalPost.headers.get("location"), "https://kn1ghts.org/beta", "successful login redirected to internal hostname");
+  assert.ok(/httponly/i.test(canonicalPost.headers.get("set-cookie") ?? ""), "canonical login did not set a session cookie");
+
+  const wrongCanonicalPost = await fetch(origin + "/beta/access", {
+    method: "POST",
+    headers: { Origin: "https://kn1ghts.org", "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ password: "incorrect" }), redirect: "manual",
+  });
+  assert.equal(wrongCanonicalPost.status, 303);
+  assert.equal(wrongCanonicalPost.headers.get("location"), "https://kn1ghts.org/beta?error=1");
+  assert.equal(wrongCanonicalPost.headers.get("set-cookie"), null, "invalid password issued session cookie");
+
+  const wwwPost = await fetch(origin + "/beta/access", {
+    method: "POST",
+    headers: { Origin: "https://www.kn1ghts.org", "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ password: "local-test-only-32-character-long-secret" }), redirect: "manual",
+  });
+  assert.equal(wwwPost.status, 303);
+  assert.equal(wwwPost.headers.get("location"), "https://www.kn1ghts.org/beta");
+
+  for (const untrustedOrigin of [
+    "https://evil.example",
+    "https://kn1ghts.org.evil.example",
+    "https://kn1ghts.org/not-an-origin",
+  ]) {
+    const spoofed = await fetch(origin + "/beta/access", {
+      method: "POST",
+      headers: {
+        Origin: untrustedOrigin,
+        "X-Forwarded-Host": "kn1ghts.org",
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({ password: "local-test-only-32-character-long-secret" }),
+      redirect: "manual",
+    });
+    assert.equal(spoofed.status, 403, `untrusted origin ${untrustedOrigin} was accepted`);
+    assert.equal(spoofed.headers.get("x-kn1ghts-beta-reject"), "origin");
+    assert.equal(spoofed.headers.get("set-cookie"), null);
+  }
+
+  const missingOrigin = await fetch(origin + "/beta/access", {
+    method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ password: "local-test-only-32-character-long-secret" }),
+    redirect: "manual",
+  });
+  assert.equal(missingOrigin.status, 403, "missing Origin bypassed CSRF protection");
+
   const wrongPost = await fetch(origin + "/beta/access", {
     method: "POST", headers: { Origin: origin, "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({ password: "not-the-password" }), redirect: "manual",
