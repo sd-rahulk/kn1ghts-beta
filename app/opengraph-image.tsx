@@ -32,7 +32,7 @@ export default function Image() {
             paddingBottom: "24px",
           }}
         >
-          <div style={{ fontSize: 56, fontWeight: 900, letterSpacing: "-3px", lineHeight: 1 }}>
+          <div style={{ display: "flex", alignItems: "baseline", fontSize: 56, fontWeight: 900, letterSpacing: "-3px", lineHeight: 1 }}>
             kn<span style={{ color: "#B3261E" }}>1</span>ghts
           </div>
           <div style={{ fontSize: 22, letterSpacing: "4px", color: "#6B6659" }}>
@@ -43,7 +43,7 @@ export default function Image() {
           <div style={{ fontSize: 88, fontWeight: 900, lineHeight: 0.98, letterSpacing: "-3px" }}>
             Four first places
           </div>
-          <div style={{ fontSize: 88, fontWeight: 900, lineHeight: 0.98, letterSpacing: "-3px" }}>
+          <div style={{ display: "flex", alignItems: "baseline", columnGap: "0.25em", fontSize: 88, fontWeight: 900, lineHeight: 0.98, letterSpacing: "-3px" }}>
             in <span style={{ fontStyle: "italic", fontWeight: 600 }}>2026.</span>
           </div>
         </div>
