@@ -3,7 +3,7 @@ export const SITE_URL = "https://kn1ghts.org";
 
 export const SITE_NAME = "kn1ghts";
 export const SITE_DESCRIPTION =
-  "kn1ghts is an Indian Capture the Flag (CTF) and cybersecurity team. Explore our competition results, team members, practical security articles and community activities.";
+  "kn1ghts is an Indian cybersecurity and Capture the Flag team. Explore competition results, team members, security research and CTF field guides.";
 
 export const PUBLIC_PROFILES = [
   "https://github.com/Kn1ghts-org",

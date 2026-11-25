@@ -5,11 +5,11 @@ import { canonicalUrl, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 const articleTitle = "Web CTF Security: Authorization, Sessions, and Safe Testing";
 const description =
-  "A practical field guide to testing web CTF applications with authorization matrices, session checks, reproducible evidence, and boundaries that keep the platform safe.";
+  "Learn to test web CTF applications with authorization matrices, session checks and reproducible evidence within safe, authorized boundaries.";
 const canonical = canonicalUrl("/blog/web-ctf-field-guide");
 
 export const metadata: Metadata = {
-  title: articleTitle,
+  title: "Web CTF Security: Authorization and Sessions",
   description,
   alternates: { canonical },
   openGraph: {
@@ -31,6 +31,7 @@ const articleSchema = {
   url: canonical,
   inLanguage: "en-IN",
   dateCreated: "2026-11-17",
+  datePublished: "2026-11-17",
   author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
   publisher: { "@id": `${SITE_URL}/#organization` },
   about: ["Web application security", "CTF", "Authorization", "Session management"],

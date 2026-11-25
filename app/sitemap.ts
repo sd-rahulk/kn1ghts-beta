@@ -37,5 +37,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       };
     });
 
-  return [...staticPages, ...posts];
+  // A CMS post can share a slug with a static guide; keep only its actual route.
+  return [...new Map([...posts, ...staticPages].map((page) => [page.url, page])).values()];
 }

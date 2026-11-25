@@ -2,10 +2,11 @@ import Link from "next/link";
 import { PageLead } from "@/components/community/CommunityShell";
 
 export const metadata = {
-  title: "Security",
-  description: "How to report a security issue in a KN1GHTS system, responsibly.",
+  title: "Responsible Security Disclosure",
+  description: "Learn how to privately report a vulnerability in a kn1ghts system, what evidence to include and the boundaries of responsible security testing.",
   alternates: { canonical: "https://kn1ghts.org/security" },
-  openGraph: { url: "https://kn1ghts.org/security" },
+  openGraph: { title: "Responsible Security Disclosure | kn1ghts", description: "Learn how to privately report a vulnerability in a kn1ghts system, what evidence to include and the boundaries of responsible security testing.", url: "https://kn1ghts.org/security", siteName: "kn1ghts", type: "website" as const },
+  twitter: { card: "summary" as const, title: "Responsible Security Disclosure | kn1ghts", description: "Learn how to privately report a vulnerability in a kn1ghts system, what evidence to include and the boundaries of responsible security testing." },
 };
 
 export default function SecurityPage() {
@@ -22,12 +23,11 @@ export default function SecurityPage() {
           <div>
             <h2>Report it privately</h2>
             <p>
-              Send the details through the contact form on the homepage, or the
-              join form on this site. Include what you found, where you found
+              Send the details through the contact form on this site. Include what you found, where you found
               it, and steps to reproduce it.
             </p>
           </div>
-          <Link className="row-link" href="/#contact">
+          <Link className="row-link" href="/contact">
             CONTACT →
           </Link>
         </article>
