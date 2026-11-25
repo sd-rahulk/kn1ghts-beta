@@ -2,7 +2,6 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { HomePage } from "@/components/home/HomePage";
 import { getSiteContent } from "@/lib/site-content";
-import { platformOr, type HomePlatformData } from "@/lib/platform-api";
 import { canonicalUrl } from "@/lib/seo";
 
 type Props = { searchParams: Promise<{ preview?: string }> };
@@ -66,16 +65,11 @@ export default async function Home({ searchParams }: Props) {
       </main>
     );
   }
-  // The redesigned homepage lands instantly on real content — no intro, no
-  // gate. Draft previews still render with empty platform data and no
-  // contact form, exactly as before.
-  const platform: HomePlatformData = preview
-    ? { blog: [], events: [], challenge: null }
-    : await platformOr<HomePlatformData>("home", { blog: [], events: [], challenge: null });
+  // The poster homepage renders no platform teasers, so no platform fetch
+  // runs here — the page no longer waits on the platform backend.
   return (
     <HomePage
       data={site}
-      platform={platform}
       preview={Boolean(preview)}
       contactReady={Boolean(process.env.BACKEND_URL && process.env.CONTACT_API_SECRET)}
     />

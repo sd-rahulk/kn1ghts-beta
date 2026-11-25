@@ -1,8 +1,9 @@
 import { Fragment } from "react";
 import type { CSSProperties } from "react";
 import { HomeHeader } from "@/components/home/HomeHeader";
+import { Ticker } from "@/components/home/Ticker";
+import { resolvePosterHref } from "@/components/home/posterLinks";
 import type { SiteContent, SiteSection } from "@/backend/lib/schema";
-import type { HomePlatformData } from "@/lib/platform-api";
 
 /* [[...]] renders as italic emphasis; newlines become line breaks. */
 function Text({ value }: { value: string }) {
@@ -39,6 +40,35 @@ function ordinal(label: string) {
   return `${n}TH`;
 }
 
+/* Plain text of a CMS title: emphasis markers stripped, newlines flattened.
+ * Used for the h1 accessible name, so it never carries the [[...]]
+ * delimiters the visible heading omits. */
+function plainTitle(value: string) {
+  return value
+    .replace(/\[\[([\s\S]*?)\]\]/g, "$1")
+    .replace(/\n/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/* Headline words for the kinetic type treatment. CMS emphasis is parsed
+ * FIRST, then each part is split into words — so "Four [[first places]]
+ * in 2026." animates as an emphasized "first places", never as the broken
+ * fragments "[[first" / "places]]". Plain titles still get one animation
+ * span per word. */
+type HeadlineWord = { text: string; em: boolean };
+
+function headlineWords(value: string): HeadlineWord[] {
+  const words: HeadlineWord[] = [];
+  for (const part of value.split(/(\[\[[\s\S]*?\]\]|\n)/)) {
+    if (!part || part === "\n") continue;
+    const em = part.startsWith("[[");
+    const text = em ? part.slice(2, -2) : part;
+    for (const word of text.split(" ").filter(Boolean)) words.push({ text: word, em });
+  }
+  return words;
+}
+
 /*
  * THE POSTER — the homepage is bare minimum: masthead + one announcement
  * block + footer. No about / disciplines / record table / member list /
@@ -55,8 +85,6 @@ export function HomePage({
   preview = false,
 }: {
   data: SiteContent;
-  /* page.tsx still passes platform; the poster renders no platform teasers. */
-  platform: HomePlatformData;
   preview?: boolean;
   contactReady?: boolean;
 }) {
@@ -67,17 +95,41 @@ export function HomePage({
   const firstPlaces = (results?.items ?? []).filter((item) => item.label === "#1");
 
   /* Ticker: the four first-place finishes, then the ledger figures parsed
-   * from the CMS stat strip ("RATING 457 · 175.732 PTS · …"). If parsing
-   * ever fails, the ticker falls back to the four firsts alone — never
-   * invented text. */
+   * from the CMS stat strip ("RATING 457 · 175.732 PTS · …"). Each figure is
+   * matched as a COMPLETE field: a partial number (e.g. "1,175.732 PTS"
+   * read as "175.732 PTS") is rejected and the field is omitted, never
+   * published as a lower score. */
   const ledger: string[] = [];
-  const points = hero?.fields.statStrip?.match(/([\d.]+)\s*PTS/i);
-  const rating = hero?.fields.statStrip?.match(/RATING\s+(\d+)/i);
-  if (points) ledger.push(`${points[1]} PTS`);
-  if (rating) ledger.push(`RATING ${rating[1]}`);
+  const stripFields = (hero?.fields.statStrip ?? "").split("·").map((field) => field.trim());
+  const pointsField = stripFields.find((field) => /PTS$/i.test(field));
+  const pointsMatch = pointsField?.match(/^([\d,]+(?:\.\d+)?)\s*PTS$/i);
+  if (pointsMatch) ledger.push(`${pointsMatch[1]} PTS`);
+  const ratingField = stripFields.find((field) => /^RATING\s/i.test(field));
+  const ratingMatch = ratingField?.match(/^RATING\s+([\d,]+)$/i);
+  if (ratingMatch) ledger.push(`RATING ${ratingMatch[1]}`);
   const tickerItems = [...firstPlaces.map((item) => `${ordinal(item.label)} ${item.title}`), ...ledger];
 
-  const headlineWords = (hero?.title ?? "").split(" ").filter(Boolean);
+  const words = headlineWords(hero?.title ?? "");
+
+  /* The CMS CTA destination may be an obsolete fragment (#results): resolve
+   * it to its replacement page and keep the CMS label with it. A real
+   * destination ("/events", an external URL) is used as authored, label and
+   * destination together. An unresolvable fragment falls back to the record
+   * page with the results label, so the label never describes a destination
+   * the button does not open. */
+  const ctaHref = hero?.fields.ctaHref;
+  const ctaResolved = ctaHref ? resolvePosterHref(ctaHref) : null;
+  const cta = ctaResolved
+    ? { href: ctaResolved, label: hero?.fields.ctaLabel || "SEE THE RESULTS" }
+    : { href: "/pow", label: "SEE THE RESULTS" };
+
+  /* Footer links are resolved the same way as the nav: a link to a removed
+   * section resolves to its replacement page, links to rendered targets
+   * (#home, #main) and real pages stay as authored, and a fragment with no
+   * page is omitted rather than rendered as a dead anchor. */
+  const footerLinks = data.settings.footerLinks
+    .map((link) => ({ label: link.label, href: resolvePosterHref(link.href) }))
+    .filter((link): link is { label: string; href: string } => link.href !== null);
 
   return (
     <div className="redesign">
@@ -96,13 +148,13 @@ export function HomePage({
                 </span>
                 <span>{hero.fields.dateline || data.settings.headerLine}</span>
               </div>
-              <h1 aria-label={hero.title}>
-                {headlineWords.map((word, i) => (
-                  <Fragment key={`${word}-${i}`}>
+              <h1 aria-label={plainTitle(hero.title)}>
+                {words.map((word, i) => (
+                  <Fragment key={`${word.text}-${i}`}>
                     {i > 0 && " "}
                     <span className="hero-word" style={{ "--i": i } as CSSProperties}>
                       <span className="hero-word-inner" aria-hidden="true">
-                        <Text value={word} />
+                        {word.em ? <em>{word.text}</em> : word.text}
                       </span>
                     </span>
                   </Fragment>
@@ -110,14 +162,8 @@ export function HomePage({
               </h1>
               <p className="hero-standfirst">{hero.description}</p>
               <p className="hero-cta">
-                {/*
-                  The CMS ctaHref is "#results" — a dead anchor on the poster
-                  page, since the results table no longer lives here. The
-                  record now lives at /pow (Proof of Work), so the CTA
-                  points there and keeps the CMS label.
-                */}
-                <a className="network-cta" href="/pow">
-                  <span>{hero.fields.ctaLabel || "SEE THE RESULTS"}</span>
+                <a className="network-cta" href={cta.href}>
+                  <span>{cta.label}</span>
                   <b aria-hidden="true">→</b>
                 </a>
               </p>
@@ -136,21 +182,7 @@ export function HomePage({
                 </p>
               )}
             </div>
-            {tickerItems.length > 0 && (
-              <div className="poster-ticker" aria-label="First-place finishes and season ledger, 2026">
-                <div className="ticker-track">
-                  {[0, 1].map((copy) => (
-                    <span className="ticker-set" key={copy} aria-hidden={copy === 1}>
-                      {tickerItems.map((item, i) => (
-                        <span className="ticker-item" key={`${copy}-${i}`}>
-                          {item}
-                        </span>
-                      ))}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
+            {tickerItems.length > 0 && <Ticker items={tickerItems} />}
           </header>
         )}
       </main>
@@ -162,7 +194,7 @@ export function HomePage({
               kn<span className="one">1</span>ghts<span className="reg">{data.settings.registrationMark}</span>
             </a>
             <nav className="footer-links" aria-label="Footer">
-              {data.settings.footerLinks.map((link) => (
+              {footerLinks.map((link) => (
                 <SourceLink key={`${link.label}-${link.href}`} href={link.href}>
                   {link.label}
                 </SourceLink>

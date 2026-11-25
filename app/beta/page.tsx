@@ -3,7 +3,6 @@ import { cookies } from "next/headers";
 import type { Metadata } from "next";
 import { HomePage } from "@/components/home/HomePage";
 import { getSiteContent } from "@/lib/site-content";
-import { platformOr, type HomePlatformData } from "@/lib/platform-api";
 import { BETA_COOKIE, betaPassword, hasBetaSession } from "@/lib/beta-access";
 import styles from "../coming-soon.module.css";
 
@@ -51,10 +50,10 @@ export default async function BetaPage({ searchParams }: Props) {
       </main>
     );
   }
-  const platform = preview ? { blog: [], events: [], challenge: null } :
-    await platformOr<HomePlatformData>("home", { blog: [], events: [], challenge: null });
+  // The poster homepage renders no platform teasers, so no platform fetch
+  // runs here — the page no longer waits on the platform backend.
   return <HomePage
-    data={site} platform={platform} preview={Boolean(preview)}
+    data={site} preview={Boolean(preview)}
     contactReady={Boolean(process.env.BACKEND_URL && process.env.CONTACT_API_SECRET)}
   />;
 }

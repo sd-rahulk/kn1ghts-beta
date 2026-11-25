@@ -482,6 +482,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--tactical) var(--paper); }
 
 /* ---------- Results ticker (the scoreboard, in motion) ---------- */
 .poster-ticker {
+  position: relative;
   overflow: hidden; background: var(--ink); color: var(--paper);
   border-top: 3px solid var(--ink);
 }
@@ -490,6 +491,21 @@ html { scrollbar-width: thin; scrollbar-color: var(--tactical) var(--paper); }
   animation: ticker-slide 36s linear infinite;
 }
 .poster-ticker:hover .ticker-track { animation-play-state: paused; }
+.poster-ticker.is-paused .ticker-track { animation-play-state: paused; }
+/* Ticker pause control (WCAG 2.2.2): a persistent, focusable button whose
+   state — not hover or focus — stops and restarts the track. It stays
+   available while paused. Hidden under reduced motion, where there is no
+   animation to stop. */
+.ticker-toggle {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  z-index: 1; min-height: 32px; padding: 0 12px;
+  border: 1px solid var(--paper); background: var(--paper); color: var(--ink);
+  font: 500 10px var(--mono); letter-spacing: 0.12em; text-transform: uppercase;
+  cursor: pointer;
+}
+.ticker-toggle:hover, .ticker-toggle:focus-visible {
+  background: var(--flag); border-color: var(--flag); color: var(--paper);
+}
 .ticker-set { display: flex; align-items: center; }
 .ticker-item {
   display: inline-flex; align-items: center; gap: 28px; padding: 14px 28px 14px 0;
@@ -564,6 +580,15 @@ html { scrollbar-width: thin; scrollbar-color: var(--tactical) var(--paper); }
   .poster-hero > .wrap { animation: none !important; }
   .scroll-progress { display: none; }
   .masthead nav a::after, .wordmark .one, .hero-cta .network-cta b { transition: none; }
+  /* With the animation off, the ticker track is a single row wider than
+     the viewport and the strip clips it — later results would be
+     unreadable with no way to reach them. Let the first set wrap within
+     the viewport, hide the duplicate set, and hide the pause button
+     (there is no motion left to stop). */
+  .ticker-track { width: auto; flex-wrap: wrap; }
+  .ticker-set { flex-wrap: wrap; }
+  .ticker-set[aria-hidden="true"] { display: none; }
+  .ticker-toggle { display: none; }
 }
 
 /* ---------- Small screens ---------- */

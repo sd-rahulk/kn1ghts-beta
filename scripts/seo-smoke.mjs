@@ -29,6 +29,21 @@ async function waitForServer() {
   throw new Error(`Server did not become ready: ${serverLogs}`);
 }
 
+// Tag-stripped text of a document, for checks on content the kinetic type
+// treatment splits into per-word spans (the raw HTML has no contiguous
+// headline text).
+function stripTags(html) {
+  return html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+}
+
+// The announcement text, extracted from the <h1> itself — not from anywhere
+// in the page — so a paragraph carrying the words cannot satisfy the check.
+function headingText(html) {
+  const match = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/);
+  assert.ok(match, "page must have a semantic fact headline");
+  return stripTags(match[1]);
+}
+
 try {
   await waitForServer();
   const favicon = await fetch(origin + "/icon.png");
@@ -71,18 +86,21 @@ try {
   assert.ok(!splash.includes("results-table"), "poster homepage still renders the results table");
   assert.ok(!splash.includes("hero-score"), "poster homepage still renders the scoreboard");
   assert.ok(!splash.includes("roster"), "poster homepage still renders the roster");
-  assert.match(splash, /poster-ticker/, "homepage announcement ticker missing");
-  assert.match(splash, /cruXipher/, "ticker must name a first-place finish");
+  assert.ok(!/<img[\s>]/i.test(splash), "poster homepage main must not contain images");
+  const tickerStart = splash.indexOf("poster-ticker");
+  assert.ok(tickerStart >= 0, "homepage announcement ticker missing");
+  const ticker = splash.slice(tickerStart);
+  assert.ok(ticker.includes("cruXipher"), "ticker must name a first-place finish");
   // The headline is split into per-word spans for the kinetic type
   // treatment, so the raw HTML has no contiguous "<h1>Four first places
-  // in 2026.</h1>" — strip tags, then match the announcement text.
-  assert.match(home, /<h1[^>]*>/, "homepage must have a semantic fact headline");
-  const homeText = home.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
-  assert.ok(homeText.includes("Four first places in 2026."), "homepage must carry the announcement headline");
+  // in 2026.</h1>" — extract the heading first, then strip its tags.
+  assert.ok(headingText(home).includes("Four first places in 2026."), "homepage must carry the announcement headline");
   // The header nav and footer sit outside <main>, so link checks run on `home`.
   assert.ok(home.includes('href="/team"'), "homepage must link to its team");
   assert.ok(home.includes('href="/blog"'), "homepage must link to its blog");
-  assert.ok(home.includes('href="/pow"'), "announcement must link to the record");
+  // The record link is checked inside <main>: the announcement CTA itself
+  // must point at /pow, not just any link on the page.
+  assert.ok(splash.includes('href="/pow"'), "announcement CTA must link to the record");
   // The poster has no sections, so the old in-page anchors must be gone —
   // every nav link is a real page now (#home and #main are the only
   // in-page targets that may remain).
@@ -103,9 +121,12 @@ try {
 
   const betaGate = await get("/beta");
   assert.match(betaGate, /Preview password/);
-  assert.ok(!betaGate.includes('class="experience is-'), "locked beta exposed original homepage");
+  // The locked response must not render the poster at all: the old
+  // cinematic-marker check could not catch that (the poster never emits
+  // that class), so check the tag-stripped text for the announcement.
+  assert.ok(!stripTags(betaGate).includes("Four first places in 2026."), "locked beta exposed the poster homepage");
   const previewBypass = await get("/beta?preview=invalid-token");
-  assert.ok(!previewBypass.includes('class="experience is-'), "beta preview parameter bypassed gate");
+  assert.ok(!stripTags(previewBypass).includes("Four first places in 2026."), "beta preview parameter bypassed gate");
 
   const foreignPost = await fetch(origin + "/beta/access", {
     method: "POST", headers: { Origin: "https://evil.example", "Content-Type": "application/x-www-form-urlencoded" },
@@ -197,10 +218,9 @@ try {
   assert.equal(beta.status, 200);
   // Valid beta access now serves the poster homepage, not the cinematic page.
   const betaBody = await beta.text();
-  // Same tag-stripped check as the public homepage: the kinetic headline
+  // Same heading-first check as the public homepage: the kinetic headline
   // is split into per-word spans, so the raw HTML is not contiguous.
-  const betaText = betaBody.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
-  assert.ok(betaText.includes("Four first places in 2026."), "valid beta access did not restore the redesigned homepage");
+  assert.ok(headingText(betaBody).includes("Four first places in 2026."), "valid beta access did not restore the redesigned homepage");
   assert.ok(!betaBody.includes('class="experience is-'), "beta exposed the removed cinematic page");
   assert.match(beta.headers.get("x-robots-tag") ?? "", /noindex/);
 
