@@ -9,7 +9,7 @@ export const PUBLIC_PROFILES = [
   "https://github.com/Kn1ghts-org",
   "https://www.linkedin.com/company/kn1ghts/",
   "https://ctftime.org/team/453025",
-  "https://ctftime.org/team/157907",
+  // Historical competition records under another account are not identity equivalents.
 ] as const;
 
 export function canonicalUrl(path: string): string {

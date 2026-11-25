@@ -210,6 +210,8 @@ try {
   assert.match(weekly, /CHALLENGE/);
   assert.match(home, /rel="canonical" href="https:\/\/kn1ghts\.org\/?"/);
   assert.match(home, /"@type":"Organization"/);
+  assert.match(home, /kn1ghts · competitive cybersecurity &amp; CTFs/i, "stable visible brand identity missing");
+  assert.match(home, /"logo":"https:\/\/kn1ghts\.org\/icon\.png"/, "organization logo missing");
   // Protect branded discovery from metadata regressions on every public page.
   const seoRoutes = ["/","/team","/events","/pow","/inhouse-weekly","/contact","/blog","/security","/blog/web-ctf-field-guide"];
   const descriptions = new Set();

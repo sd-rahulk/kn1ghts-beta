@@ -56,6 +56,7 @@ const structuredData = {
       name: SITE_NAME,
       url: SITE_URL,
       description: SITE_DESCRIPTION,
+      logo: `${SITE_URL}/icon.png`,
       sameAs: [...PUBLIC_PROFILES],
     },
     {

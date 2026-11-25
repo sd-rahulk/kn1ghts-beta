@@ -3,6 +3,8 @@
 > KN1GHTS is an India-based competitive cybersecurity team and community focused on CTFs, offensive security research, technical projects, and learning in public.
 
 Official website: https://kn1ghts.org/
+Canonical brand name: kn1ghts
+Current team profile: https://ctftime.org/team/453025
 Official GitHub: https://github.com/Kn1ghts-org
 Official LinkedIn: https://www.linkedin.com/company/kn1ghts/
 
