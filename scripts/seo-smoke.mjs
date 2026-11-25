@@ -221,8 +221,10 @@ try {
     assert.ok(description, route + ": missing description");
     assert.ok(!descriptions.has(description), route + ": duplicate description");
     descriptions.add(description);
-    const canonical = route === "/" ? "https://kn1ghts.org/" : "https://kn1ghts.org" + route;
-    assert.ok(html.includes('rel="canonical" href="' + canonical + '"'), route + ": incorrect canonical");
+    const canonicals = [...html.matchAll(/<link\s+rel="canonical"\s+href="([^"]+)"/g)].map((match) => match[1]);
+    assert.equal(canonicals.length, 1, route + ": expected exactly one canonical");
+    // A bare origin and an origin followed by "/" are the same URL.
+    assert.equal(new URL(canonicals[0]).href, new URL(route, "https://kn1ghts.org").href, route + ": incorrect canonical");
   }
   const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
   assert.equal(new Set(sitemapUrls).size, sitemapUrls.length, "duplicate sitemap URLs");
