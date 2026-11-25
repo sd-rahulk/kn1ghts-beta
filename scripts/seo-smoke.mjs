@@ -210,6 +210,24 @@ try {
   assert.match(weekly, /CHALLENGE/);
   assert.match(home, /rel="canonical" href="https:\/\/kn1ghts\.org\/?"/);
   assert.match(home, /"@type":"Organization"/);
+  assert.match(home, /kn1ghts · competitive cybersecurity &amp; CTFs/i, "stable visible brand identity missing");
+  assert.match(home, /"logo":"https:\/\/kn1ghts\.org\/icon\.png"/, "organization logo missing");
+  // Protect branded discovery from metadata regressions on every public page.
+  const seoRoutes = ["/","/team","/events","/pow","/inhouse-weekly","/contact","/blog","/security","/blog/web-ctf-field-guide"];
+  const descriptions = new Set();
+  for (const route of seoRoutes) {
+    const html = await get(route);
+    const description = html.match(/<meta name="description" content="([^"]+)"/)?.[1];
+    assert.ok(description, route + ": missing description");
+    assert.ok(!descriptions.has(description), route + ": duplicate description");
+    descriptions.add(description);
+    const canonicals = [...html.matchAll(/<link\s+rel="canonical"\s+href="([^"]+)"/g)].map((match) => match[1]);
+    assert.equal(canonicals.length, 1, route + ": expected exactly one canonical");
+    // A bare origin and an origin followed by "/" are the same URL.
+    assert.equal(new URL(canonicals[0]).href, new URL(route, "https://kn1ghts.org").href, route + ": incorrect canonical");
+  }
+  const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+  assert.equal(new Set(sitemapUrls).size, sitemapUrls.length, "duplicate sitemap URLs");
   const signin = await get("/sign-in");
   assert.match(signin, /name="robots" content="noindex/);
   console.log("Public and private smoke checks passed: poster homepage, Team, Blog, private beta authentication, community routes, SEO.");

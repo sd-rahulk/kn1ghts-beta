@@ -92,7 +92,7 @@ export function HomePage({
             <div className="wrap">
               <div className="hero-kicker">
                 <span>
-                  <strong>{hero.fields.kicker || hero.eyebrow}</strong>
+                  <strong>kn1ghts · competitive cybersecurity &amp; CTFs</strong>
                 </span>
                 <span>{hero.fields.dateline || data.settings.headerLine}</span>
               </div>
